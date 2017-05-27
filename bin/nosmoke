@@ -11,7 +11,7 @@ const pkg = require('../package.json');
 const _ = require('../lib/common/helper');
 const logger = require('../lib/common/logger');
 
-const Inspector = require('..');
+const NoSmoke = require('..');
 
 const options = {
   port: 5678,
@@ -56,14 +56,9 @@ function init(error, data) {
     process.exit(0);
   }
 
-  if (!program.udid) {
-    program.help();
-    process.exit(0);
-  }
-
   _.merge(options, _.getConfig(program));
 
-  co(Inspector, options).catch(e => {
+  co(NoSmoke, options).catch(e => {
     console.log(e);
   });
 }

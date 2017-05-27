@@ -12,13 +12,15 @@ test:
 		--require co-mocha
 travis: install
 	@NODE_ENV=test $(BIN) $(FLAGS) \
-		./node_modules/.bin/istanbul cover \
-		./node_modules/.bin/_mocha \
+		${npm_bin}/istanbul cover \
+		${npm_bin}/_mocha \
 		--report lcovonly \
 		-- -u exports \
 		$(REQUIRED) \
 		$(TESTS) \
 		--bail
+dev:
+	${npm_bin}/nodemon ./bin/nosmoke -s
 jshint:
 	@${npm_bin}/jshint .
 .PHONY: test

@@ -2,7 +2,9 @@
   "name": "nosmoke",
   "version": "0.1.0",
   "description": "nosmoke",
-  "keywords": ["nosmoke"],
+  "keywords": [
+    "nosmoke"
+  ],
   "bin": {
     "nosmoke": "./bin/nosmoke"
   },
@@ -30,11 +32,12 @@
   },
   "devDependencies": {
     "co-mocha": "*",
-    "mocha": "*",
-    "should": "*",
-    "jshint": "*",
     "istanbul": "*",
-    "pre-commit": "*"
+    "jshint": "*",
+    "mocha": "*",
+    "nodemon": "^1.11.0",
+    "pre-commit": "*",
+    "should": "*"
   },
   "scripts": {
     "test": "make test",
