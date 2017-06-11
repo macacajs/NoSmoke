@@ -12,7 +12,8 @@ WDClient.prototype.init = function() {
     desiredCapabilities: {
       platformName: 'ios',
       deviceName: 'iPhone 6 Plus',
-      app: '~/.macaca-temp/ios-app-bootstrap.app'
+      // app: '~/.macaca-temp/ios-app-bootstrap.app'
+      app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
     }
   }, function(data) {
     var sessionId = data.sessionId;
@@ -57,3 +58,42 @@ WDClient.prototype.send = function(url, method, body, callback) {
 window.wdclient = new WDClient({
   server: 'http://localhost:3456'
 });
+
+/** Crawling Action Target  */
+var NSTargetActionType = {
+  CLICK: 1,
+  INPUT: 2,
+  SWIPE: 3,
+  NAVIGATE: 4
+};
+
+function NSTargetElement() {
+  this.recognizableTag = null;
+  this.actionType  = NSTargetActionType.CLICK;
+  this.actionPerformTimes = 1;
+  this.actionValue = null;
+}
+
+/** Crawling Config  */
+function NSCrawlerConfig() {
+  this.testingPeriod = 2 * 60 * 60;
+  this.testingDepth = 16;
+  this.takeScreenShot = true;
+  this.autoCancelAlert = true;
+  this.newCommandTimeout = 1;
+  this.launchTimeout = 6;
+  this.maxActionPerPage = 20;
+  this.navigationBackKeyword =["返回","取消"];
+  this.targetElements = {};
+  this.exclusiveList = [];
+}
+
+NSCrawlerConfig.prototype.debugDesriptoin =  function () {
+  return "newCommandTimeout: " + this.newCommandTimeout + "\n" +
+    "testingDepth: " + this.testingDepth + "\n" +
+    "takeScreenShot: " + this.takeScreenShot+ "\n" +
+    "autoCancelAlert: " + this.autoCancelAlert+ "\n" +
+    "launchTimeout: " + this.launchTimeout+ "\n";
+}
+
+/** Crawling Logic  */
