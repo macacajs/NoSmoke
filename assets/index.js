@@ -59,6 +59,9 @@ window.wdclient = new WDClient({
   server: 'http://localhost:3456'
 });
 
+
+/** ----------------------------------------  AppCrawler Implementation: 1. Modeling  ----------------------------------------- **/
+
 /** Crawling Action Target  */
 var NSTargetActionType = {
   CLICK: 1,
@@ -96,4 +99,38 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function () {
     "launchTimeout: " + this.launchTimeout+ "\n";
 }
 
-/** Crawling Logic  */
+/** Crawling Node: each of the tree node represents a unique user page  */
+function NSAppCrawlingTreeNode() {
+  this.pageId = "";     // Unique page id for each of the page
+  this.path = "";       // Unique path which leads to current page
+  this.parent = null;   // Parent ui element
+  this.actions = {};    // Units in {value : NSAppCrawlingTreeNodeAction}
+  this.childen = [];    // Units in [NSAppCrawlingTreeNode]
+}
+
+NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function () {
+
+}
+  
+NSAppCrawlingTreeNode.prototype.digest = function () {
+
+}
+
+function NSAppCrawlingTreeNodeAction() {
+  this.isTriggered = false;
+  this.action = null;
+  this.input = null;
+}
+
+NSAppCrawlingTreeNodeAction.prototype.desription = function() {
+
+}
+
+/** Crawling Tree **/
+function NSAppCrawlingTree() {
+  this.tree = [];       // Node tree, which contains a set of NSAppCrawlingTreeNode
+}
+
+/** ----------------------------------------  AppCrawler Implementation: 2. Logic  ----------------------------------------- **/
+
+
