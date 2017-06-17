@@ -5,6 +5,8 @@ function WDClient(options) {
   this.init();
 };
 
+var sessionId = "";
+
 WDClient.prototype.init = function() {
   var that = this;
   console.log(this.server);
@@ -16,12 +18,15 @@ WDClient.prototype.init = function() {
       app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
     }
   }, function(data) {
-    var sessionId = data.sessionId;
+    sessionId = data.sessionId;
     console.log(data.value);
     that.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
       var base64 = `data:image/jpg;base64,${data.value}`;
       $('#screen').attr('src', base64);
     });
+
+    // Start crawling
+    new NSCrawler(crawlerConfig, sessionId).initialize().crawl();
   });
 };
 
@@ -30,7 +35,7 @@ WDClient.prototype.send = function(url, method, body, callback) {
     return response.json()
   }
   if (method.toLowerCase() === 'post') {
-    fetch(`${this.server}${url}`, {
+    return fetch(`${this.server}${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -42,7 +47,7 @@ WDClient.prototype.send = function(url, method, body, callback) {
         callback(data);
       });
   } else {
-    fetch(`${this.server}${url}`, {
+    return fetch(`${this.server}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -70,8 +75,15 @@ var NSTargetActionType = {
   NAVIGATE: 4
 };
 
+var NSTargetSearchType = {
+  XPath: 1,
+  Value: 2,
+  Identifier: 3
+};
+
 function NSTargetElement() {
-  this.recognizableTag = null;
+  this.searchMethod = NSTargetSearchType.XPath;   // Searchable via XPath, Value, Identifier
+  this.searchValue = null;                        // Search value, value of XPath, Value & Identifier
   this.actionType  = NSTargetActionType.CLICK;
   this.actionPerformTimes = 1;
   this.actionValue = null;
@@ -86,7 +98,7 @@ function NSCrawlerConfig() {
   this.newCommandTimeout = 1;
   this.launchTimeout = 6;
   this.maxActionPerPage = 20;
-  this.navigationBackKeyword =["返回","取消"];
+  this.navigationBackKeyword =[];
   this.targetElements = {};
   this.exclusiveList = [];
 }
@@ -96,7 +108,8 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function () {
     "testingDepth: " + this.testingDepth + "\n" +
     "takeScreenShot: " + this.takeScreenShot+ "\n" +
     "autoCancelAlert: " + this.autoCancelAlert+ "\n" +
-    "launchTimeout: " + this.launchTimeout+ "\n";
+    "launchTimeout: " + this.launchTimeout+ "\n" +
+    "targetElements: " + this.targetElements+ "\n";
 }
 
 /** Crawling Node: each of the tree node represents a unique user page  */
@@ -126,11 +139,56 @@ NSAppCrawlingTreeNodeAction.prototype.desription = function() {
 
 }
 
-/** Crawling Tree **/
-function NSAppCrawlingTree() {
-  this.tree = [];       // Node tree, which contains a set of NSAppCrawlingTreeNode
+/** Crawling Buffer **/
+function NSAppCrawlingBuffer() {
+  this.buffer = [];       // Node tree, which contains a set of NSAppCrawlingTreeNode
 }
 
-/** ----------------------------------------  AppCrawler Implementation: 2. Logic  ----------------------------------------- **/
+/** ----------------------------------------  AppCrawler Implementation: 2. Crawler Logic ----------------------------------------- **/
+
+function NSCrawler(config, sessionId) {
+  this.config         = config;                     // Config in format of NSCrawlerConfig
+  this.sessionId      = sessionId;                  // Session Id
+  this.crawlingBuffer = new NSAppCrawlingBuffer();  // The set of notes
+  this.currentNode    = null;                       // Current node which is in crawling
+}
+
+NSCrawler.prototype.initialize = function () {
+  return this;
+}
+
+NSCrawler.prototype.crawl = function () {
+  console.log("----> SessionId: <----");
+  console.log(this.sessionId);
+  console.log("----> Config Info: <----");
+  console.log(this.config.debugDesriptoin());
+  console.log("----> Crawling <----");
+}
+
+/** ----------------------------------------  AppCrawler Implementation: 3. Configuration & Run ----------------------------------------- **/
+
+// Login configuration
+var loginAccount  = new NSTargetElement();
+var loginPassword = new NSTargetElement();
+var loginButton   = new NSTargetElement();
+
+loginAccount.actionType     = NSTargetActionType.INPUT;
+loginAccount.searchValue    = "";
+loginAccount.actionValue    = "中文+Test+12345678";
+
+loginPassword.actionType    = NSTargetActionType.INPUT;
+loginPassword.searchValue   = "";
+loginPassword.actionValue   = "111111";
+
+loginButton.actionType      = NSTargetActionType.CLICK;
+loginButton.searchValue     = "";
+
+var crawlerConfig = new NSCrawlerConfig();
+crawlerConfig.targetElements[loginAccount.searchValue] = loginAccount;
+crawlerConfig.targetElements[loginPassword.searchValue] = loginPassword;
+crawlerConfig.targetElements[loginButton.searchValue] = loginButton;
+
+crawlerConfig.navigationBackKeyword.push("返回")
+crawlerConfig.navigationBackKeyword.push("取消")
 
 
