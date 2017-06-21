@@ -107,6 +107,7 @@ function NSCrawlerConfig() {
   this.navigationBackKeyword =[];
   this.targetElements = {};
   this.exclusiveList = [];
+  this.platform = 'iOS';
 }
 
 NSCrawlerConfig.prototype.debugDesriptoin =  function () {
@@ -268,6 +269,7 @@ function recursiveFilter(source, matches) {
             if ((source.value && source.value == match) ||
               (source.name && source.name == match)     ||
               (source.label && source.label == match)) {
+              source.input = match;
               return [source]
             }
           }
@@ -278,9 +280,11 @@ function recursiveFilter(source, matches) {
               case 'Button':
               case 'Cell':
               case 'PageIndicator':
+              case 'Other':
+                return [source];
               case 'TextField':
               case 'SecureTextField':
-              case 'Other':
+                source.input = 'random+123';
                 return [source];
               default:
             }
@@ -309,14 +313,14 @@ function checkPathIndex(parent, child) {
 
 // Parent must be an array of child elements
 function insertXPath(parent, child) {
-  //TODO: Check if is iOS device, then add specific prefix
+  let prefix = (crawlerConfig.platform == 'iOS') ? 'XCUIElementType' : '';
   checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
-  child.xpath = (parent.xpath ? parent.xpath : '//Application[1]')+ '/' +  child.type + '[' + currentIndex + ']';
+  child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
 }
 
 function produceNodeActions(rawElements) {
-  let elements = [];
+  let actions = [];
   for (let index in rawElements) {
     let rawElement = rawElements[index];
 
@@ -324,23 +328,24 @@ function produceNodeActions(rawElements) {
       case 'StaticText':
       case 'Button':
       case 'Cell':
+      case 'PageIndicator':
+      case 'Other':
         let action = new NSAppCrawlingTreeNodeAction();
         action.source = rawElement;
         action.location = rawElement.xpath;
-        break;
-      case 'PageIndicator':
-
+        actions.push(action);
         break;
       case 'TextField':
       case 'SecureTextField':
-
-        break;
-      case 'Other':
-
+        let action = new NSAppCrawlingTreeNodeAction();
+        action.source = rawElement;
+        action.location = rawElement.xpath;
+        action.input = rawElement.input;
+        actions.push(action);
         break;
       default:
     }
   }
 
-  return elements;
+  return actions;
 }
