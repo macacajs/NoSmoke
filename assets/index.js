@@ -5,10 +5,10 @@ function WDClient(options) {
   this.init();
 };
 
-var sessionId = "";
+let sessionId = "";
 
 WDClient.prototype.init = function() {
-  var that = this;
+  let that = this;
   console.log(this.server);
   this.send('/wd/hub/session', 'post', {
     desiredCapabilities: {
@@ -21,12 +21,12 @@ WDClient.prototype.init = function() {
     sessionId = data.sessionId;
     console.log(data.value);
     that.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
-      var base64 = `data:image/jpg;base64,${data.value}`;
+      let base64 = `data:image/jpg;base64,${data.value}`;
       $('#screen').attr('src', base64);
     });
 
     // Start crawling
-    var crawler = new NSCrawler(crawlerConfig, sessionId).initialize();
+    let crawler = new NSCrawler(crawlerConfig, sessionId).initialize();
     setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000)
   });
 };
@@ -145,8 +145,9 @@ NSAppCrawlingTreeNode.prototype.checkDigest = function () {
 
 function NSAppCrawlingTreeNodeAction() {
   this.isTriggered = false;
-  this.action = null;
+  this.location = null;
   this.input = null;
+  this.source = {};
 }
 
 NSAppCrawlingTreeNodeAction.prototype.desription = function() {
@@ -184,12 +185,12 @@ NSCrawler.prototype.explore = function (source) {
     node.parent = this.currentNode;
     this.currentNode = node;
 
-    let match = recursiveFilter(JSON.parse(source.value), this.config.targetElements);
-    if (match.length) {
-       // Produce actions
+    let matches = recursiveFilter(JSON.parse(source.value), this.config.targetElements);
+    if (matches.length) {
+       this.currentNode.actions = produceNodeActions(matches);
     } else {
-      //TODO: think about elements which no need to be triggered
-
+      let elements = recursiveFilter(JSON.parse(source.value));
+      this.currentNode.actions = produceNodeActions(elements);
     }
 
     setTimeout(this.prepareForNextScanning.bind(this), this.config.newCommandTimeout * 1000);
@@ -223,9 +224,9 @@ NSCrawler.prototype.crawl = function () {
 /** ----------------------------------------  AppCrawler Implementation: 3. Configuration & Run ----------------------------------------- **/
 
 // Login configuration
-var loginAccount  = new NSTargetElement();
-var loginPassword = new NSTargetElement();
-var loginButton   = new NSTargetElement();
+let loginAccount  = new NSTargetElement();
+let loginPassword = new NSTargetElement();
+let loginButton   = new NSTargetElement();
 
 loginAccount.actionType     = NSTargetActionType.INPUT;
 loginAccount.searchValue    = "please input username";
@@ -238,27 +239,30 @@ loginPassword.actionValue   = "111111";
 loginButton.actionType      = NSTargetActionType.CLICK;
 loginButton.searchValue     = "Login";
 
-var crawlerConfig = new NSCrawlerConfig();
-crawlerConfig.targetElements[loginAccount.searchValue] = loginAccount;
+let crawlerConfig = new NSCrawlerConfig();
+crawlerConfig.targetElements[loginAccount.searchValue]  = loginAccount;
 crawlerConfig.targetElements[loginPassword.searchValue] = loginPassword;
-crawlerConfig.targetElements[loginButton.searchValue] = loginButton;
+crawlerConfig.targetElements[loginButton.searchValue]   = loginButton;
 
-crawlerConfig.navigationBackKeyword.push("返回")
-crawlerConfig.navigationBackKeyword.push("取消")
+crawlerConfig.navigationBackKeyword.push("返回");
+crawlerConfig.navigationBackKeyword.push("取消");
 
 /** -------------------------------------------           Utils                  ------------------------------------------------------- **/
 
 // If match is null or empty, put all elements which belongs to button, label,
 function recursiveFilter(source, matches) {
-  var sourceArray = [];
+  let sourceArray = [];
 
-  for (var key in source) {
+  for (let key in source) {
     if (source.hasOwnProperty(key)) {
-      if (typeof  source[key] == "object" && source[key] !== null) {
-        let result = recursiveFilter(source[key], matches);
-        sourceArray = sourceArray.concat(result);
+      if (key == 'children') {
+        for (let i = 0; i < source[key].length; i++) {
+          insertXPath(source, source[key][i]);
+          let result = recursiveFilter(source[key][i], matches);
+          sourceArray = sourceArray.concat(result);
+        }
       } else if (source[key] != null) {
-        if (matches && matches.length) {
+        if (matches) {
           // Explicit mode
           for (let match in matches) {
             if ((source.value && source.value == match) ||
@@ -273,16 +277,11 @@ function recursiveFilter(source, matches) {
               case 'StaticText':
               case 'Button':
               case 'Cell':
-                break;
               case 'PageIndicator':
-                break;
               case 'TextField':
               case 'SecureTextField':
-                break;
               case 'Other':
-                break;
-              case 'Alert':
-                break;
+                return [source];
               default:
             }
           }
@@ -293,6 +292,55 @@ function recursiveFilter(source, matches) {
   return sourceArray;
 }
 
-function produceNodeActions(rawElements) {
+function checkPathIndex(parent, child) {
+  let currentTypeCount = child.type + '_count';
+  if (!parent[currentTypeCount]) {
+    for (let i = 0 ; i < parent.children.length; i++) {
+      currentTypeCount = parent.children[i].type + '_count';
+      if (!parent[currentTypeCount]) {
+        parent[currentTypeCount] = 1;
+      } else {
+        parent[currentTypeCount]++;
+      }
+      parent.children[i].pathInParent = parent[currentTypeCount];
+    }
+  }
+}
 
+// Parent must be an array of child elements
+function insertXPath(parent, child) {
+  //TODO: Check if is iOS device, then add specific prefix
+  checkPathIndex(parent, child);
+  let currentIndex = child.pathInParent;
+  child.xpath = (parent.xpath ? parent.xpath : '//Application[1]')+ '/' +  child.type + '[' + currentIndex + ']';
+}
+
+function produceNodeActions(rawElements) {
+  let elements = [];
+  for (let index in rawElements) {
+    let rawElement = rawElements[index];
+
+    switch (rawElement) {
+      case 'StaticText':
+      case 'Button':
+      case 'Cell':
+        let action = new NSAppCrawlingTreeNodeAction();
+        action.source = rawElement;
+        action.location = rawElement.xpath;
+        break;
+      case 'PageIndicator':
+
+        break;
+      case 'TextField':
+      case 'SecureTextField':
+
+        break;
+      case 'Other':
+
+        break;
+      default:
+    }
+  }
+
+  return elements;
 }
