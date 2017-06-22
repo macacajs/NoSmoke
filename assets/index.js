@@ -14,8 +14,8 @@ WDClient.prototype.init = function() {
     desiredCapabilities: {
       platformName: 'ios',
       deviceName: 'iPhone 6 Plus',
-      // app: '~/.macaca-temp/ios-app-bootstrap.app'
-      app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
+      app: '~/.macaca-temp/ios-app-bootstrap.app'
+      // app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
     }
   }, function(data) {
     sessionId = data.sessionId;
@@ -123,19 +123,27 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function () {
 function NSAppCrawlingTreeNode() {
   this.path = "";       // Unique path which leads to current page
   this.parent = null;   // Parent ui element
-  this.actions = {};    // Units in {value : NSAppCrawlingTreeNodeAction}
+  this.actions = [];    // Units in {value : NSAppCrawlingTreeNodeAction}
   this.digest = null;
 }
 
 NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function () {
-  return false;
+  let isFinished = true;
+  for (let key in this.actions) {
+    if (this.actions[key].isTriggered == false) {
+      isFinished = false;
+      break;
+    }
+  }
+
+  return isFinished;
 }
 
 NSAppCrawlingTreeNode.prototype.checkDigest = function () {
   if (this.digest == null) {
     return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`,null,null)
       .then((title)  => {
-        this.digest = title
+        this.digest = title.value;
       });
   } else {
     return new Promise((resolve) => {
@@ -177,7 +185,13 @@ NSCrawler.prototype.explore = function (source) {
     for (let index in this.crawlingBuffer) {
       if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest == node.digest) {
         this.currentNode = this.crawlingBuffer[index];
-        setTimeout(this.prepareForNextScanning.bind(this), this.config.newCommandTimeout * 1000);
+        // Check about current node related
+        if (this.currentNode.isFinishedBrowseing()) {
+          // Perform 'back' and craw again
+        } else {
+          this.performAction();
+          setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+        }
         return;
       }
     }
@@ -188,24 +202,66 @@ NSCrawler.prototype.explore = function (source) {
 
     let matches = recursiveFilter(JSON.parse(source.value), this.config.targetElements);
     if (matches.length) {
-       this.currentNode.actions = produceNodeActions(matches);
+      this.currentNode.actions = produceNodeActions(matches);
     } else {
       let elements = recursiveFilter(JSON.parse(source.value));
       this.currentNode.actions = produceNodeActions(elements);
     }
 
-    setTimeout(this.prepareForNextScanning.bind(this), this.config.newCommandTimeout * 1000);
+    this.crawlingBuffer.push(node);
+    this.performAction();
+    setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
   });
 }
 
-NSCrawler.prototype.prepareForNextScanning = function () {
-  if (this.currentNode.isFinishedBrowseing()) {
-    window.wdclient
-      .send(`/wd/hub/back`,`post`,null,null)
-      .then(this.crawl())
-  } else {
-    this.crawl()
-  }
+// Perform Node Actions
+NSCrawler.prototype.performAction = function () {
+  let that = this;
+  window.wdclient
+    .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
+    .then(()  => {
+      for (let i = 0 ; i < that.currentNode.actions.length; i++) {
+        let action = that.currentNode.actions[i];
+        if (!action.isTriggered) {
+          action.isTriggered = true;
+          window.wdclient
+            .send(`/wd/hub/session/${sessionId}/element`,`post`,{"using":"xpath","value":action.location},null)
+            .then((data) => {
+              if (data.status == 0) {
+                switch (action.source.type) {
+                  case 'StaticText':
+                  case 'Button':
+                  case 'Cell':
+                  case 'Other':
+                    window.wdclient
+                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/click`,`post`, {}, null)
+                      .then(() => {
+                        refreshScreen();
+                      });
+                    break;
+                  case 'PageIndicator':
+                    window.wdclient
+                      .send(`/wd/hub/session/${sessionId}/dragfromtoforduration`,`post`, {"fromX":10,"fromY":200,"toX":300,"toY":200, "duration":2.00}, null)
+                      .then(() => {
+                        refreshScreen();
+                      });
+                    break;
+                  case 'TextField':
+                  case 'SecureTextField':
+                    window.wdclient
+                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/value`,`post`, {"value":[action.input]}, null)
+                      .then(() => {
+                        refreshScreen();
+                      });
+                    break;
+                  default:
+                }
+              }
+            });
+          return;
+        }
+      }
+    });
 }
 
 NSCrawler.prototype.crawl = function () {
@@ -269,7 +325,7 @@ function recursiveFilter(source, matches) {
             if ((source.value && source.value == match) ||
               (source.name && source.name == match)     ||
               (source.label && source.label == match)) {
-              source.input = match;
+              source.input = matches[match].actionValue;
               return [source]
             }
           }
@@ -323,21 +379,22 @@ function produceNodeActions(rawElements) {
   let actions = [];
   for (let index in rawElements) {
     let rawElement = rawElements[index];
+    let action;
 
-    switch (rawElement) {
+    switch (rawElement.type) {
       case 'StaticText':
       case 'Button':
       case 'Cell':
       case 'PageIndicator':
       case 'Other':
-        let action = new NSAppCrawlingTreeNodeAction();
+        action = new NSAppCrawlingTreeNodeAction();
         action.source = rawElement;
         action.location = rawElement.xpath;
         actions.push(action);
         break;
       case 'TextField':
       case 'SecureTextField':
-        let action = new NSAppCrawlingTreeNodeAction();
+        action = new NSAppCrawlingTreeNodeAction();
         action.source = rawElement;
         action.location = rawElement.xpath;
         action.input = rawElement.input;
@@ -348,4 +405,11 @@ function produceNodeActions(rawElements) {
   }
 
   return actions;
+}
+
+function refreshScreen() {
+  window.wdclient.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
+    let base64 = `data:image/jpg;base64,${data.value}`;
+    $('#screen').attr('src', base64);
+  });
 }
