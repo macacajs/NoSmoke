@@ -14,8 +14,8 @@ WDClient.prototype.init = function() {
     desiredCapabilities: {
       platformName: 'ios',
       deviceName: 'iPhone 6 Plus',
-      app: '~/.macaca-temp/ios-app-bootstrap.app'
-      // app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
+      // app: '~/.macaca-temp/ios-app-bootstrap.app'
+      app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
     }
   }, function(data) {
     sessionId = data.sessionId;
@@ -139,6 +139,18 @@ NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function () {
   return isFinished;
 }
 
+NSAppCrawlingTreeNode.prototype.sortActionPriority = function () {
+  this.actions.sort((a , b) => {
+    if (a.location.includes('TabBar') && !b.location.includes('TabBar')) {
+      return 1;
+    } else if (!a.location.includes('TabBar') && b.location.includes('TabBar')) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+}
+
 NSAppCrawlingTreeNode.prototype.checkDigest = function () {
   if (this.digest == null) {
     return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`,null,null)
@@ -188,6 +200,10 @@ NSCrawler.prototype.explore = function (source) {
         // Check about current node related
         if (this.currentNode.isFinishedBrowseing()) {
           // Perform 'back' and craw again
+          this.send(`/wd/hub/back`, 'post', null, null).then(() => {
+            this.crawl();
+          });
+
         } else {
           this.performAction();
           setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
@@ -208,6 +224,7 @@ NSCrawler.prototype.explore = function (source) {
       this.currentNode.actions = produceNodeActions(elements);
     }
 
+    this.currentNode.sortActionPriority();
     this.crawlingBuffer.push(node);
     this.performAction();
     setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
@@ -311,6 +328,11 @@ function recursiveFilter(source, matches) {
   let sourceArray = [];
 
   for (let key in source) {
+    // filter out nav-bar element, avoid miss back operation
+    if (source.type == 'NavigationBar') {
+      continue;
+    }
+
     if (source.hasOwnProperty(key)) {
       if (key == 'children') {
         for (let i = 0; i < source[key].length; i++) {
@@ -337,11 +359,13 @@ function recursiveFilter(source, matches) {
               case 'Cell':
               case 'PageIndicator':
               case 'Other':
-                return [source];
+                sourceArray.push(source)
+                return sourceArray;
               case 'TextField':
               case 'SecureTextField':
                 source.input = 'random+123';
-                return [source];
+                sourceArray.push(source)
+                return sourceArray;
               default:
             }
           }
