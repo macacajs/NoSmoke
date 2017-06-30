@@ -224,6 +224,10 @@ NSCrawler.prototype.explore = function (source) {
       this.currentNode.actions = produceNodeActions(elements);
     }
 
+    if (this.currentNode.actions.length > this.config.maxActionPerPage) {
+      this.currentNode.actions = this.currentNode.actions.slice(0,this.config.maxActionPerPage+1);
+    }
+
     this.currentNode.sortActionPriority();
     this.crawlingBuffer.push(node);
     this.performAction();
@@ -249,7 +253,6 @@ NSCrawler.prototype.performAction = function () {
                   case 'StaticText':
                   case 'Button':
                   case 'Cell':
-                  case 'Other':
                     window.wdclient
                       .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/click`,`post`, {}, null)
                       .then(() => {
@@ -288,11 +291,13 @@ NSCrawler.prototype.crawl = function () {
   console.log(this.config.debugDesriptoin());
   console.log("----> Crawling <----");
 
-  window.wdclient
-    .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
-    .then((data)  => {
-       this.explore(data)
-    })
+  window.wdclient.send(`/wd/hub/session/${sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
+    window.wdclient
+      .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
+      .then((data)  => {
+        this.explore(data)
+      });
+  });
 }
 
 /** ----------------------------------------  AppCrawler Implementation: 3. Configuration & Run ----------------------------------------- **/
@@ -358,7 +363,6 @@ function recursiveFilter(source, matches) {
               case 'Button':
               case 'Cell':
               case 'PageIndicator':
-              case 'Other':
                 sourceArray.push(source)
                 return sourceArray;
               case 'TextField':
@@ -410,7 +414,6 @@ function produceNodeActions(rawElements) {
       case 'Button':
       case 'Cell':
       case 'PageIndicator':
-      case 'Other':
         action = new NSAppCrawlingTreeNodeAction();
         action.source = rawElement;
         action.location = rawElement.xpath;
