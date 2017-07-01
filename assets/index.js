@@ -103,7 +103,7 @@ function NSCrawlerConfig() {
   this.autoCancelAlert = true;
   this.newCommandTimeout = 3;
   this.launchTimeout = 6;
-  this.maxActionPerPage = 20;
+  this.maxActionPerPage = 300;
   this.navigationBackKeyword =[];
   this.targetElements = {};
   this.exclusivePattern = "";
@@ -182,6 +182,8 @@ function NSCrawler(config, sessionId) {
   this.sessionId      = sessionId;                  // Session Id
   this.crawlingBuffer = [];                         // The set of notes
   this.currentNode    = null;                       // Current node which is in crawling
+  this.repeatingCrawlingCount = 0;                  // When exceed 3, whole program exists
+  this.crawlingExpires = false;                     // Flag to indicate whether a crawling expires
 }
 
 NSCrawler.prototype.initialize = function () {
@@ -198,10 +200,10 @@ NSCrawler.prototype.explore = function (source) {
         // Check about current node related
         if (this.currentNode.isFinishedBrowseing()) {
           // Perform 'back' and craw again
+          this.repeatingCrawlingCount++;
           window.wdclient.send(`/wd/hub/session/${sessionId}/back`, 'post', {}, null).then(() => {
             this.crawl();
           });
-
         } else {
           this.performAction();
           setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
@@ -209,6 +211,8 @@ NSCrawler.prototype.explore = function (source) {
         return;
       }
     }
+
+    this.repeatingCrawlingCount = 0;
 
     // 2. Initialize an new node
     node.parent = this.currentNode;
@@ -253,6 +257,7 @@ NSCrawler.prototype.performAction = function () {
                   case 'Cell':
                     window.wdclient
                       .send(`/wd/hub/session/${sessionId}/actions`,`post`,{'actions':[{'type':'tap', "x":action.source.rect.x, "y":action.source.rect.y}]}, null)
+                      // .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/click`,`post`, {}, null)
                       .then(() => {
                         refreshScreen();
                       });
@@ -283,6 +288,16 @@ NSCrawler.prototype.performAction = function () {
 }
 
 NSCrawler.prototype.crawl = function () {
+
+  // Terminate under the following cases:
+  // 1. the previous node has been finished for continuously count of 5, assume crawling finish
+  // 2. the crawling process takes too long and hence expire
+  if (this.repeatingCrawlingCount >= 5
+    || this.crawlingExpires) {
+    console.log("-----> Crawling Finished <-----");
+    return;
+  }
+
   window.wdclient.send(`/wd/hub/session/${sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
     window.wdclient
       .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
@@ -321,7 +336,8 @@ crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").conc
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("popView");
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("cookie:");
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("toast");
-
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("webview");
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("list");
 
 /** -------------------------------------------           Utils                  ------------------------------------------------------- **/
 
