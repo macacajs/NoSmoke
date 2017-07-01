@@ -106,7 +106,7 @@ function NSCrawlerConfig() {
   this.maxActionPerPage = 20;
   this.navigationBackKeyword =[];
   this.targetElements = {};
-  this.exclusiveList = [];
+  this.exclusivePattern = "";
   this.platform = 'iOS';
 }
 
@@ -189,8 +189,6 @@ NSCrawler.prototype.initialize = function () {
 }
 
 NSCrawler.prototype.explore = function (source) {
-  console.log("-------> Checkout Console <--------");
-  console.log(source);
   let node = new NSAppCrawlingTreeNode();
   node.checkDigest().then(() => {
     // 1. Check if there is an existing node
@@ -200,7 +198,7 @@ NSCrawler.prototype.explore = function (source) {
         // Check about current node related
         if (this.currentNode.isFinishedBrowseing()) {
           // Perform 'back' and craw again
-          this.send(`/wd/hub/back`, 'post', null, null).then(() => {
+          window.wdclient.send(`/wd/hub/session/${sessionId}/back`, 'post', {}, null).then(() => {
             this.crawl();
           });
 
@@ -216,11 +214,11 @@ NSCrawler.prototype.explore = function (source) {
     node.parent = this.currentNode;
     this.currentNode = node;
 
-    let matches = recursiveFilter(JSON.parse(source.value), this.config.targetElements);
+    let matches = recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
     if (matches.length) {
       this.currentNode.actions = produceNodeActions(matches);
     } else {
-      let elements = recursiveFilter(JSON.parse(source.value));
+      let elements = recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
       this.currentNode.actions = produceNodeActions(elements);
     }
 
@@ -245,16 +243,16 @@ NSCrawler.prototype.performAction = function () {
         let action = that.currentNode.actions[i];
         if (!action.isTriggered) {
           action.isTriggered = true;
+          console.log(JSON.stringify(action.source));
           window.wdclient
             .send(`/wd/hub/session/${sessionId}/element`,`post`,{"using":"xpath","value":action.location},null)
             .then((data) => {
               if (data.status == 0) {
                 switch (action.source.type) {
-                  case 'StaticText':
                   case 'Button':
                   case 'Cell':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/click`,`post`, {}, null)
+                      .send(`/wd/hub/session/${sessionId}/actions`,`post`,{'actions':[{'type':'tap', "x":action.source.rect.x, "y":action.source.rect.y}]}, null)
                       .then(() => {
                         refreshScreen();
                       });
@@ -285,12 +283,6 @@ NSCrawler.prototype.performAction = function () {
 }
 
 NSCrawler.prototype.crawl = function () {
-  console.log("----> SessionId: <----");
-  console.log(this.sessionId);
-  console.log("----> Config Info: <----");
-  console.log(this.config.debugDesriptoin());
-  console.log("----> Crawling <----");
-
   window.wdclient.send(`/wd/hub/session/${sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
     window.wdclient
       .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
@@ -325,11 +317,16 @@ crawlerConfig.targetElements[loginButton.searchValue]   = loginButton;
 
 crawlerConfig.navigationBackKeyword.push("返回");
 crawlerConfig.navigationBackKeyword.push("取消");
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("pushView");
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("popView");
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("cookie:");
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("toast");
+
 
 /** -------------------------------------------           Utils                  ------------------------------------------------------- **/
 
 // If match is null or empty, put all elements which belongs to button, label,
-function recursiveFilter(source, matches) {
+function recursiveFilter(source, matches, exclusive) {
   let sourceArray = [];
 
   for (let key in source) {
@@ -342,7 +339,7 @@ function recursiveFilter(source, matches) {
       if (key == 'children') {
         for (let i = 0; i < source[key].length; i++) {
           insertXPath(source, source[key][i]);
-          let result = recursiveFilter(source[key][i], matches);
+          let result = recursiveFilter(source[key][i], matches, exclusive);
           sourceArray = sourceArray.concat(result);
         }
       } else if (source[key] != null) {
@@ -357,6 +354,13 @@ function recursiveFilter(source, matches) {
             }
           }
         } else {
+          // If the source value/name/label matches the exclusive pattern, avoid recording
+          if ((exclusive) && ((source.value && exclusive.includes(source.value)) ||
+            (source.name && exclusive.includes(source.name))   ||
+            (source.label && exclusive.includes(source.label)))) {
+            return [];
+          }
+
           if (source.type) {
             switch (source.type) {
               case 'StaticText':

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <title>test</title>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="format-detection" content="email=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+</head>
+<body>
+<div id="content">
+  <ul>
+    <li>userAgent: <span id="userAgent"></span></li>
+    <li>cookie: <span id="cookie"></span></li>
+    <li><button id="pushView" data='{"url": "TEST", "title": "pushView"}'>pushView</button></li>
+    <li><button id="popView">popView</button></li>
+    <li><button id="setTitle" data='{"title": "new title!"}'>setTitle</button></li>
+  </ul>
+</div>
+<script>
+var $ = function(selector) {
+  var res = document.querySelectorAll(selector);
+  if (res.length > 1) {
+    return res;
+  }
+  return document.querySelector(selector);
+};
+
+$('#userAgent').innerHTML = navigator.userAgent;
+$('#cookie').innerHTML = document.cookie;
+
+var init = function() {
+  var buttons = $('button');
+
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function(e) {
+      var target = e.target;
+      var data = target.getAttribute('data')
+      JsBridge.call(target.id, JSON.parse(data), function() {
+      });
+    }, false);
+  }
+  
+  JsBridge.call('setTitle', {
+    title: 'test ' + new Date().getMinutes() + 'min ' + new Date().getSeconds() + 's'
+  }, function() {
+  });
+};
+
+document.addEventListener('JSBridgeReady', function() {
+  init();
+}, false);
+</script>
+</body>
+</html>
