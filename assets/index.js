@@ -97,13 +97,13 @@ function NSTargetElement() {
 
 /** Crawling Config  */
 function NSCrawlerConfig() {
-  this.testingPeriod = 2 * 60 * 60;
+  this.testingPeriod = 0.5 * 60 * 60;
   this.testingDepth = 16;
   this.takeScreenShot = true;
   this.autoCancelAlert = true;
   this.newCommandTimeout = 3;
   this.launchTimeout = 6;
-  this.maxActionPerPage = 300;
+  this.maxActionPerPage = 100;
   this.navigationBackKeyword =[];
   this.targetElements = {};
   this.exclusivePattern = "";
@@ -187,6 +187,8 @@ function NSCrawler(config, sessionId) {
 }
 
 NSCrawler.prototype.initialize = function () {
+
+  setTimeout(()=>{ this.crawlingExpires = true; },this.config.testingPeriod * 1000)
   return this;
 }
 
@@ -335,9 +337,6 @@ crawlerConfig.navigationBackKeyword.push("取消");
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("pushView");
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("popView");
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("cookie:");
-crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("toast");
-crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("webview");
-crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("list");
 
 /** -------------------------------------------           Utils                  ------------------------------------------------------- **/
 
