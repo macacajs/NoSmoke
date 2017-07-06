@@ -14,7 +14,7 @@
   "expr": true,
   "sub": true,
   "quotmark": "single",
-  "loopfunc": false,
+  "loopfunc": true,
   "lastsemic": true,
   "funcscope": false,
   "esnext": true,
@@ -26,6 +26,7 @@
   "mocha": true,
   "validthis": true,
   "globals": {
-    "define": false
+    "define": false,
+    "$": false
   }
 }
