@@ -3,9 +3,10 @@
 function WDClient(options) {
   this.server = options.server;
   this.init();
-};
+}
 
-let sessionId = "";
+let sessionId = null;
+let crawlerConfig = new NSCrawlerConfig();
 
 WDClient.prototype.init = function() {
   let that = this;
@@ -15,7 +16,7 @@ WDClient.prototype.init = function() {
       platformName: 'ios',
       deviceName: 'iPhone 6 Plus',
       // app: '~/.macaca-temp/ios-app-bootstrap.app'
-      app: '/Users/Gangdooz/private/macaca/NoSmoke/.macaca-temp/ios-app-bootstrap.app'
+      app: ''
     }
   }, function(data) {
     sessionId = data.sessionId;
@@ -27,13 +28,13 @@ WDClient.prototype.init = function() {
 
     // Start crawling
     let crawler = new NSCrawler(crawlerConfig, sessionId).initialize();
-    setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000)
+    setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000);
   });
 };
 
 WDClient.prototype.send = function(url, method, body, callback) {
   function parseJSON(response) {
-    return response.json()
+    return response.json();
   }
   if (method.toLowerCase() === 'post') {
     return fetch(`${this.server}${url}`, {
@@ -46,7 +47,7 @@ WDClient.prototype.send = function(url, method, body, callback) {
       .then(parseJSON)
       .then(function(data) {
         if (callback) {
-          callback(data)
+          callback(data);
         }
         return data;
       });
@@ -106,40 +107,39 @@ function NSCrawlerConfig() {
   this.maxActionPerPage = 100;
   this.navigationBackKeyword =[];
   this.targetElements = {};
-  this.exclusivePattern = "";
+  this.exclusivePattern = '';
   this.platform = 'iOS';
 }
 
-NSCrawlerConfig.prototype.debugDesriptoin =  function () {
-  return "newCommandTimeout: " + this.newCommandTimeout + "\n" +
-    "testingDepth: " + this.testingDepth + "\n" +
-    "takeScreenShot: " + this.takeScreenShot+ "\n" +
-    "autoCancelAlert: " + this.autoCancelAlert+ "\n" +
-    "launchTimeout: " + this.launchTimeout+ "\n" +
-    "targetElements: " + this.targetElements+ "\n";
-}
+NSCrawlerConfig.prototype.debugDesriptoin =  function() {
+  return 'newCommandTimeout: ' + this.newCommandTimeout + '\n' +
+    'testingDepth: ' + this.testingDepth + '\n' +
+    'takeScreenShot: ' + this.takeScreenShot+ '\n' +
+    'autoCancelAlert: ' + this.autoCancelAlert+ '\n' +
+    'launchTimeout: ' + this.launchTimeout+ '\n' +
+    'targetElements: ' + this.targetElements+ '\n';
+};
 
 /** Crawling Node: each of the tree node represents a unique user page  */
 function NSAppCrawlingTreeNode() {
-  this.path = "";       // Unique path which leads to current page
+  this.path = '';       // Unique path which leads to current page
   this.parent = null;   // Parent ui element
   this.actions = [];    // Units in {value : NSAppCrawlingTreeNodeAction}
   this.digest = null;
 }
 
-NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function () {
+NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
   let isFinished = true;
   for (let key in this.actions) {
-    if (this.actions[key].isTriggered == false) {
+    if (this.actions[key].isTriggered === false) {
       isFinished = false;
       break;
     }
   }
-
   return isFinished;
-}
+};
 
-NSAppCrawlingTreeNode.prototype.sortActionPriority = function () {
+NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
   this.actions.sort((a , b) => {
     if (a.location.includes('TabBar') && !b.location.includes('TabBar')) {
       return 1;
@@ -149,9 +149,9 @@ NSAppCrawlingTreeNode.prototype.sortActionPriority = function () {
       return 0;
     }
   });
-}
+};
 
-NSAppCrawlingTreeNode.prototype.checkDigest = function () {
+NSAppCrawlingTreeNode.prototype.checkDigest = function() {
   if (this.digest == null) {
     return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`,null,null)
       .then((title)  => {
@@ -162,7 +162,7 @@ NSAppCrawlingTreeNode.prototype.checkDigest = function () {
       resolve(this.digest);
     });
   }
-}
+};
 
 function NSAppCrawlingTreeNodeAction() {
   this.isTriggered = false;
@@ -173,31 +173,33 @@ function NSAppCrawlingTreeNodeAction() {
 
 NSAppCrawlingTreeNodeAction.prototype.desription = function() {
 
-}
+};
 
 /** ----------------------------------------  AppCrawler Implementation: 2. Crawler Logic ----------------------------------------- **/
 
 function NSCrawler(config, sessionId) {
-  this.config         = config;                     // Config in format of NSCrawlerConfig
-  this.sessionId      = sessionId;                  // Session Id
+  this.config = config;                     // Config in format of NSCrawlerConfig
+  this.sessionId = sessionId;                  // Session Id
   this.crawlingBuffer = [];                         // The set of notes
-  this.currentNode    = null;                       // Current node which is in crawling
+  this.currentNode = null;                       // Current node which is in crawling
   this.repeatingCrawlingCount = 0;                  // When exceed 3, whole program exists
   this.crawlingExpires = false;                     // Flag to indicate whether a crawling expires
 }
 
-NSCrawler.prototype.initialize = function () {
+NSCrawler.prototype.initialize = function() {
 
-  setTimeout(()=>{ this.crawlingExpires = true; },this.config.testingPeriod * 1000)
+  setTimeout(() => {
+    this.crawlingExpires = true;
+  }, this.config.testingPeriod * 1000);
   return this;
-}
+};
 
-NSCrawler.prototype.explore = function (source) {
+NSCrawler.prototype.explore = function(source) {
   let node = new NSAppCrawlingTreeNode();
   node.checkDigest().then(() => {
     // 1. Check if there is an existing node
     for (let index in this.crawlingBuffer) {
-      if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest == node.digest) {
+      if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest === node.digest) {
         this.currentNode = this.crawlingBuffer[index];
         // Check about current node related
         if (this.currentNode.isFinishedBrowseing()) {
@@ -237,36 +239,51 @@ NSCrawler.prototype.explore = function (source) {
     this.performAction();
     setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
   });
-}
+};
 
 // Perform Node Actions
-NSCrawler.prototype.performAction = function () {
+NSCrawler.prototype.performAction = function() {
   let that = this;
   window.wdclient
-    .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
-    .then(()  => {
-      for (let i = 0 ; i < that.currentNode.actions.length; i++) {
+    .send(`/wd/hub/session/${sessionId}/source`, `get`, null, null)
+    .then(() => {
+      for (let i = 0; i < that.currentNode.actions.length; i++) {
         let action = that.currentNode.actions[i];
         if (!action.isTriggered) {
           action.isTriggered = true;
           console.log(JSON.stringify(action.source));
+
           window.wdclient
-            .send(`/wd/hub/session/${sessionId}/element`,`post`,{"using":"xpath","value":action.location},null)
-            .then((data) => {
-              if (data.status == 0) {
+            .send(`/wd/hub/session/${sessionId}/element`, `post`, {
+              using: 'xpath',
+              value: action.location
+            }, null)
+            .then(data => {
+              if (data.status === 0) {
                 switch (action.source.type) {
                   case 'Button':
                   case 'Cell':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/actions`,`post`,{'actions':[{'type':'tap', "x":action.source.rect.x, "y":action.source.rect.y}]}, null)
-                      // .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/click`,`post`, {}, null)
+                      .send(`/wd/hub/session/${sessionId}/actions`, `post`, {
+                        actions: [{
+                          type: 'tap',
+                          x: action.source.rect.x,
+                          y: action.source.rect.y
+                        }]
+                      }, null)
                       .then(() => {
                         refreshScreen();
                       });
                     break;
                   case 'PageIndicator':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/dragfromtoforduration`,`post`, {"fromX":10,"fromY":200,"toX":300,"toY":200, "duration":2.00}, null)
+                      .send(`/wd/hub/session/${sessionId}/dragfromtoforduration`,`post`, {
+                        fromX: 10,
+                        fromY: 200,
+                        toX: 300,
+                        toY: 200,
+                        duration: 2.00
+                      }, null)
                       .then(() => {
                         refreshScreen();
                       });
@@ -274,12 +291,15 @@ NSCrawler.prototype.performAction = function () {
                   case 'TextField':
                   case 'SecureTextField':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/value`,`post`, {"value":[action.input]}, null)
+                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
+                        'value': [action.input]
+                      }, null)
                       .then(() => {
                         refreshScreen();
                       });
                     break;
                   default:
+                    break;
                 }
               }
             });
@@ -287,56 +307,54 @@ NSCrawler.prototype.performAction = function () {
         }
       }
     });
-}
+};
 
 NSCrawler.prototype.crawl = function () {
 
   // Terminate under the following cases:
   // 1. the previous node has been finished for continuously count of 5, assume crawling finish
   // 2. the crawling process takes too long and hence expire
-  if (this.repeatingCrawlingCount >= 5
-    || this.crawlingExpires) {
-    console.log("-----> Crawling Finished <-----");
+  if (this.repeatingCrawlingCount >= 5 || this.crawlingExpires) {
+    console.log('-----> Crawling Finished <-----');
     return;
   }
 
   window.wdclient.send(`/wd/hub/session/${sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
     window.wdclient
-      .send(`/wd/hub/session/${sessionId}/source`,`get`,null,null)
+      .send(`/wd/hub/session/${sessionId}/source`, `get`, null, null)
       .then((data)  => {
-        this.explore(data)
+        this.explore(data);
       });
   });
-}
+};
 
 /** ----------------------------------------  AppCrawler Implementation: 3. Configuration & Run ----------------------------------------- **/
 
 // Login configuration
-let loginAccount  = new NSTargetElement();
+let loginAccount = new NSTargetElement();
 let loginPassword = new NSTargetElement();
-let loginButton   = new NSTargetElement();
+let loginButton = new NSTargetElement();
 
-loginAccount.actionType     = NSTargetActionType.INPUT;
-loginAccount.searchValue    = "please input username";
-loginAccount.actionValue    = "中文+Test+12345678";
+loginAccount.actionType = NSTargetActionType.INPUT;
+loginAccount.searchValue = 'please input username';
+loginAccount.actionValue = '中文+Test+12345678';
 
-loginPassword.actionType    = NSTargetActionType.INPUT;
-loginPassword.searchValue   = "please input password";
-loginPassword.actionValue   = "111111";
+loginPassword.actionType = NSTargetActionType.INPUT;
+loginPassword.searchValue = 'please input password';
+loginPassword.actionValue = '111111';
 
-loginButton.actionType      = NSTargetActionType.CLICK;
-loginButton.searchValue     = "Login";
+loginButton.actionType = NSTargetActionType.CLICK;
+loginButton.searchValue = 'Login';
 
-let crawlerConfig = new NSCrawlerConfig();
-crawlerConfig.targetElements[loginAccount.searchValue]  = loginAccount;
+crawlerConfig.targetElements[loginAccount.searchValue] = loginAccount;
 crawlerConfig.targetElements[loginPassword.searchValue] = loginPassword;
-crawlerConfig.targetElements[loginButton.searchValue]   = loginButton;
+crawlerConfig.targetElements[loginButton.searchValue] = loginButton;
 
-crawlerConfig.navigationBackKeyword.push("返回");
-crawlerConfig.navigationBackKeyword.push("取消");
-crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("pushView");
-crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("popView");
-crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat("_").concat("cookie:");
+crawlerConfig.navigationBackKeyword.push('返回');
+crawlerConfig.navigationBackKeyword.push('取消');
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat('_').concat('pushView');
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat('_').concat('popView');
+crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat('_').concat('cookie:');
 
 /** -------------------------------------------           Utils                  ------------------------------------------------------- **/
 
@@ -346,26 +364,26 @@ function recursiveFilter(source, matches, exclusive) {
 
   for (let key in source) {
     // filter out nav-bar element, avoid miss back operation
-    if (source.type == 'NavigationBar') {
+    if (source.type === 'NavigationBar') {
       continue;
     }
 
     if (source.hasOwnProperty(key)) {
-      if (key == 'children') {
+      if (key === 'children') {
         for (let i = 0; i < source[key].length; i++) {
           insertXPath(source, source[key][i]);
           let result = recursiveFilter(source[key][i], matches, exclusive);
           sourceArray = sourceArray.concat(result);
         }
-      } else if (source[key] != null) {
+      } else if (source[key] !== null) {
         if (matches) {
           // Explicit mode
           for (let match in matches) {
-            if ((source.value && source.value == match) ||
-              (source.name && source.name == match)     ||
-              (source.label && source.label == match)) {
+            if ((source.value && source.value === match) ||
+              (source.name && source.name === match)     ||
+              (source.label && source.label === match)) {
               source.input = matches[match].actionValue;
-              return [source]
+              return [source];
             }
           }
         } else {
@@ -382,12 +400,12 @@ function recursiveFilter(source, matches, exclusive) {
               case 'Button':
               case 'Cell':
               case 'PageIndicator':
-                sourceArray.push(source)
+                sourceArray.push(source);
                 return sourceArray;
               case 'TextField':
               case 'SecureTextField':
                 source.input = 'random+123';
-                sourceArray.push(source)
+                sourceArray.push(source);
                 return sourceArray;
               default:
             }
@@ -401,8 +419,9 @@ function recursiveFilter(source, matches, exclusive) {
 
 function checkPathIndex(parent, child) {
   let currentTypeCount = child.type + '_count';
+
   if (!parent[currentTypeCount]) {
-    for (let i = 0 ; i < parent.children.length; i++) {
+    for (let i = 0; i < parent.children.length; i++) {
       currentTypeCount = parent.children[i].type + '_count';
       if (!parent[currentTypeCount]) {
         parent[currentTypeCount] = 1;
@@ -416,7 +435,7 @@ function checkPathIndex(parent, child) {
 
 // Parent must be an array of child elements
 function insertXPath(parent, child) {
-  let prefix = (crawlerConfig.platform == 'iOS') ? 'XCUIElementType' : '';
+  let prefix = crawlerConfig.platform === 'iOS' ? 'XCUIElementType' : '';
   checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
@@ -449,7 +468,6 @@ function produceNodeActions(rawElements) {
       default:
     }
   }
-
   return actions;
 }
 

@@ -2,5 +2,5 @@
 node_modules/
 coverage/
 build/
-assets/
+assets/jquery-3.2.1.min.js
 dist/
