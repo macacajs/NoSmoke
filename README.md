@@ -17,11 +17,11 @@
 [download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
 [download-url]: https://npmjs.org/package/nosmoke
 
-> smoke testing
+> A cross platform UI crawler which scans view trees then generate and execute UI test cases.
 
 ## Installment
 
-```shell
+``` bash
 $ npm i nosmoke -g
 ```
 
