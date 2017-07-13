@@ -1,5 +1,9 @@
 'use strict';
 
+const _ = require('./utils');
+const WDClient = require('./wd-client');
+
+/*
 function WDClient(options) {
   this.server = options.server;
   this.init();
@@ -67,7 +71,7 @@ WDClient.prototype.send = function(url, method, body, callback) {
       });
   }
 };
-
+*/
 window.wdclient = new WDClient({
   server: 'http://localhost:3456'
 });
@@ -128,6 +132,7 @@ function NSAppCrawlingTreeNode() {
   this.digest = null;
 }
 
+/*
 NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
   let isFinished = true;
   for (let key in this.actions) {
@@ -138,7 +143,6 @@ NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
   }
   return isFinished;
 };
-
 NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
   this.actions.sort((a , b) => {
     if (a.location.includes('TabBar') && !b.location.includes('TabBar')) {
@@ -151,10 +155,11 @@ NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
   });
 };
 
+
 NSAppCrawlingTreeNode.prototype.checkDigest = function() {
   if (this.digest == null) {
-    return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`,null,null)
-      .then((title)  => {
+    return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`, null, null)
+      .then(title  => {
         this.digest = title.value;
       });
   } else {
@@ -174,8 +179,6 @@ function NSAppCrawlingTreeNodeAction() {
 NSAppCrawlingTreeNodeAction.prototype.desription = function() {
 
 };
-
-/** ----------------------------------------  AppCrawler Implementation: 2. Crawler Logic ----------------------------------------- **/
 
 function NSCrawler(config, sessionId) {
   this.config = config;                     // Config in format of NSCrawlerConfig
@@ -328,8 +331,6 @@ NSCrawler.prototype.crawl = function () {
   });
 };
 
-/** ----------------------------------------  AppCrawler Implementation: 3. Configuration & Run ----------------------------------------- **/
-
 // Login configuration
 let loginAccount = new NSTargetElement();
 let loginPassword = new NSTargetElement();
@@ -356,7 +357,7 @@ crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat('_').conc
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat('_').concat('popView');
 crawlerConfig.exclusivePattern = crawlerConfig.exclusivePattern.concat('_').concat('cookie:');
 
-/** -------------------------------------------           Utils                  ------------------------------------------------------- **/
+
 
 // If match is null or empty, put all elements which belongs to button, label,
 function recursiveFilter(source, matches, exclusive) {
@@ -477,3 +478,4 @@ function refreshScreen() {
     $('#screen').attr('src', base64);
   });
 }
+*/
