@@ -8,5 +8,6 @@ Makefile
 .jshintrc
 .jshintignore
 coverage/
+public/index.js
 *.sw*
 *.un~

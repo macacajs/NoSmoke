@@ -31,17 +31,26 @@
     "xutil": "^1.0.1"
   },
   "devDependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
     "co-mocha": "*",
     "istanbul": "*",
+    "jquery": "^3.2.1",
     "jshint": "*",
     "mocha": "*",
     "nodemon": "^1.11.0",
     "pre-commit": "*",
-    "should": "*"
+    "should": "*",
+    "webpack": "^1.13.2",
+    "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
     "test": "make test",
-    "jshint": "make jshint"
+    "jshint": "make jshint",
+    "build": "webpack -p",
+    "watch": "webpack --watch",
+    "prepublish": "npm run build"
   },
   "pre-commit": [
     "jshint"
