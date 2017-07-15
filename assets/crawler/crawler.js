@@ -1,48 +1,5 @@
 'use strict';
 
-/** Crawling Node: each of the tree node represents a unique user page  */
-function NSAppCrawlingTreeNode() {
-  this.path = '';       // Unique path which leads to current page
-  this.parent = null;   // Parent ui element
-  this.actions = [];    // Units in {value : NSAppCrawlingTreeNodeAction}
-  this.digest = null;
-}
-
-NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
-  let isFinished = true;
-  for (let key in this.actions) {
-    if (this.actions[key].isTriggered === false) {
-      isFinished = false;
-      break;
-    }
-  }
-  return isFinished;
-};
-NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
-  this.actions.sort((a , b) => {
-    if (a.location.includes('TabBar') && !b.location.includes('TabBar')) {
-      return 1;
-    } else if (!a.location.includes('TabBar') && b.location.includes('TabBar')) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-};
-
-NSAppCrawlingTreeNode.prototype.checkDigest = function() {
-  if (this.digest == null) {
-    return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`, null, null)
-      .then(title  => {
-        this.digest = title.value;
-      });
-  } else {
-    return new Promise((resolve) => {
-      resolve(this.digest);
-    });
-  }
-};
-
 function NSCrawler(config, sessionId) {
   this.config = config;                     // Config in format of NSCrawlerConfig
   this.sessionId = sessionId;                  // Session Id
@@ -193,6 +150,127 @@ NSCrawler.prototype.crawl = function () {
       });
   });
 };
+
+
+// If match is null or empty, put all elements which belongs to button, label,
+function recursiveFilter(source, matches, exclusive) {
+  let sourceArray = [];
+
+  for (let key in source) {
+    // filter out nav-bar element, avoid miss back operation
+    if (source.type === 'NavigationBar') {
+      continue;
+    }
+
+    if (source.hasOwnProperty(key)) {
+      if (key === 'children') {
+        for (let i = 0; i < source[key].length; i++) {
+          insertXPath(source, source[key][i]);
+          let result = recursiveFilter(source[key][i], matches, exclusive);
+          sourceArray = sourceArray.concat(result);
+        }
+      } else if (source[key] !== null) {
+        if (matches) {
+          // Explicit mode
+          for (let match in matches) {
+            if ((source.value && source.value === match) ||
+              (source.name && source.name === match)     ||
+              (source.label && source.label === match)) {
+              source.input = matches[match].actionValue;
+              return [source];
+            }
+          }
+        } else {
+          // If the source value/name/label matches the exclusive pattern, avoid recording
+          if ((exclusive) && ((source.value && exclusive.includes(source.value)) ||
+            (source.name && exclusive.includes(source.name))   ||
+            (source.label && exclusive.includes(source.label)))) {
+            return [];
+          }
+
+          if (source.type) {
+            switch (source.type) {
+              case 'StaticText':
+              case 'Button':
+              case 'Cell':
+              case 'PageIndicator':
+                sourceArray.push(source);
+                return sourceArray;
+              case 'TextField':
+              case 'SecureTextField':
+                source.input = 'random+123';
+                sourceArray.push(source);
+                return sourceArray;
+              default:
+            }
+          }
+        }
+      }
+    }
+  }
+  return sourceArray;
+}
+
+function checkPathIndex(parent, child) {
+  let currentTypeCount = child.type + '_count';
+
+  if (!parent[currentTypeCount]) {
+    for (let i = 0; i < parent.children.length; i++) {
+      currentTypeCount = parent.children[i].type + '_count';
+      if (!parent[currentTypeCount]) {
+        parent[currentTypeCount] = 1;
+      } else {
+        parent[currentTypeCount]++;
+      }
+      parent.children[i].pathInParent = parent[currentTypeCount];
+    }
+  }
+}
+
+// Parent must be an array of child elements
+function insertXPath(parent, child) {
+  let prefix = crawlerConfig.platform === 'iOS' ? 'XCUIElementType' : '';
+  checkPathIndex(parent, child);
+  let currentIndex = child.pathInParent;
+  child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
+}
+
+function produceNodeActions(rawElements) {
+  let actions = [];
+  for (let index in rawElements) {
+    let rawElement = rawElements[index];
+    let action;
+
+    switch (rawElement.type) {
+      case 'StaticText':
+      case 'Button':
+      case 'Cell':
+      case 'PageIndicator':
+        action = new NSAppCrawlingTreeNodeAction();
+        action.source = rawElement;
+        action.location = rawElement.xpath;
+        actions.push(action);
+        break;
+      case 'TextField':
+      case 'SecureTextField':
+        action = new NSAppCrawlingTreeNodeAction();
+        action.source = rawElement;
+        action.location = rawElement.xpath;
+        action.input = rawElement.input;
+        actions.push(action);
+        break;
+      default:
+    }
+  }
+  return actions;
+}
+
+function refreshScreen() {
+  window.wdclient.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
+    let base64 = `data:image/jpg;base64,${data.value}`;
+    $('#screen').attr('src', base64);
+  });
+}
 
 exports.NSCrawler = NSCrawler;
 

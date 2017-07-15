@@ -1,21 +1,17 @@
 'use strict';
 
-const {
-  NSCrawler
-} = require('./crawler');
 
 function WDClient(options) {
   this.server = options.server;
-  this.init();
+  return this.init();
 }
 
 let sessionId = null;
-let crawlerConfig = new NSCrawlerConfig();
 
 WDClient.prototype.init = function() {
   let that = this;
   console.log(this.server);
-  this.send('/wd/hub/session', 'post', {
+  return this.send('/wd/hub/session', 'post', {
     desiredCapabilities: {
       platformName: 'ios',
       deviceName: 'iPhone 6 Plus',
@@ -30,9 +26,9 @@ WDClient.prototype.init = function() {
       $('#screen').attr('src', base64);
     });
 
-    // Start crawling
-    let crawler = new NSCrawler(crawlerConfig, sessionId).initialize();
-    setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000);
+    return {
+      'sessionId':sessionId
+    };
   });
 };
 
