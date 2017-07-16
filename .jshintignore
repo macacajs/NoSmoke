@@ -1,6 +1,0 @@
-.git/
-node_modules/
-coverage/
-build/
-assets/jquery-3.2.1.min.js
-dist/

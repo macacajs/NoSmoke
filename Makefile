@@ -21,6 +21,4 @@ travis: install
 		--bail
 dev:
 	${npm_bin}/nodemon ./bin/nosmoke -s
-jshint:
-	@${npm_bin}/jshint .
 .PHONY: test
