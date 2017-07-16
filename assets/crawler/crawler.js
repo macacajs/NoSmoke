@@ -278,4 +278,3 @@ function refreshScreen() {
 }
 
 exports.NSCrawler = NSCrawler;
-

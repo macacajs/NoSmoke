@@ -11,7 +11,7 @@ crawlerConfig.loadDefault();
 
 window.wdclient = new WDClient({
   server: 'http://localhost:3456'
-}).then((data) => {
+}).then(data => {
   let crawler = new NSCrawler(crawlerConfig, data.sessionId).initialize();
   setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000);
 });

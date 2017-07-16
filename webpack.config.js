@@ -9,26 +9,21 @@ module.exports = {
     publicPath: '/',
     filename: 'index.js'
   },
-  resolve: {
-    extensions: ['', '.jsx', '.js']
+  externals: {
   },
-  externals: [
-  ],
   module: {
     loaders: [
       {
-        test: /\.less$/,
-        loader: 'style!css!less'
+        test: /\.js$/,
+        loader: 'jsx-loader?harmony'
       },
       {
-        test: /\.jsx?$/,
-        loader: 'babel',
-        exclude: /node_modules/
+        test: /\.js$/,
+        loader: 'babel-loader'
       },
       {
         test: /\.json$/,
-        loader: 'json',
-        exclude: /node_modules/
+        loader: 'json-loader'
       }
     ]
   }
