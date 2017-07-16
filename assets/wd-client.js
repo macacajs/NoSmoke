@@ -1,6 +1,7 @@
 'use strict';
 
 let $ = require('jQuery');
+let YAML = require('yamljs');
 
 function WDClient(options) {
   this.server = options.server;
@@ -12,12 +13,10 @@ let sessionId = null;
 WDClient.prototype.init = function() {
   let that = this;
   console.log(this.server);
+  let desiredCapabilities = YAML.load('crawler.config.yml').desiredCapabilities
+
   this.send('/wd/hub/session', 'post', {
-    desiredCapabilities: {
-      platformName: 'ios',
-      deviceName: 'iPhone 6 Plus',
-      app: '.macaca-temp/ios-app-bootstrap.app'
-    }
+    desiredCapabilities: desiredCapabilities
   }, function(data) {
     sessionId = data.sessionId;
     that.sessionId = sessionId;

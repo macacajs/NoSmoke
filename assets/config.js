@@ -1,6 +1,6 @@
 'use strict';
 
-YAML = require('yamljs');
+let YAML = require('yamljs');
 
 /** Crawling Action Target  */
 var NSTargetActionType = {
