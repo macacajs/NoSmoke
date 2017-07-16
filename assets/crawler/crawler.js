@@ -1,5 +1,7 @@
 'use strict';
 
+let $ = require('jQuery');
+
 const {
   NSAppCrawlingTreeNodeAction,
   NSAppCrawlingTreeNode
@@ -50,11 +52,11 @@ NSCrawler.prototype.explore = function(source) {
     node.parent = this.currentNode;
     this.currentNode = node;
 
-    let matches = recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
+    let matches = this.recursiveFilter(source.value, this.config.targetElements, this.config.exclusivePattern);
     if (matches.length) {
       this.currentNode.actions = produceNodeActions(matches);
     } else {
-      let elements = recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
+      let elements = this.recursiveFilter(source.value, null, this.config.exclusivePattern);
       this.currentNode.actions = produceNodeActions(elements);
     }
 
@@ -100,7 +102,7 @@ NSCrawler.prototype.performAction = function() {
                         }]
                       }, null)
                       .then(() => {
-                        refreshScreen();
+                        this.refreshScreen();
                       });
                     break;
                   case 'PageIndicator':
@@ -113,7 +115,7 @@ NSCrawler.prototype.performAction = function() {
                         duration: 2.00
                       }, null)
                       .then(() => {
-                        refreshScreen();
+                        this.refreshScreen();
                       });
                     break;
                   case 'TextField':
@@ -123,7 +125,7 @@ NSCrawler.prototype.performAction = function() {
                         'value': [action.input]
                       }, null)
                       .then(() => {
-                        refreshScreen();
+                        this.refreshScreen();
                       });
                     break;
                   default:
@@ -158,7 +160,7 @@ NSCrawler.prototype.crawl = function () {
 
 
 // If match is null or empty, put all elements which belongs to button, label,
-function recursiveFilter(source, matches, exclusive) {
+NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   let sourceArray = [];
 
   for (let key in source) {
@@ -170,8 +172,8 @@ function recursiveFilter(source, matches, exclusive) {
     if (source.hasOwnProperty(key)) {
       if (key === 'children') {
         for (let i = 0; i < source[key].length; i++) {
-          insertXPath(source, source[key][i]);
-          let result = recursiveFilter(source[key][i], matches, exclusive);
+          this.insertXPath(source, source[key][i]);
+          let result = this.recursiveFilter(source[key][i], matches, exclusive);
           sourceArray = sourceArray.concat(result);
         }
       } else if (source[key] !== null) {
@@ -216,7 +218,7 @@ function recursiveFilter(source, matches, exclusive) {
   return sourceArray;
 }
 
-function checkPathIndex(parent, child) {
+NSCrawler.prototype.checkPathIndex = function (parent, child) {
   let currentTypeCount = child.type + '_count';
 
   if (!parent[currentTypeCount]) {
@@ -233,9 +235,9 @@ function checkPathIndex(parent, child) {
 }
 
 // Parent must be an array of child elements
-function insertXPath(parent, child) {
+NSCrawler.prototype.insertXPath = function (parent, child) {
   let prefix = this.config.platform === 'iOS' ? 'XCUIElementType' : '';
-  checkPathIndex(parent, child);
+  this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
 }
@@ -270,7 +272,7 @@ function produceNodeActions(rawElements) {
   return actions;
 }
 
-function refreshScreen() {
+NSCrawler.prototype.refreshScreen = function () {
   window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
     let base64 = `data:image/jpg;base64,${data.value}`;
     $('#screen').attr('src', base64);
