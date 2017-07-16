@@ -1,5 +1,7 @@
 'use strict';
 
+let YAML = require('yamljs');
+
 /** Crawling Action Target  */
 var NSTargetActionType = {
   CLICK: 1,
@@ -46,30 +48,12 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function() {
 };
 
 NSCrawlerConfig.prototype.loadDefault = function() {
-  let loginAccount = new NSTargetElement();
-  let loginPassword = new NSTargetElement();
-  let loginButton = new NSTargetElement();
-
-  loginAccount.actionType = NSTargetActionType.INPUT;
-  loginAccount.searchValue = 'please input username';
-  loginAccount.actionValue = '中文+Test+12345678';
-
-  loginPassword.actionType = NSTargetActionType.INPUT;
-  loginPassword.searchValue = 'please input password';
-  loginPassword.actionValue = '111111';
-
-  loginButton.actionType = NSTargetActionType.CLICK;
-  loginButton.searchValue = 'Login';
-
-  this.targetElements[loginAccount.searchValue] = loginAccount;
-  this.targetElements[loginPassword.searchValue] = loginPassword;
-  this.targetElements[loginButton.searchValue] = loginButton;
-
-  this.navigationBackKeyword.push('返回');
-  this.navigationBackKeyword.push('取消');
-  this.exclusivePattern = this.exclusivePattern.concat('_').concat('pushView');
-  this.exclusivePattern = this.exclusivePattern.concat('_').concat('popView');
-  this.exclusivePattern = this.exclusivePattern.concat('_').concat('cookie:');
+  let crawlingConfig = YAML.load('crawler.config.yml').crawlingConfig
+  for (let i in crawlingConfig) {
+    if (crawlingConfig.hasOwnProperty(i) && this.hasOwnProperty(i)) {
+      this[i] = crawlingConfig[i];
+    }
+  }
 };
 
 module.exports = NSCrawlerConfig;

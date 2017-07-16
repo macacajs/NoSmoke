@@ -8,10 +8,10 @@ const {
 } = require('./models');
 
 function NSCrawler(config, sessionId) {
-  this.config = config;                     // Config in format of NSCrawlerConfig
-  this.sessionId = sessionId;                  // Session Id
+  this.config = config;                             // Config in format of NSCrawlerConfig
+  this.sessionId = sessionId;                       // Session Id
   this.crawlingBuffer = [];                         // The set of notes
-  this.currentNode = null;                       // Current node which is in crawling
+  this.currentNode = null;                          // Current node which is in crawling
   this.repeatingCrawlingCount = 0;                  // When exceed 3, whole program exists
   this.crawlingExpires = false;                     // Flag to indicate whether a crawling expires
 }
@@ -31,9 +31,7 @@ NSCrawler.prototype.explore = function(source) {
     for (let index in this.crawlingBuffer) {
       if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest === node.digest) {
         this.currentNode = this.crawlingBuffer[index];
-        // Check about current node related
         if (this.currentNode.isFinishedBrowseing()) {
-          // Perform 'back' and craw again
           this.repeatingCrawlingCount++;
           window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
             this.crawl();
@@ -158,7 +156,6 @@ NSCrawler.prototype.crawl = function () {
   });
 };
 
-
 // If match is null or empty, put all elements which belongs to button, label,
 NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   let sourceArray = [];
@@ -180,9 +177,9 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
         if (matches) {
           // Explicit mode
           for (let match in matches) {
-            if ((source.value && source.value === match) ||
-              (source.name && source.name === match)     ||
-              (source.label && source.label === match)) {
+            if ((source.value && source.value === matches[match].searchValue) ||
+              (source.name && source.name === matches[match].searchValue)     ||
+              (source.label && source.label === matches[match].searchValue)) {
               source.input = matches[match].actionValue;
               return [source];
             }
