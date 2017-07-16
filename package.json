@@ -29,7 +29,8 @@
     "wolfy87-eventemitter": "^5.2.2",
     "xlogger": "^1.0.4",
     "xml2map": "^1.0.2",
-    "xutil": "^1.0.1"
+    "xutil": "^1.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "babel": "~5.8.23",

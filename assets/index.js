@@ -17,7 +17,6 @@ window.wdclient = new WDClient({
 });
 
 window.eventEmmiter.addListener('onSessionCreated', (data)=>{
-  console.log('check about we are here')
   let crawler = new NSCrawler(crawlerConfig, data.sessionId).initialize();
   setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000);
 });

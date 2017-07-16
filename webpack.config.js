@@ -9,6 +9,9 @@ module.exports = {
     publicPath: '/',
     filename: 'index.js'
   },
+  node: {
+    fs: "empty"
+  },
   externals: {
   },
   module: {

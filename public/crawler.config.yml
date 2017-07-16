@@ -1,0 +1,27 @@
+---
+# 1. Initialization option
+desiredCapabilities:
+  platformName: 'ios'
+  deviceName: 'iPhone 6 Plus'
+  app: '.macaca-temp/ios-app-bootstrap.app'
+
+# 2. Crawling option
+crawlingConfig:
+  targetElements:
+    loginAccount:
+      actionType  : 2
+      searchValue : 'please input username'
+      actionValue : '中文+Test+12345678'
+    loginPassword:
+      actionType  : 2
+      searchValue : 'please input password'
+      actionValue : '111111'
+    loginButton:
+      actionType  : 1
+      searchValue : 'Login'
+      actionValue : ''
+  exclusivePattern: 'pushView_popView_cookie'
+  navigationBackKeyword:
+    - '返回'
+    - '取消'
+...
