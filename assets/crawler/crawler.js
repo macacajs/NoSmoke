@@ -52,11 +52,11 @@ NSCrawler.prototype.explore = function(source) {
     node.parent = this.currentNode;
     this.currentNode = node;
 
-    let matches = this.recursiveFilter(source.value, this.config.targetElements, this.config.exclusivePattern);
+    let matches = this.recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
     if (matches.length) {
       this.currentNode.actions = produceNodeActions(matches);
     } else {
-      let elements = this.recursiveFilter(source.value, null, this.config.exclusivePattern);
+      let elements = this.recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
       this.currentNode.actions = produceNodeActions(elements);
     }
 
