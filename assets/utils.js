@@ -1,5 +1,5 @@
 'use strict';
 
 exports.a = () => {
-  alert(1)
-}
+  alert(1);
+};

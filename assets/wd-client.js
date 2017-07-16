@@ -1,9 +1,10 @@
 'use strict';
 
+let $ = require('jQuery');
 
 function WDClient(options) {
   this.server = options.server;
-  return this.init();
+  this.init();
 }
 
 let sessionId = null;
@@ -11,24 +12,22 @@ let sessionId = null;
 WDClient.prototype.init = function() {
   let that = this;
   console.log(this.server);
-  return this.send('/wd/hub/session', 'post', {
+  this.send('/wd/hub/session', 'post', {
     desiredCapabilities: {
       platformName: 'ios',
       deviceName: 'iPhone 6 Plus',
-      // app: '~/.macaca-temp/ios-app-bootstrap.app'
-      app: ''
+      app: '.macaca-temp/ios-app-bootstrap.app'
     }
   }, function(data) {
     sessionId = data.sessionId;
+    that.sessionId = sessionId;
     console.log(data.value);
     that.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
       let base64 = `data:image/jpg;base64,${data.value}`;
       $('#screen').attr('src', base64);
     });
 
-    return {
-      'sessionId':sessionId
-    };
+    window.eventEmmiter.emitEvent('onSessionCreated',[data]);
   });
 };
 

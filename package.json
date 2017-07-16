@@ -26,23 +26,26 @@
     "npm-update": "^1.0.2",
     "nunjucks": "^2.4.2",
     "request": "^2.74.0",
+    "wolfy87-eventemitter": "^5.2.2",
     "xlogger": "^1.0.4",
     "xml2map": "^1.0.2",
     "xutil": "^1.0.1"
   },
   "devDependencies": {
-    "babel-core": "^6.13.2",
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.13.2",
-    "co-mocha": "*",
+    "babel": "~5.8.23",
+    "babel-core": "^5.x",
+    "babel-loader": "^5.x",
+    "co-mocha": "^1.2.0",
+    "eslint": "^4.0.0",
     "istanbul": "*",
     "jquery": "^3.2.1",
-    "jshint": "*",
+    "json-loader": "^0.5.2",
+    "jsx-loader": "^0.13.2",
     "mocha": "*",
     "nodemon": "^1.11.0",
     "pre-commit": "*",
     "should": "*",
-    "webpack": "^1.13.2",
+    "webpack": "^2.6.1",
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
@@ -52,9 +55,7 @@
     "watch": "webpack --watch",
     "prepublish": "npm run build"
   },
-  "pre-commit": [
-    "jshint"
-  ],
+  "pre-commit": [],
   "homepage": "https://github.com/macacajs/nosmoke",
   "license": "MIT"
 }

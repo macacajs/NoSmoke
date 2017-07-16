@@ -1,5 +1,12 @@
 'use strict';
 
+let $ = require('jQuery');
+
+const {
+  NSAppCrawlingTreeNodeAction,
+  NSAppCrawlingTreeNode
+} = require('./models');
+
 function NSCrawler(config, sessionId) {
   this.config = config;                     // Config in format of NSCrawlerConfig
   this.sessionId = sessionId;                  // Session Id
@@ -28,7 +35,7 @@ NSCrawler.prototype.explore = function(source) {
         if (this.currentNode.isFinishedBrowseing()) {
           // Perform 'back' and craw again
           this.repeatingCrawlingCount++;
-          window.wdclient.send(`/wd/hub/session/${sessionId}/back`, 'post', {}, null).then(() => {
+          window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
             this.crawl();
           });
         } else {
@@ -45,11 +52,11 @@ NSCrawler.prototype.explore = function(source) {
     node.parent = this.currentNode;
     this.currentNode = node;
 
-    let matches = recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
+    let matches = this.recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
     if (matches.length) {
       this.currentNode.actions = produceNodeActions(matches);
     } else {
-      let elements = recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
+      let elements = this.recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
       this.currentNode.actions = produceNodeActions(elements);
     }
 
@@ -68,7 +75,7 @@ NSCrawler.prototype.explore = function(source) {
 NSCrawler.prototype.performAction = function() {
   let that = this;
   window.wdclient
-    .send(`/wd/hub/session/${sessionId}/source`, `get`, null, null)
+    .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
     .then(() => {
       for (let i = 0; i < that.currentNode.actions.length; i++) {
         let action = that.currentNode.actions[i];
@@ -77,7 +84,7 @@ NSCrawler.prototype.performAction = function() {
           console.log(JSON.stringify(action.source));
 
           window.wdclient
-            .send(`/wd/hub/session/${sessionId}/element`, `post`, {
+            .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
               using: 'xpath',
               value: action.location
             }, null)
@@ -87,7 +94,7 @@ NSCrawler.prototype.performAction = function() {
                   case 'Button':
                   case 'Cell':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/actions`, `post`, {
+                      .send(`/wd/hub/session/${this.sessionId}/actions`, `post`, {
                         actions: [{
                           type: 'tap',
                           x: action.source.rect.x,
@@ -95,12 +102,12 @@ NSCrawler.prototype.performAction = function() {
                         }]
                       }, null)
                       .then(() => {
-                        refreshScreen();
+                        this.refreshScreen();
                       });
                     break;
                   case 'PageIndicator':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/dragfromtoforduration`,`post`, {
+                      .send(`/wd/hub/session/${this.sessionId}/dragfromtoforduration`,`post`, {
                         fromX: 10,
                         fromY: 200,
                         toX: 300,
@@ -108,17 +115,17 @@ NSCrawler.prototype.performAction = function() {
                         duration: 2.00
                       }, null)
                       .then(() => {
-                        refreshScreen();
+                        this.refreshScreen();
                       });
                     break;
                   case 'TextField':
                   case 'SecureTextField':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
+                      .send(`/wd/hub/session/${this.sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
                         'value': [action.input]
                       }, null)
                       .then(() => {
-                        refreshScreen();
+                        this.refreshScreen();
                       });
                     break;
                   default:
@@ -142,9 +149,9 @@ NSCrawler.prototype.crawl = function () {
     return;
   }
 
-  window.wdclient.send(`/wd/hub/session/${sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
+  window.wdclient.send(`/wd/hub/session/${this.sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
     window.wdclient
-      .send(`/wd/hub/session/${sessionId}/source`, `get`, null, null)
+      .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
       .then((data)  => {
         this.explore(data);
       });
@@ -153,7 +160,7 @@ NSCrawler.prototype.crawl = function () {
 
 
 // If match is null or empty, put all elements which belongs to button, label,
-function recursiveFilter(source, matches, exclusive) {
+NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   let sourceArray = [];
 
   for (let key in source) {
@@ -165,8 +172,8 @@ function recursiveFilter(source, matches, exclusive) {
     if (source.hasOwnProperty(key)) {
       if (key === 'children') {
         for (let i = 0; i < source[key].length; i++) {
-          insertXPath(source, source[key][i]);
-          let result = recursiveFilter(source[key][i], matches, exclusive);
+          this.insertXPath(source, source[key][i]);
+          let result = this.recursiveFilter(source[key][i], matches, exclusive);
           sourceArray = sourceArray.concat(result);
         }
       } else if (source[key] !== null) {
@@ -211,7 +218,7 @@ function recursiveFilter(source, matches, exclusive) {
   return sourceArray;
 }
 
-function checkPathIndex(parent, child) {
+NSCrawler.prototype.checkPathIndex = function (parent, child) {
   let currentTypeCount = child.type + '_count';
 
   if (!parent[currentTypeCount]) {
@@ -228,9 +235,9 @@ function checkPathIndex(parent, child) {
 }
 
 // Parent must be an array of child elements
-function insertXPath(parent, child) {
-  let prefix = crawlerConfig.platform === 'iOS' ? 'XCUIElementType' : '';
-  checkPathIndex(parent, child);
+NSCrawler.prototype.insertXPath = function (parent, child) {
+  let prefix = this.config.platform === 'iOS' ? 'XCUIElementType' : '';
+  this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
 }
@@ -265,12 +272,11 @@ function produceNodeActions(rawElements) {
   return actions;
 }
 
-function refreshScreen() {
-  window.wdclient.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
+NSCrawler.prototype.refreshScreen = function () {
+  window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
     let base64 = `data:image/jpg;base64,${data.value}`;
     $('#screen').attr('src', base64);
   });
 }
 
 exports.NSCrawler = NSCrawler;
-

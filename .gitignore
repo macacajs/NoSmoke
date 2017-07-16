@@ -2,6 +2,7 @@
 node_modules
 npm-debug.log
 .idea/*
+.macaca-temp/*
 Thumbs.db
 coverage/
 .project
