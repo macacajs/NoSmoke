@@ -8,6 +8,13 @@ function NSAppCrawlingTreeNode() {
   this.digest = null;
 }
 
+function NSAppCrawlingTreeNodeAction() {
+  this.isTriggered = false;
+  this.location = null;
+  this.input = null;
+  this.source = {};
+}
+
 NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
   let isFinished = true;
   for (let key in this.actions) {
@@ -18,6 +25,7 @@ NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
   }
   return isFinished;
 };
+
 NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
   this.actions.sort((a , b) => {
     if (a.location.includes('TabBar') && !b.location.includes('TabBar')) {
@@ -32,7 +40,7 @@ NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
 
 NSAppCrawlingTreeNode.prototype.checkDigest = function() {
   if (this.digest == null) {
-    return window.wdclient.send(`/wd/hub/session/${sessionId}/title`,`get`, null, null)
+    return window.wdclient.send(`/wd/hub/session/${window.wdclient.sessionId}/title`,`get`, null, null)
       .then(title  => {
         this.digest = title.value;
       });
@@ -43,9 +51,5 @@ NSAppCrawlingTreeNode.prototype.checkDigest = function() {
   }
 };
 
-function NSAppCrawlingTreeNodeAction() {
-  this.isTriggered = false;
-  this.location = null;
-  this.input = null;
-  this.source = {};
-}
+exports.NSAppCrawlingTreeNodeAction  = NSAppCrawlingTreeNodeAction;
+exports.NSAppCrawlingTreeNode = NSAppCrawlingTreeNode;

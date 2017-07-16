@@ -1,13 +1,13 @@
 'use strict';
 
-const _ = require('./utils');
 const WDClient = require('./wd-client');
 const NSCrawlerConfig = require('./config');
 const {
   NSCrawler
-} = require('./crawler');
+} = require('./crawler/crawler');
 
 let crawlerConfig = new NSCrawlerConfig();
+crawlerConfig.loadDefault();
 
 window.wdclient = new WDClient({
   server: 'http://localhost:3456'

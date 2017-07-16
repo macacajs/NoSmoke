@@ -1,5 +1,10 @@
 'use strict';
 
+const {
+  NSAppCrawlingTreeNodeAction,
+  NSAppCrawlingTreeNode
+} = require('./models');
+
 function NSCrawler(config, sessionId) {
   this.config = config;                     // Config in format of NSCrawlerConfig
   this.sessionId = sessionId;                  // Session Id
@@ -28,7 +33,7 @@ NSCrawler.prototype.explore = function(source) {
         if (this.currentNode.isFinishedBrowseing()) {
           // Perform 'back' and craw again
           this.repeatingCrawlingCount++;
-          window.wdclient.send(`/wd/hub/session/${sessionId}/back`, 'post', {}, null).then(() => {
+          window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
             this.crawl();
           });
         } else {
@@ -68,7 +73,7 @@ NSCrawler.prototype.explore = function(source) {
 NSCrawler.prototype.performAction = function() {
   let that = this;
   window.wdclient
-    .send(`/wd/hub/session/${sessionId}/source`, `get`, null, null)
+    .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
     .then(() => {
       for (let i = 0; i < that.currentNode.actions.length; i++) {
         let action = that.currentNode.actions[i];
@@ -77,7 +82,7 @@ NSCrawler.prototype.performAction = function() {
           console.log(JSON.stringify(action.source));
 
           window.wdclient
-            .send(`/wd/hub/session/${sessionId}/element`, `post`, {
+            .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
               using: 'xpath',
               value: action.location
             }, null)
@@ -87,7 +92,7 @@ NSCrawler.prototype.performAction = function() {
                   case 'Button':
                   case 'Cell':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/actions`, `post`, {
+                      .send(`/wd/hub/session/${this.sessionId}/actions`, `post`, {
                         actions: [{
                           type: 'tap',
                           x: action.source.rect.x,
@@ -100,7 +105,7 @@ NSCrawler.prototype.performAction = function() {
                     break;
                   case 'PageIndicator':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/dragfromtoforduration`,`post`, {
+                      .send(`/wd/hub/session/${this.sessionId}/dragfromtoforduration`,`post`, {
                         fromX: 10,
                         fromY: 200,
                         toX: 300,
@@ -114,7 +119,7 @@ NSCrawler.prototype.performAction = function() {
                   case 'TextField':
                   case 'SecureTextField':
                     window.wdclient
-                      .send(`/wd/hub/session/${sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
+                      .send(`/wd/hub/session/${this.sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
                         'value': [action.input]
                       }, null)
                       .then(() => {
@@ -142,9 +147,9 @@ NSCrawler.prototype.crawl = function () {
     return;
   }
 
-  window.wdclient.send(`/wd/hub/session/${sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
+  window.wdclient.send(`/wd/hub/session/${this.sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
     window.wdclient
-      .send(`/wd/hub/session/${sessionId}/source`, `get`, null, null)
+      .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
       .then((data)  => {
         this.explore(data);
       });
@@ -229,7 +234,7 @@ function checkPathIndex(parent, child) {
 
 // Parent must be an array of child elements
 function insertXPath(parent, child) {
-  let prefix = crawlerConfig.platform === 'iOS' ? 'XCUIElementType' : '';
+  let prefix = this.config.platform === 'iOS' ? 'XCUIElementType' : '';
   checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
@@ -266,7 +271,7 @@ function produceNodeActions(rawElements) {
 }
 
 function refreshScreen() {
-  window.wdclient.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
+  window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
     let base64 = `data:image/jpg;base64,${data.value}`;
     $('#screen').attr('src', base64);
   });

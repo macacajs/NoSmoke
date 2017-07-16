@@ -1,6 +1,5 @@
 'use strict';
 
-
 function WDClient(options) {
   this.server = options.server;
   return this.init();
@@ -20,6 +19,7 @@ WDClient.prototype.init = function() {
     }
   }, function(data) {
     sessionId = data.sessionId;
+    this.sessionId = sessionId;
     console.log(data.value);
     that.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
       let base64 = `data:image/jpg;base64,${data.value}`;
