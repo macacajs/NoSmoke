@@ -2,9 +2,8 @@
 # 1. Initialization option
 desiredCapabilities:
   platformName: 'android'
-    autoAcceptAlerts: false
   isWaitActivity: true
-  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
+  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
 # 2. Crawling option
 crawlingConfig:
