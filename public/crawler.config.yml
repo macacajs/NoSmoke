@@ -1,9 +1,10 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'ios'
-  deviceName: 'iPhone 6 Plus'
-  app: '.macaca-temp/ios-app-bootstrap.app'
+  platformName: 'android'
+    autoAcceptAlerts: false
+  isWaitActivity: true
+  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 
 # 2. Crawling option
 crawlingConfig:
