@@ -3,13 +3,12 @@
 let EventEmitter = require('wolfy87-eventemitter');
 let WDClient = require('./wd-client');
 let NSCrawlerConfig = require('./config');
+let crawlerConfig = new NSCrawlerConfig();
+crawlerConfig.loadDefault();
 
 const {
   NSCrawler
-} = require('./crawler/crawler');
-
-let crawlerConfig = new NSCrawlerConfig();
-crawlerConfig.loadDefault();
+} = require(crawlerConfig.platform == 'iOS'?'./crawler/crawler-ios':'./crawler/crawler-android');
 
 window.eventEmmiter = new EventEmitter();
 window.wdclient = new WDClient({
