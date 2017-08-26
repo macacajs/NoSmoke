@@ -19,6 +19,4 @@ travis: install
 		$(REQUIRED) \
 		$(TESTS) \
 		--bail
-dev:
-	${npm_bin}/nodemon ./bin/nosmoke -s
 .PHONY: test
