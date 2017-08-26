@@ -23,6 +23,7 @@
     "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
+    "macaca-reporter": "*",
     "npm-update": "^1.0.2",
     "nunjucks": "^2.4.2",
     "request": "^2.74.0",
