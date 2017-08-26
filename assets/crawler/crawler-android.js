@@ -11,13 +11,12 @@ const {
 let NSCrawler = require('./crawler').NSCrawler;
 
 // Perform Node Actions
-NSCrawler.prototype.performAction = function() {
-  let that = this;
+NSCrawler.prototype.performAction = function(actions) {
   window.wdclient
     .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
     .then(() => {
-      for (let i = 0; i < that.currentNode.actions.length; i++) {
-        let action = that.currentNode.actions[i];
+      for (let i = 0; i < actions.length; i++) {
+        let action = actions[i];
         if (!action.isTriggered) {
           action.isTriggered = true;
           console.log(JSON.stringify(action.source));
@@ -86,8 +85,15 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
     if (utils.isArray(source.node)) {
       for (let i = 0; i < source.node.length; i++) {
         this.insertXPath(source, source.node[i]);
-        let result = this.recursiveFilter(source.node[i], matches, exclusive);
-        sourceArray = sourceArray.concat(result);
+        let result = this.recursiveFilter(source.children[i], matches, exclusive);
+        if (this.config.tabBarTypes.indexOf(source.type) >= 0) {
+          // Check if sourceType is tab, put it in a high priority list
+          this.insertTabNode(result);
+          return [];
+        } else {
+          // Check for local source array for normal cases
+          sourceArray = sourceArray.concat(result);
+        }
       }
     } else {
       this.insertXPath(source, source.node);

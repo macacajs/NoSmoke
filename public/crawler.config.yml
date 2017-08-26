@@ -25,7 +25,7 @@ crawlingConfig:
       actionType  : 1
       searchValue : 'yes'
       actionValue : ''
-  exclusivePattern: 'pushView/popView/cookie/userAgent/Mozilla'
+  exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:'
 # iOS Configuration
   clickTypes:
     - 'StaticText'
@@ -38,14 +38,20 @@ crawlingConfig:
     - 'PageIndicator'
   verticalScrollTypes:
     - 'ScrollView'
-# Android Configuration
-#    clickTypes:
-#      - 'android.widget.ImageView'
-#      - 'android.widget.TextView'
-#      - 'android.widget.Button'
-#    editTypes:
-#      - 'EditText'
+  tabBarTypes:
+    - 'TabBar'
+  exclusiveTypes:
+    - 'NavigationBar'
   navigationBackKeyword:
     - '返回'
     - '取消'
+  # Android Configuration
+  #    clickTypes:
+  #      - 'android.widget.ImageView'
+  #      - 'android.widget.TextView'
+  #      - 'android.widget.Button'
+  #    editTypes:
+  #      - 'EditText'
+  #    tabBarTypes:
+  #      - ''
 ...

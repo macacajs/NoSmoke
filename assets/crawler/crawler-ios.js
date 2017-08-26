@@ -11,13 +11,12 @@ const {
 let NSCrawler = require('./crawler').NSCrawler;
 
 // Perform Node Actions
-NSCrawler.prototype.performAction = function() {
-  let that = this;
+NSCrawler.prototype.performAction = function(actions) {
   window.wdclient
     .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
     .then(() => {
-      for (let i = 0; i < that.currentNode.actions.length; i++) {
-        let action = that.currentNode.actions[i];
+      for (let i = 0; i < actions.length; i++) {
+        let action = actions[i];
         if (!action.isTriggered) {
           action.isTriggered = true;
           console.log(JSON.stringify(action.source));
@@ -77,7 +76,7 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   let sourceArray = [];
 
   // filter out nav-bar element, avoid miss back operation
-  if (source.type === 'NavigationBar') {
+  if (this.config.exclusiveTypes.indexOf(source.type) >= 0) {
     return [];
   }
 
@@ -85,7 +84,14 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
     for (let i = 0; i < source.children.length; i++) {
       this.insertXPath(source, source.children[i]);
       let result = this.recursiveFilter(source.children[i], matches, exclusive);
-      sourceArray = sourceArray.concat(result);
+      if (this.config.tabBarTypes.indexOf(source.type) >= 0) {
+        // Check if sourceType is tab, put it in a high priority list
+        this.insertTabNode(result);
+        return [];
+      } else {
+        // Check for local source array for normal cases
+        sourceArray = sourceArray.concat(result);
+      }
     }
   }
 
@@ -118,7 +124,7 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   }
 
   return sourceArray;
-}
+};
 
 NSCrawler.prototype.checkPathIndex = function (parent, child) {
   let currentTypeCount = child.type + '_count';
@@ -134,7 +140,7 @@ NSCrawler.prototype.checkPathIndex = function (parent, child) {
       parent.children[i].pathInParent = parent[currentTypeCount];
     }
   }
-}
+};
 
 // Parent must be an array of child elements
 NSCrawler.prototype.insertXPath = function (parent, child) {
@@ -142,6 +148,6 @@ NSCrawler.prototype.insertXPath = function (parent, child) {
   this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
-}
+};
 
 exports.NSCrawler = NSCrawler;

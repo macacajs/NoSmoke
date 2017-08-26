@@ -51,10 +51,15 @@ NSCrawler.prototype.explore = function(source) {
       if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest === node.digest) {
         this.currentNode = this.crawlingBuffer[index];
         if (this.currentNode.isFinishedBrowseing()) {
-          this.repeatingCrawlingCount++;
-          window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
-            this.crawl();
-          });
+          if (this.currentNode.parent.type == 'tab') {
+            this.currentNode = this.currentNode.parent;
+            this.performAction();
+          } else {
+            this.repeatingCrawlingCount++;
+            window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
+              this.crawl();
+            });
+          }
         } else {
           this.performAction();
           setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
@@ -103,6 +108,18 @@ NSCrawler.prototype.refreshScreen = function () {
     $('#screen').attr('src', base64);
   });
 };
+
+NSCrawler.prototype.insertTabNode = function (rawElement) {
+  if (this.currentNode.parent.type != 'tab') {
+    // If the parent is already a tab, ignore this data
+    let node = new NSAppCrawlingTreeNode();
+    node.actions = this.produceNodeActions(rawElement);
+    node.parent = this.currentNode.parent;
+    node.type = 'tab';
+    node.digest = JSON.stringify(rawElement);
+    this.currentNode.parent = node;
+  }
+}
 
 NSCrawler.prototype.produceNodeActions = function(rawElements) {
   let actions = [];

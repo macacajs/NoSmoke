@@ -40,6 +40,8 @@ function NSCrawlerConfig() {
   this.editTypes = [];
   this.horizontalScrollTypes = [];
   this.verticalScrollTypes = [];
+  this.tabBarTypes = [];
+  this.exclusiveTypes = [];
 }
 
 NSCrawlerConfig.prototype.debugDesriptoin =  function() {
