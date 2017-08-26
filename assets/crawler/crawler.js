@@ -45,7 +45,7 @@ NSCrawler.prototype.crawl = function () {
 
 NSCrawler.prototype.explore = function(source) {
   let node = new NSAppCrawlingTreeNode();
-  node.checkDigest().then(() => {
+  node.checkDigest(this.config.platform ,source).then(() => {
     // 1. Check if there is an existing node
     for (let index in this.crawlingBuffer) {
       if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest === node.digest) {

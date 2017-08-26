@@ -48,7 +48,7 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function() {
 };
 
 NSCrawlerConfig.prototype.loadDefault = function() {
-  let crawlingConfig = YAML.load('crawler.config.yml').crawlingConfig
+  let crawlingConfig = YAML.load('crawler.config.yml').crawlingConfig;
   for (let i in crawlingConfig) {
     if (crawlingConfig.hasOwnProperty(i) && this.hasOwnProperty(i)) {
       this[i] = crawlingConfig[i];

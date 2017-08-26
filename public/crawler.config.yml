@@ -3,10 +3,12 @@
 desiredCapabilities:
   platformName: 'android'
   isWaitActivity: true
+  activity: 'LoginActivity'
   app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
 # 2. Crawling option
 crawlingConfig:
+  platform: 'android'
   targetElements:
     loginAccount:
       actionType  : 2

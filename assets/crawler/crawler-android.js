@@ -54,12 +54,14 @@ NSCrawler.prototype.performAction = function() {
                       });
                     break;
                   default:
+                    let NUMERIC_REGEXP = /[-]{0,1}[\d.]*[\d]+/g;
+                    let raw = action.source.bounds.match(NUMERIC_REGEXP);
                     window.wdclient
                       .send(`/wd/hub/session/${this.sessionId}/actions`, `post`, {
                         actions: [{
                           type: 'tap',
-                          x: action.source.rect.x,
-                          y: action.source.rect.y
+                          x: (parseFloat(raw[0]) + parseFloat(raw[2]))/2,
+                          y: (parseFloat(raw[1]) + parseFloat(raw[3]))/2
                         }]
                       }, null)
                       .then(() => {
@@ -106,7 +108,11 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   } else {
     // If the source value/name/label matches the exclusive pattern, avoid recording
     if ((exclusive) && (source.text && exclusive.includes(source.text))) {
-      return [];
+      return sourceArray;
+    }
+
+    if (!source.class || source.class.indexOf('Layout') >= 0) {
+      return sourceArray;
     }
 
     if (source.class) {
@@ -125,15 +131,15 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   }
 
   return sourceArray;
-}
+};
 
 NSCrawler.prototype.checkPathIndex = function (parent, child) {
-  let currentTypeCount = child.type + '_count';
+  let currentTypeCount = child.class + '_count';
 
   if (!parent[currentTypeCount]) {
-    if (utils.isArray(source.node)) {
+    if (utils.isArray(parent.node)) {
       for (let i = 0; i < parent.node.length; i++) {
-        currentTypeCount = parent.node[i].package + '_count';
+        currentTypeCount = parent.node[i].class + '_count';
         if (!parent[currentTypeCount]) {
           parent[currentTypeCount] = 1;
         } else {
@@ -145,15 +151,15 @@ NSCrawler.prototype.checkPathIndex = function (parent, child) {
         parent.node.pathInParent = 1;
     }
   }
-}
+};
 
 // Parent must be an array of child elements
 NSCrawler.prototype.insertXPath = function (parent, child) {
   let prefix = '';
   this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
-  child.xpath = (parent.xpath ? parent.xpath + '/' : '//') + prefix + child.package + '[' + currentIndex + ']';
-}
+  child.xpath = (parent.xpath ? parent.xpath + '/' : '//') + prefix + child.class + '[' + currentIndex + ']';
+};
 
 NSCrawler.prototype.produceNodeActions = function(rawElements) {
   let actions = [];
@@ -166,13 +172,13 @@ NSCrawler.prototype.produceNodeActions = function(rawElements) {
     actions.push(action);
   }
   return actions;
-}
+};
 
 NSCrawler.prototype.refreshScreen = function () {
   window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
     let base64 = `data:image/jpg;base64,${data.value}`;
     $('#screen').attr('src', base64);
   });
-}
+};
 
 exports.NSCrawler = NSCrawler;

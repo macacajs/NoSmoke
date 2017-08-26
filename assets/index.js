@@ -6,9 +6,12 @@ let NSCrawlerConfig = require('./config');
 let crawlerConfig = new NSCrawlerConfig();
 crawlerConfig.loadDefault();
 
-const {
-  NSCrawler
-} = require(crawlerConfig.platform == 'iOS'?'./crawler/crawler-ios':'./crawler/crawler-android');
+let NSCrawler;
+if (crawlerConfig.platform == 'iOS') {
+  NSCrawler = require('./crawler/crawler-ios').NSCrawler;
+} else {
+  NSCrawler = require('./crawler/crawler-android').NSCrawler;
+}
 
 window.eventEmmiter = new EventEmitter();
 window.wdclient = new WDClient({
