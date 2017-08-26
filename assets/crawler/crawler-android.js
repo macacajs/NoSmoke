@@ -108,10 +108,10 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   } else {
     // If the source value/name/label matches the exclusive pattern, avoid recording
     if ((exclusive) && (source.text && exclusive.includes(source.text))) {
-      return sourceArray;
+      return [];
     }
 
-    if (!source.class || source.class.indexOf('Layout') >= 0) {
+    if (!source.class || source.class.indexOf('Layout') >= 0 || source.class.indexOf('.View') >= 0) {
       return sourceArray;
     }
 
@@ -122,7 +122,7 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
           sourceArray.push(source);
           return sourceArray;
         default:
-          if (source.enabled) {
+          if (source.enabled == 'true') {
             sourceArray.push(source);
           }
           return sourceArray;
@@ -159,26 +159,6 @@ NSCrawler.prototype.insertXPath = function (parent, child) {
   this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath + '/' : '//') + prefix + child.class + '[' + currentIndex + ']';
-};
-
-NSCrawler.prototype.produceNodeActions = function(rawElements) {
-  let actions = [];
-  for (let index in rawElements) {
-    let rawElement = rawElements[index];
-    let action = new NSAppCrawlingTreeNodeAction();
-    action.source = rawElement;
-    action.location = rawElement.xpath;
-    action.input = rawElement.input;
-    actions.push(action);
-  }
-  return actions;
-};
-
-NSCrawler.prototype.refreshScreen = function () {
-  window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
-    let base64 = `data:image/jpg;base64,${data.value}`;
-    $('#screen').attr('src', base64);
-  });
 };
 
 exports.NSCrawler = NSCrawler;

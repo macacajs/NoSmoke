@@ -88,4 +88,24 @@ NSCrawler.prototype.explore = function(source) {
   });
 };
 
+NSCrawler.prototype.refreshScreen = function () {
+  window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
+    let base64 = `data:image/jpg;base64,${data.value}`;
+    $('#screen').attr('src', base64);
+  });
+};
+
+NSCrawler.prototype.produceNodeActions = function(rawElements) {
+  let actions = [];
+  for (let index in rawElements) {
+    let rawElement = rawElements[index];
+    let action = new NSAppCrawlingTreeNodeAction();
+    action.source = rawElement;
+    action.location = rawElement.xpath;
+    action.input = rawElement.input;
+    actions.push(action);
+  }
+  return actions;
+};
+
 exports.NSCrawler = NSCrawler;

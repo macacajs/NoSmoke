@@ -78,25 +78,6 @@ NSCrawler.prototype.performAction = function() {
     });
 };
 
-NSCrawler.prototype.crawl = function () {
-
-  // Terminate under the following cases:
-  // 1. the previous node has been finished for continuously count of 5, assume crawling finish
-  // 2. the crawling process takes too long and hence expire
-  if (this.repeatingCrawlingCount >= 5 || this.crawlingExpires) {
-    console.log('-----> Crawling Finished <-----');
-    return;
-  }
-
-  window.wdclient.send(`/wd/hub/session/${this.sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
-    window.wdclient
-      .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
-      .then((data)  => {
-        this.explore(data);
-      });
-  });
-};
-
 // If match is null or empty, put all elements which belongs to button, label,
 NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   let sourceArray = [];
@@ -178,43 +159,6 @@ NSCrawler.prototype.insertXPath = function (parent, child) {
   this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath : '//' + prefix + 'Application[1]')+ '/' + prefix + child.type + '[' + currentIndex + ']';
-}
-
-NSCrawler.prototype.produceNodeActions = function(rawElements) {
-  let actions = [];
-  for (let index in rawElements) {
-    let rawElement = rawElements[index];
-    let action;
-
-    switch (rawElement.type) {
-      case 'StaticText':
-      case 'Button':
-      case 'Cell':
-      case 'PageIndicator':
-        action = new NSAppCrawlingTreeNodeAction();
-        action.source = rawElement;
-        action.location = rawElement.xpath;
-        actions.push(action);
-        break;
-      case 'TextField':
-      case 'SecureTextField':
-        action = new NSAppCrawlingTreeNodeAction();
-        action.source = rawElement;
-        action.location = rawElement.xpath;
-        action.input = rawElement.input;
-        actions.push(action);
-        break;
-      default:
-    }
-  }
-  return actions;
-}
-
-NSCrawler.prototype.refreshScreen = function () {
-  window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
-    let base64 = `data:image/jpg;base64,${data.value}`;
-    $('#screen').attr('src', base64);
-  });
 }
 
 exports.NSCrawler = NSCrawler;

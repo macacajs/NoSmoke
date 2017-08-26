@@ -22,6 +22,10 @@ crawlingConfig:
       actionType  : 1
       searchValue : 'Login'
       actionValue : ''
+    configirm:
+      actionType  : 1
+      searchValue : 'yes'
+      actionValue : ''
   exclusivePattern: 'pushView_popView_cookie'
   navigationBackKeyword:
     - '返回'
