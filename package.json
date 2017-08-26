@@ -51,6 +51,7 @@
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
+    "dev": "nodemon ./bin/nosmoke -s",
     "test": "make test",
     "jshint": "make jshint",
     "build": "webpack -p",
