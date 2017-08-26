@@ -116,16 +116,11 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
     }
 
     if (source.class) {
-      switch (source.class) {
-        case 'android.widget.EditText':
-          source.input = 'random+123';
-          sourceArray.push(source);
-          return sourceArray;
-        default:
-          if (source.enabled == 'true') {
-            sourceArray.push(source);
-          }
-          return sourceArray;
+      if (this.config.clickTypes.indexOf(source.class) >= 0) {
+        sourceArray.push(source);
+      } else if (this.config.editTypes.indexOf(source.class) >= 0) {
+        source.input = 'random+123';
+        sourceArray.push(source);
       }
     }
   }

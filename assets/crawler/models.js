@@ -17,6 +17,7 @@ String.prototype.hashCode = function() {
 function NSAppCrawlingTreeNode() {
   this.path = '';       // Unique path which leads to current page
   this.parent = null;   // Parent ui element
+  this.depth = 0;
   this.actions = [];    // Units in {value : NSAppCrawlingTreeNodeAction}
   this.digest = null;
 }

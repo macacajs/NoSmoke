@@ -30,16 +30,10 @@ NSCrawler.prototype.performAction = function() {
             .then(data => {
               if (data.status === 0) {
                 switch (action.source.type) {
+                  case 'StaticText':
                   case 'Button':
                   case 'Cell':
-                    window.wdclient
-                      .send(`/wd/hub/session/${this.sessionId}/actions`, `post`, {
-                        actions: [{
-                          type: 'tap',
-                          x: action.source.rect.x,
-                          y: action.source.rect.y
-                        }]
-                      }, null)
+                    window.wdclient.send(`/wd/hub/session/${this.sessionId}/element/${data.value.ELEMENT}/click`, 'post', {}, null)
                       .then(() => {
                         this.refreshScreen();
                       });
@@ -82,58 +76,47 @@ NSCrawler.prototype.performAction = function() {
 NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   let sourceArray = [];
 
-  for (let key in source) {
-    // filter out nav-bar element, avoid miss back operation
-    if (source.type === 'NavigationBar') {
-      continue;
+  // filter out nav-bar element, avoid miss back operation
+  if (source.type === 'NavigationBar') {
+    return [];
+  }
+
+  if (source.hasOwnProperty('children')) {
+    for (let i = 0; i < source.children.length; i++) {
+      this.insertXPath(source, source.children[i]);
+      let result = this.recursiveFilter(source.children[i], matches, exclusive);
+      sourceArray = sourceArray.concat(result);
+    }
+  }
+
+  if (matches) {
+    // Explicit mode
+    for (let match in matches) {
+      if ((source.value && source.value === matches[match].searchValue) ||
+        (source.name && source.name === matches[match].searchValue)     ||
+        (source.label && source.label === matches[match].searchValue)) {
+        source.input = matches[match].actionValue;
+        return [source];
+      }
+    }
+  } else {
+    // If the source value/name/label matches the exclusive pattern, avoid recording
+    if ((exclusive) && ((source.value && exclusive.includes(source.value)) ||
+      (source.name && exclusive.includes(source.name))   ||
+      (source.label && exclusive.includes(source.label)))) {
+      return [];
     }
 
-    if (source.hasOwnProperty(key)) {
-      if (key === 'children') {
-        for (let i = 0; i < source[key].length; i++) {
-          this.insertXPath(source, source[key][i]);
-          let result = this.recursiveFilter(source[key][i], matches, exclusive);
-          sourceArray = sourceArray.concat(result);
-        }
-      } else if (source[key] !== null) {
-        if (matches) {
-          // Explicit mode
-          for (let match in matches) {
-            if ((source.value && source.value === matches[match].searchValue) ||
-              (source.name && source.name === matches[match].searchValue)     ||
-              (source.label && source.label === matches[match].searchValue)) {
-              source.input = matches[match].actionValue;
-              return [source];
-            }
-          }
-        } else {
-          // If the source value/name/label matches the exclusive pattern, avoid recording
-          if ((exclusive) && ((source.value && exclusive.includes(source.value)) ||
-            (source.name && exclusive.includes(source.name))   ||
-            (source.label && exclusive.includes(source.label)))) {
-            return [];
-          }
-
-          if (source.type) {
-            switch (source.type) {
-              case 'StaticText':
-              case 'Button':
-              case 'Cell':
-              case 'PageIndicator':
-                sourceArray.push(source);
-                return sourceArray;
-              case 'TextField':
-              case 'SecureTextField':
-                source.input = 'random+123';
-                sourceArray.push(source);
-                return sourceArray;
-              default:
-            }
-          }
-        }
+    if (source.type) {
+      if (this.config.clickTypes.indexOf(source.type) >= 0) {
+        sourceArray.push(source);
+      } else if (this.config.editTypes.indexOf(source.type) >= 0) {
+        source.input = 'random+123';
+        sourceArray.push(source);
       }
     }
   }
+
   return sourceArray;
 }
 

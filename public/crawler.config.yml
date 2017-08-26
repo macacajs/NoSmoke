@@ -1,14 +1,13 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'android'
-  isWaitActivity: true
-  activity: 'LoginActivity'
-  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
+  platformName: 'iOS'
+  deviceName: 'iPhone 6 Plus'
+  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 
 # 2. Crawling option
 crawlingConfig:
-  platform: 'android'
+  platform: 'iOS'
   targetElements:
     loginAccount:
       actionType  : 2
@@ -22,11 +21,30 @@ crawlingConfig:
       actionType  : 1
       searchValue : 'Login'
       actionValue : ''
-    configirm:
+    alertConfirm:
       actionType  : 1
       searchValue : 'yes'
       actionValue : ''
-  exclusivePattern: 'pushView_popView_cookie'
+  exclusivePattern: 'pushView/popView/cookie/userAgent/Mozilla'
+# iOS Configuration
+  clickTypes:
+    - 'StaticText'
+    - 'Button'
+    - 'Cell'
+  editTypes:
+    - 'TextField'
+    - 'SecureTextField'
+  horizontalScrollTypes:
+    - 'PageIndicator'
+  verticalScrollTypes:
+    - 'ScrollView'
+# Android Configuration
+#    clickTypes:
+#      - 'android.widget.ImageView'
+#      - 'android.widget.TextView'
+#      - 'android.widget.Button'
+#    editTypes:
+#      - 'EditText'
   navigationBackKeyword:
     - '返回'
     - '取消'

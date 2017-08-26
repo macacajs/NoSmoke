@@ -65,7 +65,16 @@ NSCrawler.prototype.explore = function(source) {
 
     this.repeatingCrawlingCount = 0;
 
-    // 2. Initialize an new node
+    node.depth = this.currentNode? this.currentNode.depth + 1 : 0;
+    // 2. Check if already reached the max depth, if so, fallback
+    if (node.depth >= this.config.testingDepth) {
+      window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
+        this.crawl();
+      });
+      return;
+    }
+
+    // 3. Initialize an new node
     node.parent = this.currentNode;
     this.currentNode = node;
 

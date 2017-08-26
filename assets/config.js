@@ -31,11 +31,15 @@ function NSCrawlerConfig() {
   this.autoCancelAlert = true;
   this.newCommandTimeout = 3;
   this.launchTimeout = 6;
-  this.maxActionPerPage = 100;
+  this.maxActionPerPage = 20;
   this.navigationBackKeyword =[];
   this.targetElements = {};
   this.exclusivePattern = '';
   this.platform = 'iOS';
+  this.clickTypes = [];
+  this.editTypes = [];
+  this.horizontalScrollTypes = [];
+  this.verticalScrollTypes = [];
 }
 
 NSCrawlerConfig.prototype.debugDesriptoin =  function() {
