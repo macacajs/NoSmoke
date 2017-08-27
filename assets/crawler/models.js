@@ -1,6 +1,7 @@
 'use strict';
 
 let utils = require('../utils');
+let root = require('window-or-global');
 
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
@@ -56,7 +57,7 @@ NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
 NSAppCrawlingTreeNode.prototype.checkDigest = function(platform, source) {
   if (this.digest == null) {
     if (platform == 'iOS') {
-      return window.wdclient.send(`/wd/hub/session/${window.wdclient.sessionId}/title`,`get`, null, null)
+      return root.wdclient.send(`/wd/hub/session/${root.wdclient.sessionId}/title`,`get`, null, null)
         .then(title  => {
           this.digest = title.value;
         });

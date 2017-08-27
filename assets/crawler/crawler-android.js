@@ -1,7 +1,7 @@
 'use strict';
 
-let $ = require('jQuery');
 let utils = require('../utils');
+let root = require('window-or-global');
 
 const {
   NSAppCrawlingTreeNodeAction,
@@ -12,7 +12,7 @@ let NSCrawler = require('./crawler').NSCrawler;
 
 // Perform Node Actions
 NSCrawler.prototype.performAction = function(actions) {
-  window.wdclient
+  root.wdclient
     .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
     .then(() => {
       for (let i = 0; i < actions.length; i++) {
@@ -21,7 +21,7 @@ NSCrawler.prototype.performAction = function(actions) {
           action.isTriggered = true;
           console.log(JSON.stringify(action.source));
 
-          window.wdclient
+          root.wdclient
             .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
               using: 'xpath',
               value: action.location
@@ -31,8 +31,8 @@ NSCrawler.prototype.performAction = function(actions) {
                 switch (action.source.type) {
                   case 'android.widget.HorizontalScrollView':
                   case 'android.widget.ViewFlipper':
-                    window.wdclient
-                      .send(`/wd/hub/session/${this.sessionId}/dragfromtoforduration`,`post`, {
+                    root.wdclient
+                      .send(`/wd/hub/session/` +this.sessionId + `/dragfromtoforduration`,`post`, {
                         fromX: 10,
                         fromY: 200,
                         toX: 300,
@@ -44,8 +44,8 @@ NSCrawler.prototype.performAction = function(actions) {
                       });
                     break;
                   case 'android.widget.EditText':
-                    window.wdclient
-                      .send(`/wd/hub/session/${this.sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
+                    root.wdclient
+                      .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
                         'value': [action.input]
                       }, null)
                       .then(() => {
@@ -55,8 +55,8 @@ NSCrawler.prototype.performAction = function(actions) {
                   default:
                     let NUMERIC_REGEXP = /[-]{0,1}[\d.]*[\d]+/g;
                     let raw = action.source.bounds.match(NUMERIC_REGEXP);
-                    window.wdclient
-                      .send(`/wd/hub/session/${this.sessionId}/actions`, `post`, {
+                    root.wdclient
+                      .send(`/wd/hub/session/` + this.sessionId + `/actions`, `post`, {
                         actions: [{
                           type: 'tap',
                           x: (parseFloat(raw[0]) + parseFloat(raw[2]))/2,

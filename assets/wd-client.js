@@ -1,7 +1,8 @@
 'use strict';
 
-let $ = require('jQuery');
 let YAML = require('yamljs');
+let root = require('window-or-global');
+let utils = require('./utils');
 
 function WDClient(options) {
   this.server = options.server;
@@ -13,7 +14,17 @@ let sessionId = null;
 WDClient.prototype.init = function() {
   let that = this;
   console.log(this.server);
-  let desiredCapabilities = YAML.load('crawler.config.yml').desiredCapabilities
+
+  if (!utils.isWebRuntime()) {
+    root.fetch = require('node-fetch');
+  }
+
+  let desiredCapabilities = null;
+  if (!utils.isWebRuntime()) {
+    desiredCapabilities =  YAML.load(__dirname+'/../public/crawler.config.yml').desiredCapabilities;
+  } else {
+    desiredCapabilities =  YAML.load('crawler.config.yml').desiredCapabilities;
+  }
 
   this.send('/wd/hub/session', 'post', {
     desiredCapabilities: desiredCapabilities
@@ -21,12 +32,12 @@ WDClient.prototype.init = function() {
     sessionId = data.sessionId;
     that.sessionId = sessionId;
     console.log(data.value);
-    that.send(`/wd/hub/session/${sessionId}/screenshot`, 'get', null, function(data) {
+    that.send(`/wd/hub/session/` + sessionId +`/screenshot`, 'get', null, function(data) {
       let base64 = `data:image/jpg;base64,${data.value}`;
       $('#screen').attr('src', base64);
     });
 
-    window.eventEmmiter.emitEvent('onSessionCreated',[data]);
+    root.eventEmmiter.emitEvent('onSessionCreated',[data]);
   });
 };
 
@@ -35,7 +46,7 @@ WDClient.prototype.send = function(url, method, body, callback) {
     return response.json();
   }
   if (method.toLowerCase() === 'post') {
-    return fetch(`${this.server}${url}`, {
+    return fetch(this.server+url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -50,7 +61,7 @@ WDClient.prototype.send = function(url, method, body, callback) {
         return data;
       });
   } else {
-    return fetch(`${this.server}${url}`, {
+    return fetch(this.server+url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

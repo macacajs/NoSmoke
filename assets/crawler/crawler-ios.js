@@ -1,7 +1,7 @@
 'use strict';
 
-let $ = require('jQuery');
 let utils = require('../utils');
+let root = require('window-or-global');
 
 const {
   NSAppCrawlingTreeNodeAction,
@@ -12,8 +12,8 @@ let NSCrawler = require('./crawler').NSCrawler;
 
 // Perform Node Actions
 NSCrawler.prototype.performAction = function(actions) {
-  window.wdclient
-    .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
+  root.wdclient
+    .send(`/wd/hub/session/`+this.sessionId+`/source`, `get`, null, null)
     .then(() => {
       for (let i = 0; i < actions.length; i++) {
         let action = actions[i];
@@ -21,8 +21,8 @@ NSCrawler.prototype.performAction = function(actions) {
           action.isTriggered = true;
           console.log(JSON.stringify(action.source));
 
-          window.wdclient
-            .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
+          root.wdclient
+            .send(`/wd/hub/session/`+ this.sessionId+ `/element`, `post`, {
               using: 'xpath',
               value: action.location
             }, null)
@@ -32,14 +32,14 @@ NSCrawler.prototype.performAction = function(actions) {
                   case 'StaticText':
                   case 'Button':
                   case 'Cell':
-                    window.wdclient.send(`/wd/hub/session/${this.sessionId}/element/${data.value.ELEMENT}/click`, 'post', {}, null)
+                    root.wdclient.send(`/wd/hub/session/`+ this.sessionId + `/element/` + data.value.ELEMENT + `/click`, 'post', {}, null)
                       .then(() => {
                         this.refreshScreen();
                       });
                     break;
                   case 'PageIndicator':
-                    window.wdclient
-                      .send(`/wd/hub/session/${this.sessionId}/dragfromtoforduration`,`post`, {
+                    root.wdclient
+                      .send(`/wd/hub/session/` + this.sessionId + `/dragfromtoforduration`,`post`, {
                         fromX: 10,
                         fromY: 200,
                         toX: 300,
@@ -52,8 +52,8 @@ NSCrawler.prototype.performAction = function(actions) {
                     break;
                   case 'TextField':
                   case 'SecureTextField':
-                    window.wdclient
-                      .send(`/wd/hub/session/${this.sessionId}/element/${data.value.ELEMENT}/value`,`post`, {
+                    root.wdclient
+                      .send(`/wd/hub/session/` + this.sessionId + `/element/` + data.value.ELEMENT + `/value`,`post`, {
                         'value': [action.input]
                       }, null)
                       .then(() => {

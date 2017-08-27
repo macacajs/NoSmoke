@@ -1,6 +1,7 @@
 'use strict';
 
-let $ = require('jQuery');
+let root = require('window-or-global');
+let utils = require('../utils');
 
 const {
   NSAppCrawlingTreeNodeAction,
@@ -17,7 +18,6 @@ function NSCrawler(config, sessionId) {
 }
 
 NSCrawler.prototype.initialize = function() {
-
   setTimeout(() => {
     this.crawlingExpires = true;
   }, this.config.testingPeriod * 1000);
@@ -34,9 +34,9 @@ NSCrawler.prototype.crawl = function () {
     return;
   }
 
-  window.wdclient.send(`/wd/hub/session/${this.sessionId}/dismiss_alert`, 'post', {}, null).then(() => {
-    window.wdclient
-      .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
+  root.wdclient.send(`/wd/hub/session/` +this.sessionId + `/dismiss_alert`, 'post', {}, null).then(() => {
+    root.wdclient
+      .send(`/wd/hub/session/` + this.sessionId + `/source`, `get`, null, null)
       .then((data)  => {
         this.explore(data);
       });
@@ -53,15 +53,15 @@ NSCrawler.prototype.explore = function(source) {
         if (this.currentNode.isFinishedBrowseing()) {
           if (this.currentNode.parent.type == 'tab') {
             this.currentNode = this.currentNode.parent;
-            this.performAction();
+            this.performAction(this.currentNode.actions);
           } else {
             this.repeatingCrawlingCount++;
-            window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
+            root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
               this.crawl();
             });
           }
         } else {
-          this.performAction();
+          this.performAction(this.currentNode.actions);
           setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
         }
         return;
@@ -73,7 +73,7 @@ NSCrawler.prototype.explore = function(source) {
     node.depth = this.currentNode? this.currentNode.depth + 1 : 0;
     // 2. Check if already reached the max depth, if so, fallback
     if (node.depth >= this.config.testingDepth) {
-      window.wdclient.send(`/wd/hub/session/${this.sessionId}/back`, 'post', {}, null).then(() => {
+      root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
         this.crawl();
       });
       return;
@@ -97,16 +97,32 @@ NSCrawler.prototype.explore = function(source) {
 
     this.currentNode.sortActionPriority();
     this.crawlingBuffer.push(node);
-    this.performAction();
+    this.performAction(this.currentNode.actions);
     setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
   });
-};
+}
 
 NSCrawler.prototype.refreshScreen = function () {
-  window.wdclient.send(`/wd/hub/session/${this.sessionId}/screenshot`, 'get', null, function(data) {
-    let base64 = `data:image/jpg;base64,${data.value}`;
-    $('#screen').attr('src', base64);
-  });
+
+  console.log('check if is node runtime: ' + utils.isNodeRuntime());
+  console.log('check if is web runtime: ' + utils.isWebRuntime());
+
+  if (utils.isWebRuntime()) {
+    root.wdclient.send(`/wd/hub/session/`+ this.sessionId +`/screenshot`, 'get', null, function(data) {
+      let base64 = `data:image/jpg;base64,`+data.value;
+      $('#screen').attr('src', base64);
+    });
+  } else {
+    // const filepath = path.join(__dirname, '..', 'screenshots', `${_.uuid()}.png`);
+    // const reportspath = path.join(__dirname, '..', 'reports');
+    // _.mkdir(path.dirname(filepath));
+    //
+    // return this
+    //   .saveScreenshot(filepath)
+    //   .then(() => {
+    //     appendToContext(context, `${path.relative(reportspath, filepath)}`);
+    //   });
+  }
 };
 
 NSCrawler.prototype.insertTabNode = function (rawElement) {

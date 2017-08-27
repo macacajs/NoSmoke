@@ -1,6 +1,7 @@
 'use strict';
 
 let YAML = require('yamljs');
+let utils = require('./utils');
 
 /** Crawling Action Target  */
 var NSTargetActionType = {
@@ -54,7 +55,15 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function() {
 };
 
 NSCrawlerConfig.prototype.loadDefault = function() {
-  let crawlingConfig = YAML.load('crawler.config.yml').crawlingConfig;
+  console.log("check is web runtime" + utils.isWebRuntime());
+
+  let crawlingConfig = null
+  if (!utils.isWebRuntime()) {
+    crawlingConfig =  YAML.load(__dirname+'/../public/crawler.config.yml').crawlingConfig;
+  } else {
+    crawlingConfig =  YAML.load('crawler.config.yml').crawlingConfig;
+  }
+
   for (let i in crawlingConfig) {
     if (crawlingConfig.hasOwnProperty(i) && this.hasOwnProperty(i)) {
       this[i] = crawlingConfig[i];
