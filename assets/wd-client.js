@@ -2,6 +2,7 @@
 
 let YAML = require('yamljs');
 let root = require('window-or-global');
+
 let utils = require('./utils');
 
 function WDClient(options) {

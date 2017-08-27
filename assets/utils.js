@@ -14,6 +14,4 @@ exports.isWebRuntime = () => {
   return isBrowser();
 };
 
-exports.isArray = (what) => {
-  return Object.prototype.toString.call(what) === '[object Array]';
-}
+exports.isArray = Array.isArray; 
