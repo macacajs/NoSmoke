@@ -14,7 +14,10 @@ if (crawlerConfig.platform == 'iOS') {
   NSCrawler = require('./crawler/crawler-android').NSCrawler;
 }
 
-root.eventEmmiter = new EventEmitter();
+if (!root.eventEmmiter) {
+  root.eventEmmiter = new EventEmitter();
+}
+
 root.wdclient = new WDClient({
   server: 'http://localhost:3456'
 });

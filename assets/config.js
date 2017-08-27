@@ -55,9 +55,7 @@ NSCrawlerConfig.prototype.debugDesriptoin =  function() {
 };
 
 NSCrawlerConfig.prototype.loadDefault = function() {
-  console.log("check is web runtime" + utils.isWebRuntime());
-
-  let crawlingConfig = null
+  let crawlingConfig = null;
   if (!utils.isWebRuntime()) {
     crawlingConfig =  YAML.load(__dirname+'/../public/crawler.config.yml').crawlingConfig;
   } else {

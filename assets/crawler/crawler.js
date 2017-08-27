@@ -100,29 +100,19 @@ NSCrawler.prototype.explore = function(source) {
     this.performAction(this.currentNode.actions);
     setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
   });
-}
+};
 
 NSCrawler.prototype.refreshScreen = function () {
-
-  console.log('check if is node runtime: ' + utils.isNodeRuntime());
-  console.log('check if is web runtime: ' + utils.isWebRuntime());
-
-  if (utils.isWebRuntime()) {
-    root.wdclient.send(`/wd/hub/session/`+ this.sessionId +`/screenshot`, 'get', null, function(data) {
-      let base64 = `data:image/jpg;base64,`+data.value;
-      $('#screen').attr('src', base64);
-    });
-  } else {
-    // const filepath = path.join(__dirname, '..', 'screenshots', `${_.uuid()}.png`);
-    // const reportspath = path.join(__dirname, '..', 'reports');
-    // _.mkdir(path.dirname(filepath));
-    //
-    // return this
-    //   .saveScreenshot(filepath)
-    //   .then(() => {
-    //     appendToContext(context, `${path.relative(reportspath, filepath)}`);
-    //   });
-  }
+  let that = this;
+  root.wdclient.send(`/wd/hub/session/`+ this.sessionId +`/screenshot`, 'get', null, function(data) {
+    if (utils.isWebRuntime()) {
+      let base64 = `data:image/jpg;base64,` + data.value;
+      document.getElementById('screen').attr('src', base64);
+    } else {
+      data.currentNode = that.currentNode;
+      root.eventEmmiter.emitEvent('onScreenRefresh',[data]);
+    }
+  });
 };
 
 NSCrawler.prototype.insertTabNode = function (rawElement) {
@@ -135,7 +125,7 @@ NSCrawler.prototype.insertTabNode = function (rawElement) {
     node.digest = JSON.stringify(rawElement);
     this.currentNode.parent = node;
   }
-}
+};
 
 NSCrawler.prototype.produceNodeActions = function(rawElements) {
   let actions = [];

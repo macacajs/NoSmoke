@@ -12,6 +12,8 @@ let NSCrawler = require('./crawler').NSCrawler;
 
 // Perform Node Actions
 NSCrawler.prototype.performAction = function(actions) {
+  this.refreshScreen();
+
   root.wdclient
     .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
     .then(() => {
@@ -39,18 +41,14 @@ NSCrawler.prototype.performAction = function(actions) {
                         toY: 200,
                         duration: 2.00
                       }, null)
-                      .then(() => {
-                        this.refreshScreen();
-                      });
+                      .then(() => {});
                     break;
                   case 'android.widget.EditText':
                     root.wdclient
                       .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
                         'value': [action.input]
                       }, null)
-                      .then(() => {
-                        this.refreshScreen();
-                      });
+                      .then(() => {});
                     break;
                   default:
                     let NUMERIC_REGEXP = /[-]{0,1}[\d.]*[\d]+/g;
@@ -63,9 +61,7 @@ NSCrawler.prototype.performAction = function(actions) {
                           y: (parseFloat(raw[1]) + parseFloat(raw[3]))/2
                         }]
                       }, null)
-                      .then(() => {
-                        this.refreshScreen();
-                      });
+                      .then(() => {});
                     break;
                 }
               }
