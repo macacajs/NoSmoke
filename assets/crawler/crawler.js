@@ -1,7 +1,8 @@
 'use strict';
 
-let root = require('window-or-global');
 let utils = require('../utils');
+
+let root = require('window-or-global');
 
 const {
   NSAppCrawlingTreeNodeAction,

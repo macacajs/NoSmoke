@@ -18,11 +18,12 @@
     "co": "^4.6.0",
     "co-request": "^1.0.0",
     "commander": "^2.9.0",
-    "detect-port": "^1.0.0",
+    "detect-port": "^1.2.1",
     "koa": "^1.2.1",
     "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
+    "macaca-utils": "^1.0.0",
     "node-fetch": "^1.7.2",
     "npm-update": "^1.0.2",
     "nunjucks": "^2.4.2",
@@ -54,12 +55,14 @@
   "scripts": {
     "dev": "nodemon ./bin/nosmoke -s",
     "test": "make test",
-    "jshint": "make jshint",
+    "lint": "eslint .",
     "build": "webpack -p",
     "watch": "webpack --watch",
     "prepublish": "npm run build"
   },
-  "pre-commit": [],
+  "pre-commit": [
+    "lint"
+  ],
   "homepage": "https://github.com/macacajs/nosmoke",
   "license": "MIT"
 }
