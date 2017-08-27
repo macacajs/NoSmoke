@@ -1,13 +1,7 @@
 'use strict';
 
 let root = require('window-or-global');
-
 let utils = require('../utils');
-
-const {
-  NSAppCrawlingTreeNodeAction,
-  NSAppCrawlingTreeNode
-} = require('./models');
 
 let NSCrawler = require('./crawler').NSCrawler;
 

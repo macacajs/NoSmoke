@@ -2,7 +2,6 @@
 
 let YAML = require('yamljs');
 let root = require('window-or-global');
-
 let utils = require('./utils');
 
 function WDClient(options) {
@@ -34,8 +33,8 @@ WDClient.prototype.init = function() {
     that.sessionId = sessionId;
     console.log(data.value);
     that.send(`/wd/hub/session/` + sessionId +`/screenshot`, 'get', null, function(data) {
-      let base64 = `data:image/jpg;base64,${data.value}`;
-      $('#screen').attr('src', base64);
+      let base64 = `data:image/jpg;base64,`+data.value;
+      document.getElementById('screen').setAttribute('src', base64);
     });
 
     root.eventEmmiter.emitEvent('onSessionCreated',[data]);

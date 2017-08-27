@@ -108,7 +108,7 @@ NSCrawler.prototype.refreshScreen = function () {
   root.wdclient.send(`/wd/hub/session/`+ this.sessionId +`/screenshot`, 'get', null, function(data) {
     if (utils.isWebRuntime()) {
       let base64 = `data:image/jpg;base64,` + data.value;
-      document.getElementById('screen').attr('src', base64);
+      document.getElementById('screen').setAttribute('src', base64);
     } else {
       data.currentNode = that.currentNode;
       root.eventEmmiter.emitEvent('onScreenRefresh',[data]);
