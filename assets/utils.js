@@ -1,9 +1,5 @@
 'use strict';
 
-exports.a = () => {
-  alert(1);
-};
-
 exports.isNodeRuntime = () => {
   let isNode=new Function("try {return this===global;}catch(e){return false;}");
   return isNode();
