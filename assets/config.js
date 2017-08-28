@@ -27,12 +27,12 @@ function NSTargetElement() {
 
 function NSCrawlerConfig() {
   this.testingPeriod = 0.5 * 60 * 60;
-  this.testingDepth = 16;
+  this.testingDepth = 8;
   this.takeScreenShot = true;
   this.autoCancelAlert = true;
   this.newCommandTimeout = 3;
   this.launchTimeout = 6;
-  this.maxActionPerPage = 20;
+  this.maxActionPerPage = 10;
   this.navigationBackKeyword =[];
   this.targetElements = {};
   this.exclusivePattern = '';

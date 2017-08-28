@@ -2,21 +2,6 @@
 
 let root = require('window-or-global');
 
-let utils = require('../utils');
-
-String.prototype.hashCode = function() {
-  var hash = 0, i, chr;
-  if (this.length === 0) {
-    return hash;
-  }
-  for (i = 0; i < this.length; i++) {
-    chr   = this.charCodeAt(i);
-    hash  = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
-};
-
 /** Crawling Node: each of the tree node represents a unique user page  */
 function NSAppCrawlingTreeNode() {
   this.path = '';       // Unique path which leads to current page
@@ -46,15 +31,7 @@ NSAppCrawlingTreeNode.prototype.isFinishedBrowseing = function() {
 };
 
 NSAppCrawlingTreeNode.prototype.sortActionPriority = function() {
-  this.actions.sort((a , b) => {
-    if (a.location.includes('TabBar') && !b.location.includes('TabBar')) {
-      return 1;
-    } else if (!a.location.includes('TabBar') && b.location.includes('TabBar')) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
+
 };
 
 NSAppCrawlingTreeNode.prototype.checkDigest = function(platform, source) {
@@ -67,6 +44,7 @@ NSAppCrawlingTreeNode.prototype.checkDigest = function(platform, source) {
     } else {
       return new Promise((resolve) => {
         this.digest = (source.value.match(/node/g) || []).length + '_' +
+          (source.value.match(/android/g) || []).length + '_' +
           (source.value.match(/TextView/g) || []).length + '_' +
           (source.value.match(/EditText/g) || []).length + '_' +
           (source.value.match(/Layout/g) || []).length + '_' +

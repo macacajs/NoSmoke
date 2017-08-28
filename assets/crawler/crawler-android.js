@@ -46,17 +46,7 @@ NSCrawler.prototype.performAction = function(actions) {
                       .then(() => {});
                     break;
                   default:
-                    let NUMERIC_REGEXP = /[-]{0,1}[\d.]*[\d]+/g;
-                    let raw = action.source.bounds.match(NUMERIC_REGEXP);
-                    root.wdclient
-                      .send(`/wd/hub/session/` + this.sessionId + `/actions`, `post`, {
-                        actions: [{
-                          type: 'tap',
-                          x: (parseFloat(raw[0]) + parseFloat(raw[2]))/2,
-                          y: (parseFloat(raw[1]) + parseFloat(raw[3]))/2
-                        }]
-                      }, null)
-                      .then(() => {});
+                    root.wdclient.send(`/wd/hub/session/`+ this.sessionId + `/element/` + data.value.ELEMENT + `/click`, 'post', {}, null);
                     break;
                 }
               }
@@ -67,67 +57,18 @@ NSCrawler.prototype.performAction = function(actions) {
     });
 };
 
-// If match is null or empty, put all elements which belongs to button, label,
-NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
-  let sourceArray = [];
-
-  // Dive deeper in Nodes
-  if (source.hasOwnProperty('node')) {
-    if (utils.isArray(source.node)) {
-      for (let i = 0; i < source.node.length; i++) {
-        this.insertXPath(source, source.node[i]);
-        let result = this.recursiveFilter(source.children[i], matches, exclusive);
-        if (this.config.tabBarTypes.indexOf(source.type) >= 0) {
-          // Check if sourceType is tab, put it in a high priority list
-          this.insertTabNode(result);
-          return [];
-        } else {
-          // Check for local source array for normal cases
-          sourceArray = sourceArray.concat(result);
-        }
-      }
-    } else {
-      this.insertXPath(source, source.node);
-      let result = this.recursiveFilter(source.node, matches, exclusive);
-      sourceArray = sourceArray.concat(result);
-    }
+NSCrawler.prototype.checkElementValidity = function (source) {
+  if (!source.class || source.class.indexOf('Layout') >= 0 || source.class.indexOf('.View') >= 0) {
+    return false;
   }
-
-  // Check matches
-  if (matches) {
-    // Explicit mode
-    for (let match in matches) {
-      if (source.text && source.text === matches[match].searchValue) {
-        source.input = matches[match].actionValue;
-        return [source];
-      }
-    }
-  } else {
-    // If the source value/name/label matches the exclusive pattern, avoid recording
-    if ((exclusive) && (source.text && exclusive.includes(source.text))) {
-      return [];
-    }
-
-    if (!source.class || source.class.indexOf('Layout') >= 0 || source.class.indexOf('.View') >= 0) {
-      return sourceArray;
-    }
-
-    if (source.class) {
-      if (this.config.clickTypes.indexOf(source.class) >= 0) {
-        sourceArray.push(source);
-      } else if (this.config.editTypes.indexOf(source.class) >= 0) {
-        source.input = 'random+123';
-        sourceArray.push(source);
-      }
-    }
-  }
-
-  return sourceArray;
+  return true;
 };
 
-NSCrawler.prototype.checkPathIndex = function (parent, child) {
-  let currentTypeCount = child.class + '_count';
+NSCrawler.prototype.insertXPath = function (parent, child) {
+  let prefix = '';
 
+  /** scan and check index path for once and only once*/
+  let currentTypeCount = child.class + '_count';
   if (!parent[currentTypeCount]) {
     if (utils.isArray(parent.node)) {
       for (let i = 0; i < parent.node.length; i++) {
@@ -140,15 +81,10 @@ NSCrawler.prototype.checkPathIndex = function (parent, child) {
         parent.node[i].pathInParent = parent[currentTypeCount];
       }
     } else {
-        parent.node.pathInParent = 1;
+      parent.node.pathInParent = 1;
     }
   }
-};
 
-// Parent must be an array of child elements
-NSCrawler.prototype.insertXPath = function (parent, child) {
-  let prefix = '';
-  this.checkPathIndex(parent, child);
   let currentIndex = child.pathInParent;
   child.xpath = (parent.xpath ? parent.xpath + '/' : '//') + prefix + child.class + '[' + currentIndex + ']';
 };
