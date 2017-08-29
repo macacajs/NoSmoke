@@ -1,3 +1,5 @@
+'use strict';
+
 const path = require('path');
 
 module.exports = {
@@ -19,12 +21,10 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'jsx-loader?harmony'
-      },
-      {
+      }, {
         test: /\.js$/,
         loader: 'babel-loader'
-      },
-      {
+      }, {
         test: /\.json$/,
         loader: 'json-loader'
       }
