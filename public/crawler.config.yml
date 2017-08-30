@@ -15,7 +15,7 @@ crawlingConfig:
     loginAccount:
       actionType  : 2
       searchValue : 'please input username'
-      actionValue : '中文+Test+12345678'
+      actionValue : 'Test+12345678'
     loginPassword:
       actionType  : 2
       searchValue : 'please input password'
