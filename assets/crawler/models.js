@@ -42,15 +42,16 @@ NSAppCrawlingTreeNode.prototype.checkDigest = function(platform, source) {
           this.digest = title.value;
         });
     } else {
-      return new Promise((resolve) => {
-        this.digest = (source.value.match(/node/g) || []).length + '_' +
-          (source.value.match(/android/g) || []).length + '_' +
-          (source.value.match(/TextView/g) || []).length + '_' +
-          (source.value.match(/EditText/g) || []).length + '_' +
-          (source.value.match(/Layout/g) || []).length + '_' +
-          (source.value.match(/Button/g) || []).length;
-        resolve(this.digest);
-      });
+      return root.wdclient.send(`/wd/hub/session/${root.wdclient.sessionId}/title`,`get`, null, null)
+        .then(title  => {
+          this.digest = (source.value.match(/node/g) || []).length + '_' +
+            (source.value.match(/android/g) || []).length + '_' +
+            (source.value.match(/TextView/g) || []).length + '_' +
+            (source.value.match(/EditText/g) || []).length + '_' +
+            (source.value.match(/Layout/g) || []).length + '_' +
+            (source.value.match(/Button/g) || []).length + '_' +
+            title.value;
+        });
     }
   } else {
     return new Promise((resolve) => {
