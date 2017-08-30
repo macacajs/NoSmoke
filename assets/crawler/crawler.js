@@ -4,6 +4,8 @@ let utils = require('../utils');
 
 let root = require('window-or-global');
 
+const maxRepeatCrawlingCount = 8;
+
 const {
   NSAppCrawlingTreeNodeAction,
   NSAppCrawlingTreeNode
@@ -29,7 +31,7 @@ NSCrawler.prototype.crawl = function () {
   // Terminate under the following cases:
   // 1. the previous node has been finished for continuously count of 8, assume crawling finish
   // 2. the crawling process takes too long and hence expire
-  if (this.repeatingCrawlingCount >= 8 || this.crawlingExpires) {
+  if (this.repeatingCrawlingCount >= maxRepeatCrawlingCount || this.crawlingExpires) {
     console.log('-----> Crawling Finished <-----');
     return;
   }
@@ -63,9 +65,16 @@ NSCrawler.prototype.explore = function(source) {
           } else {
             /** 1.1.2 if finished browseing, and the current one is originates from a normal view, trigger back and then crawl again*/
             this.repeatingCrawlingCount++;
-            root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
+            if (this.currentNode.depth === 0) {
+              /** 1.1.2.1 if depth is 0 , then terminate crawling, avoid further navigate back */
+              this.repeatingCrawlingCount = maxRepeatCrawlingCount;
               this.crawl();
-            });
+            } else {
+              /** 1.1.2.1 if depth is not 0, then back and further explore */
+              root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
+                this.crawl();
+              });
+            }
           }
         } else {
           /** 1.1 if not finish crawling, crawling on current node*/
@@ -195,7 +204,7 @@ NSCrawler.prototype.eraseModelDifference = function (source) {
       source.children = source.node;
     }
   }
-}
+};
 
 NSCrawler.prototype.refreshScreen = function () {
   /** Based on environment, choose the way of refresh screen */
@@ -216,12 +225,16 @@ NSCrawler.prototype.insertTabNode = function (rawElement) {
   let node = new NSAppCrawlingTreeNode();
   node.actions = this.produceNodeActions(rawElement);
   node.type = 'tab';
-  node.digest = JSON.stringify(rawElement);
+  node.depth = this.currentNode.depth;
+  node.digest = '';
+  for (let i = 0; i < node.actions; i++) {
+    node.digest = node.digest + '_' +node.actions[i].location;
+  }
 
   /** check: if there is a similar node in the parent chain, avoid */
   let parentNode = this.currentNode.parent;
   while (parentNode) {
-    if (parentNode.digest == node.digest) {
+    if (parentNode.digest === node.digest) {
       console.log('similar tab elements in parent, abort');
       return;
     }
