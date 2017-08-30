@@ -72,6 +72,7 @@ NSCrawler.prototype.explore = function(source) {
             } else {
               /** 1.1.2.1 if depth is not 0, then back and further explore */
               root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
+                this.refreshScreen();
                 this.crawl();
               });
             }
@@ -92,6 +93,7 @@ NSCrawler.prototype.explore = function(source) {
     node.depth = this.currentNode? this.currentNode.depth + 1 : 0;
     if (node.depth >= this.config.testingDepth) {
       root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
+        this.refreshScreen();
         this.crawl();
       });
       return;
