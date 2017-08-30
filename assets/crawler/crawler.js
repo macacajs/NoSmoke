@@ -192,6 +192,56 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
   return sourceArray;
 };
 
+NSCrawler.prototype.performAction = function(actions) {
+  this.refreshScreen();
+
+  root.wdclient
+    .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
+    .then(() => {
+      for (let i = 0; i < actions.length; i++) {
+        let action = actions[i];
+        if (!action.isTriggered) {
+          action.isTriggered = true;
+
+          /** log and only log in the current progress */
+          console.log(JSON.stringify(action.source));
+
+          /** conduct action based on configurable types */
+          root.wdclient
+            .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
+              using: 'xpath',
+              value: action.location
+            }, null)
+            .then(data => {
+              if (data.status === 0) {
+                if (this.config.clickTypes.indexOf(action.source.type) >= 0) {
+                  /** 1. handle click actions */
+                  root.wdclient.send(`/wd/hub/session/`+ this.sessionId + `/element/` + data.value.ELEMENT + `/click`, 'post', {}, null);
+                } else if (this.config.horizontalScrollTypes.indexOf(action.source.type) >= 0) {
+                  /** 2. handle horizontal scroll actions */
+                  root.wdclient
+                    .send(`/wd/hub/session/` +this.sessionId + `/dragfromtoforduration`,`post`, {
+                      fromX: 10,
+                      fromY: 200,
+                      toX: 300,
+                      toY: 200,
+                      duration: 2.00
+                    }, null);
+                } else if (this.config.editTypes.indexOf(action.source.type)) {
+                  /** 3. handle edit actions */
+                  root.wdclient
+                    .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
+                      'value': [action.input]
+                    }, null);
+                }
+              }
+            });
+          return;
+        }
+      }
+    });
+};
+
 NSCrawler.prototype.checkElementValidity = function (source) {
   return true;
 };

@@ -5,8 +5,6 @@ desiredCapabilities:
   isWaitActivity: true
   activity: 'LoginActivity'
   app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
-#  deviceName: 'iPhone 6 Plus'
-#  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 
 # 2. Crawling option
 crawlingConfig:
@@ -23,11 +21,9 @@ crawlingConfig:
     loginButton:
       actionType  : 1
       searchValue : 'Login'
-      actionValue : ''
     alertConfirm:
       actionType  : 1
       searchValue : 'yes'
-      actionValue : ''
   exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:/setTitle/Macaca Test Swipe API/'
   # Android Configuration
   clickTypes:
@@ -41,6 +37,12 @@ crawlingConfig:
 ...
 
 #  # iOS Configuration
+#  # Desired Capabilities
+#  deviceName: 'iPhone 6 Plus'
+#  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
+#
+#  # crawling config
+#
 #  clickTypes:
 #    - 'StaticText'
 #    - 'Button'
