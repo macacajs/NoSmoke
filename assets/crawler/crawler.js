@@ -58,10 +58,16 @@ NSCrawler.prototype.explore = function(source) {
         if (this.currentNode.isFinishedBrowseing()) {
           /** 1.1 if finished browseing, divide into two condition below */
           if (this.currentNode.parent && this.currentNode.parent.type == 'tab') {
-            /** 1.1.1 if finished browseing, and the current one is under a control widget, trigger the control widget */
-            this.currentNode = this.currentNode.parent;
-            this.performAction(this.currentNode.actions);
-            setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+            if (this.currentNode.parent.isFinishedBrowseing()) {
+              /** 1.1.2 if the tab control also finishes, press back */
+              this.back();
+              return;
+            } else {
+              /** 1.1.2 if finished browseing, and the current one is under a control widget, trigger the control widget */
+              this.currentNode = this.currentNode.parent;
+              this.performAction(this.currentNode.actions);
+              setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+            }
           } else {
             /** 1.1.2 if finished browseing, and the current one is originates from a normal view, trigger back and then crawl again*/
             this.repeatingCrawlingCount++;
@@ -71,10 +77,7 @@ NSCrawler.prototype.explore = function(source) {
               this.crawl();
             } else {
               /** 1.1.2.1 if depth is not 0, then back and further explore */
-              root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
-                this.refreshScreen();
-                this.crawl();
-              });
+              this.back();
             }
           }
         } else {
@@ -92,10 +95,7 @@ NSCrawler.prototype.explore = function(source) {
     /** 2. check if already reached the max depth, if so, fallback */
     node.depth = this.currentNode? this.currentNode.depth + 1 : 0;
     if (node.depth >= this.config.testingDepth) {
-      root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
-        this.refreshScreen();
-        this.crawl();
-      });
+      this.back();
       return;
     }
 
@@ -120,6 +120,13 @@ NSCrawler.prototype.explore = function(source) {
     setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
   });
 };
+
+NSCrawler.prototype.back = function () {
+  root.wdclient.send(`/wd/hub/session/` + this.sessionId + `/back`, 'post', {}, null).then(() => {
+    this.refreshScreen();
+    this.crawl();
+  });
+}
 
 // If match is null or empty, put all elements which belongs to button, label,
 NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
@@ -227,7 +234,7 @@ NSCrawler.prototype.performAction = function(actions) {
                       toY: 200,
                       duration: 2.00
                     }, null);
-                } else if (this.config.editTypes.indexOf(action.source.type)) {
+                } else if (this.config.editTypes.indexOf(action.source.type) >= 0 ) {
                   /** 3. handle edit actions */
                   root.wdclient
                     .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
