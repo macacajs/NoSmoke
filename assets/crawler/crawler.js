@@ -33,12 +33,10 @@ NSCrawler.prototype.crawl = function () {
   // 2. the crawling process takes too long and hence expire
   if (this.repeatingCrawlingCount >= maxRepeatCrawlingCount || this.crawlingExpires) {
     console.log('-----> Crawling Finished <-----');
+    root.eventEmmiter.emitEvent('terminateCrawling');
     return;
   }
 
-  // root.wdclient.send(`/wd/hub/session/` +this.sessionId + `/dismiss_alert`, 'post', {}, null).then(() => {
-  //
-  // });
   root.wdclient
     .send(`/wd/hub/session/` + this.sessionId + `/source`, `get`, null, null)
     .then((data)  => {
