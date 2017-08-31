@@ -267,7 +267,7 @@ NSCrawler.prototype.refreshScreen = function () {
       document.getElementById('screen').setAttribute('src', base64);
     } else {
       data.currentNode = that.currentNode;
-      root.eventEmmiter.emitEvent('onScreenRefresh',[data]);
+      root.eventEmmiter.emitEvent('screenRefresh',[data]);
     }
   });
 };
