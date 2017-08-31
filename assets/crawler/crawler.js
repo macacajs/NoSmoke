@@ -234,7 +234,7 @@ NSCrawler.prototype.performAction = function(actions) {
                       toY: 200,
                       duration: 2.00
                     }, null);
-                } else if (this.config.editTypes.indexOf(action.source.type)) {
+                } else if (this.config.editTypes.indexOf(action.source.type) >= 0 ) {
                   /** 3. handle edit actions */
                   root.wdclient
                     .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {

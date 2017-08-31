@@ -1,19 +1,21 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'android'
-  isWaitActivity: true
-  activity: 'LoginActivity'
-  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
+  platformName: 'iOS'
+  deviceName: 'iPhone 6 Plus'
+  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
+#  isWaitActivity: true
+#  activity: 'LoginActivity'
+#  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
 # 2. Crawling option
 crawlingConfig:
-  platform: 'android'
+  platform: 'iOS'
   targetElements:
     loginAccount:
       actionType  : 2
       searchValue : 'please input username'
-      actionValue : 'Test+12345678'
+      actionValue : '中文+Test+12345678'
     loginPassword:
       actionType  : 2
       searchValue : 'please input password'
@@ -25,16 +27,34 @@ crawlingConfig:
       actionType  : 1
       searchValue : 'yes'
   exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:/setTitle/Macaca Test Swipe API/'
-  # Android Configuration
   clickTypes:
-    - 'android.widget.ImageView'
-    - 'android.widget.TextView'
-    - 'android.widget.Button'
+    - 'StaticText'
+    - 'Button'
   editTypes:
-    - 'android.widget.EditText'
+    - 'TextField'
+    - 'SecureTextField'
+  horizontalScrollTypes:
+    - 'PageIndicator'
+  verticalScrollTypes:
+    - 'ScrollView'
   tabBarTypes:
-    - 'android.widget.TabWidget'
+    - 'TabBar'
+  exclusiveTypes:
+    - 'NavigationBar'
+  navigationBackKeyword:
+    - '返回'
+    - '取消'
 ...
+
+#  # Android Configuration
+#  clickTypes:
+#    - 'android.widget.ImageView'
+#    - 'android.widget.TextView'
+#    - 'android.widget.Button'
+#  editTypes:
+#    - 'android.widget.EditText'
+#  tabBarTypes:
+#    - 'android.widget.TabWidget'
 
 #  # iOS Configuration
 #  # Desired Capabilities
