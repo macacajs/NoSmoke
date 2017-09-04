@@ -1,7 +1,6 @@
 'use strict';
 
 let utils = require('../utils');
-
 let root = require('window-or-global');
 
 const maxRepeatCrawlingCount = 8;
@@ -40,83 +39,91 @@ NSCrawler.prototype.crawl = function () {
   root.wdclient
     .send(`/wd/hub/session/` + this.sessionId + `/source`, `get`, null, null)
     .then((data)  => {
-      this.explore(data);
+      root.wdclient
+        .send(`/wd/hub/session/` + this.sessionId + `/contexts`, `get`, null, null)
+        .then((contexts) => {
+          this.explore(data, contexts);
+        });
     });
 };
 
-NSCrawler.prototype.explore = function(source) {
+NSCrawler.prototype.explore = function(source, contexts) {
   let node = new NSAppCrawlingTreeNode();
-  node.checkDigest(this.config.platform ,source).then(() => {
-
-    /** 1. check if there is an existing node */
-    for (let index in this.crawlingBuffer) {
-      if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest === node.digest) {
-        this.currentNode = this.crawlingBuffer[index];
-        /** 1.1 check if finished browseing */
-        if (this.currentNode.isFinishedBrowseing()) {
-          /** 1.1 if finished browseing, divide into two condition below */
-          if (this.currentNode.parent && this.currentNode.parent.type == 'tab') {
-            if (this.currentNode.parent.isFinishedBrowseing()) {
-              /** 1.1.2 if the tab control also finishes, press back */
-              this.back();
-              return;
+  /** Update context, then further explore */
+  this.updateContext(source, contexts).then(() => {
+      /** Now the context should have been updated */
+      node.checkDigest(this.config.platform ,source).then(() => {
+      /** 1. check if there is an existing node */
+      for (let index in this.crawlingBuffer) {
+        if(this.crawlingBuffer[index] && this.crawlingBuffer[index].digest === node.digest) {
+          this.currentNode = this.crawlingBuffer[index];
+          /** 1.1 check if finished browseing */
+          if (this.currentNode.isFinishedBrowseing()) {
+            /** 1.1 if finished browseing, divide into two condition below */
+            if (this.currentNode.parent && this.currentNode.parent.type === 'tab') {
+              if (this.currentNode.parent.isFinishedBrowseing()) {
+                /** 1.1.2 if the tab control also finishes, press back */
+                this.back();
+                return;
+              } else {
+                /** 1.1.2 if finished browseing, and the current one is under a control widget, trigger the control widget */
+                this.currentNode = this.currentNode.parent;
+                this.performAction(this.currentNode.actions);
+                setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+              }
             } else {
-              /** 1.1.2 if finished browseing, and the current one is under a control widget, trigger the control widget */
-              this.currentNode = this.currentNode.parent;
-              this.performAction(this.currentNode.actions);
-              setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+              /** 1.1.2 if finished browseing, and the current one is originates from a normal view, trigger back and then crawl again*/
+              this.repeatingCrawlingCount++;
+              if (this.currentNode.depth === 0) {
+                /** 1.1.2.1 if depth is 0 , then terminate crawling, avoid further navigate back */
+                this.repeatingCrawlingCount = maxRepeatCrawlingCount;
+                this.crawl();
+              } else {
+                /** 1.1.2.1 if depth is not 0, then back and further explore */
+                this.back();
+              }
             }
           } else {
-            /** 1.1.2 if finished browseing, and the current one is originates from a normal view, trigger back and then crawl again*/
-            this.repeatingCrawlingCount++;
-            if (this.currentNode.depth === 0) {
-              /** 1.1.2.1 if depth is 0 , then terminate crawling, avoid further navigate back */
-              this.repeatingCrawlingCount = maxRepeatCrawlingCount;
-              this.crawl();
-            } else {
-              /** 1.1.2.1 if depth is not 0, then back and further explore */
-              this.back();
-            }
+            /** 1.1 if not finish crawling, crawling on current node*/
+            this.performAction(this.currentNode.actions);
+            setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
           }
-        } else {
-          /** 1.1 if not finish crawling, crawling on current node*/
-          this.performAction(this.currentNode.actions);
-          setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+          /** 1.2 for existing node, avoid creating new node and quit */
+          return;
         }
-        /** 1.2 for existing node, avoid creating new node and quit */
+      }
+
+      this.repeatingCrawlingCount = 0;
+
+      /** 2. check if already reached the max depth, if so, fallback */
+      node.depth = this.currentNode? this.currentNode.depth + 1 : 0;
+      if (node.depth >= this.config.testingDepth) {
+        this.back();
         return;
       }
+
+      /** 3. initialize an new node */
+      node.parent = this.currentNode;
+      this.currentNode = node;
+
+      let matches = this.recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
+      if (matches.length) {
+        this.currentNode.actions = this.produceNodeActions(matches);
+      } else {
+        let elements = this.recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
+        this.currentNode.actions = this.produceNodeActions(elements);
+      }
+
+      if (this.currentNode.actions.length > this.config.maxActionPerPage) {
+        this.currentNode.actions = this.currentNode.actions.slice(0,this.config.maxActionPerPage+1);
+      }
+
+      this.crawlingBuffer.push(node);
+      this.performAction(this.currentNode.actions);
+      setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
+    });
     }
-
-    this.repeatingCrawlingCount = 0;
-
-    /** 2. check if already reached the max depth, if so, fallback */
-    node.depth = this.currentNode? this.currentNode.depth + 1 : 0;
-    if (node.depth >= this.config.testingDepth) {
-      this.back();
-      return;
-    }
-
-    /** 3. initialize an new node */
-    node.parent = this.currentNode;
-    this.currentNode = node;
-
-    let matches = this.recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
-    if (matches.length) {
-      this.currentNode.actions = this.produceNodeActions(matches);
-    } else {
-      let elements = this.recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
-      this.currentNode.actions = this.produceNodeActions(elements);
-    }
-
-    if (this.currentNode.actions.length > this.config.maxActionPerPage) {
-      this.currentNode.actions = this.currentNode.actions.slice(0,this.config.maxActionPerPage+1);
-    }
-
-    this.crawlingBuffer.push(node);
-    this.performAction(this.currentNode.actions);
-    setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
-  });
+  );
 };
 
 NSCrawler.prototype.back = function () {
@@ -124,13 +131,13 @@ NSCrawler.prototype.back = function () {
     this.refreshScreen();
     this.crawl();
   });
-}
+};
 
 // If match is null or empty, put all elements which belongs to button, label,
 NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
 
   /** 0. check crawling validity, erase difference between muli-platforms */
-    // filter out nav-bar element, avoid miss back operation
+  // filter out nav-bar element, avoid miss back operation
   let sourceArray = [];
   if (this.config.exclusiveTypes.indexOf(source.type) >= 0) {
     return [];
@@ -301,6 +308,10 @@ NSCrawler.prototype.insertTabNode = function (rawElement) {
   node.parent = this.currentNode.parent;
   this.currentNode.parent = node;
   this.crawlingBuffer.push(node);
+};
+
+NSCrawler.prototype.updateContext = function(source, contexts) {
+  return new Promise(resolve => setTimeout(resolve, 500));
 };
 
 NSCrawler.prototype.produceNodeActions = function(rawElements) {
