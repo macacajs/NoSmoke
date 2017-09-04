@@ -33,12 +33,10 @@ NSCrawler.prototype.crawl = function () {
   // 2. the crawling process takes too long and hence expire
   if (this.repeatingCrawlingCount >= maxRepeatCrawlingCount || this.crawlingExpires) {
     console.log('-----> Crawling Finished <-----');
+    root.eventEmmiter.emitEvent('terminateCrawling');
     return;
   }
 
-  // root.wdclient.send(`/wd/hub/session/` +this.sessionId + `/dismiss_alert`, 'post', {}, null).then(() => {
-  //
-  // });
   root.wdclient
     .send(`/wd/hub/session/` + this.sessionId + `/source`, `get`, null, null)
     .then((data)  => {
@@ -234,7 +232,7 @@ NSCrawler.prototype.performAction = function(actions) {
                       toY: 200,
                       duration: 2.00
                     }, null);
-                } else if (this.config.editTypes.indexOf(action.source.type)) {
+                } else if (this.config.editTypes.indexOf(action.source.type) >= 0 ) {
                   /** 3. handle edit actions */
                   root.wdclient
                     .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
@@ -274,7 +272,7 @@ NSCrawler.prototype.refreshScreen = function () {
       document.getElementById('screen').setAttribute('src', base64);
     } else {
       data.currentNode = that.currentNode;
-      root.eventEmmiter.emitEvent('onScreenRefresh',[data]);
+      root.eventEmmiter.emitEvent('screenRefresh',[data]);
     }
   });
 };
