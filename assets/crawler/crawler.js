@@ -33,7 +33,7 @@ NSCrawler.prototype.crawl = function () {
   // 2. the crawling process takes too long and hence expire
   if (this.repeatingCrawlingCount >= maxRepeatCrawlingCount || this.crawlingExpires) {
     console.log('-----> Crawling Finished <-----');
-    root.eventEmmiter.emitEvent('terminateCrawling');
+    root.eventEmmiter.emit('terminateCrawling');
     return;
   }
 
@@ -272,7 +272,7 @@ NSCrawler.prototype.refreshScreen = function () {
       document.getElementById('screen').setAttribute('src', base64);
     } else {
       data.currentNode = that.currentNode;
-      root.eventEmmiter.emitEvent('screenRefresh',[data]);
+      root.eventEmmiter.emit('screenRefresh',data);
     }
   });
 };

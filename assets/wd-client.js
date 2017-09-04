@@ -37,7 +37,7 @@ WDClient.prototype.init = function() {
       document.getElementById('screen').setAttribute('src', base64);
     });
 
-    root.eventEmmiter.emitEvent('onSessionCreated',[data]);
+    root.eventEmmiter.emit('onSessionCreated',data);
   });
 };
 

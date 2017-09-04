@@ -29,7 +29,6 @@
     "request": "^2.74.0",
     "socket.io": "^2.0.3",
     "window-or-global": "^1.0.1",
-    "wolfy87-eventemitter": "^5.2.2",
     "xlogger": "^1.0.4",
     "xml2map": "^1.0.2",
     "xutil": "^1.0.7",

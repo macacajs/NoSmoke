@@ -1,6 +1,6 @@
 'use strict';
 
-let EventEmitter = require('wolfy87-eventemitter');
+let EventEmitter = require('events');
 let WDClient = require('./wd-client');
 let root = require('window-or-global');
 let NSCrawlerConfig = require('./config');
@@ -23,6 +23,7 @@ root.wdclient = new WDClient({
 });
 
 root.eventEmmiter.addListener('onSessionCreated', (data)=>{
+  console.log('check current data ' + data);
   let crawler = new NSCrawler(crawlerConfig, data.sessionId).initialize();
   setTimeout(crawler.crawl.bind(crawler), crawlerConfig.launchTimeout * 1000);
 });
