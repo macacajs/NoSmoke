@@ -65,8 +65,7 @@ crawlingConfig:
 ### c. Customizable Hooks
 Different applications provides various design of UI layers. Hence it becomes extremely difficult to provide a generic crawling algorithm which can suites into all scenarios, especially when it is also required to support multiplatform crawlings. Hence a series of hooks are provided to provide further customizablility. 
 
-TODO: introduce crawling life cycle and hookable phases.
-
+![mechanism](https://user-images.githubusercontent.com/8198256/30107256-c2ea5898-9330-11e7-9559-10d0b0fec04c.png)
 
 ## Install & Run
 Since current project is still under development, you can run the following command to see current crawling implementation.
