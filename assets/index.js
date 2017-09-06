@@ -8,7 +8,7 @@ let crawlerConfig = new NSCrawlerConfig();
 crawlerConfig.loadDefault();
 
 let NSCrawler;
-if (crawlerConfig.platform == 'iOS') {
+if (crawlerConfig.platform === 'iOS') {
   NSCrawler = require('./crawler/crawler-ios').NSCrawler;
 } else {
   NSCrawler = require('./crawler/crawler-android').NSCrawler;

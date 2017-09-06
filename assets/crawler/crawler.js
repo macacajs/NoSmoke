@@ -1,7 +1,7 @@
 'use strict';
 
 let utils = require('../utils');
-
+let hooks = require('../../public/hooks').Hooks;
 let root = require('window-or-global');
 
 const maxRepeatCrawlingCount = 8;
@@ -54,14 +54,14 @@ NSCrawler.prototype.explore = function(source) {
         this.currentNode = this.crawlingBuffer[index];
         /** 1.1 check if finished browseing */
         if (this.currentNode.isFinishedBrowseing()) {
-          /** 1.1 if finished browseing, divide into two condition below */
+          /** 1.1.1 if finished browseing, divide into two condition below */
           if (this.currentNode.parent && this.currentNode.parent.type == 'tab') {
             if (this.currentNode.parent.isFinishedBrowseing()) {
-              /** 1.1.2 if the tab control also finishes, press back */
+              /** 1.1.1.1 if the tab control also finishes, press - */
               this.back();
               return;
             } else {
-              /** 1.1.2 if finished browseing, and the current one is under a control widget, trigger the control widget */
+              /** 1.1.1.2 if finished browseing, and the current one is under a control widget, trigger the control widget */
               this.currentNode = this.currentNode.parent;
               this.performAction(this.currentNode.actions);
               setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
@@ -74,16 +74,16 @@ NSCrawler.prototype.explore = function(source) {
               this.repeatingCrawlingCount = maxRepeatCrawlingCount;
               this.crawl();
             } else {
-              /** 1.1.2.1 if depth is not 0, then back and further explore */
+              /** 1.1.2.2 if depth is not 0, then back and further explore */
               this.back();
             }
           }
         } else {
-          /** 1.1 if not finish crawling, crawling on current node*/
+          /** 1.2 if not finish crawling, crawling on current node*/
           this.performAction(this.currentNode.actions);
           setTimeout(this.crawl.bind(this), this.config.newCommandTimeout * 1000);
         }
-        /** 1.2 for existing node, avoid creating new node and quit */
+        /** for existing node, avoid creating new node and quit */
         return;
       }
     }
@@ -200,51 +200,53 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
 NSCrawler.prototype.performAction = function(actions) {
   this.refreshScreen();
 
-  root.wdclient
-    .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
-    .then(() => {
-      for (let i = 0; i < actions.length; i++) {
-        let action = actions[i];
-        if (!action.isTriggered) {
-          action.isTriggered = true;
+  if (!hooks.performAction(actions, this)) {
+    root.wdclient
+      .send(`/wd/hub/session/${this.sessionId}/source`, `get`, null, null)
+      .then(() => {
+        for (let i = 0; i < actions.length; i++) {
+          let action = actions[i];
+          if (!action.isTriggered) {
+            action.isTriggered = true;
 
-          /** log and only log in the current progress */
-          console.log(JSON.stringify(action.source));
+            /** log and only log in the current progress */
+            console.log(JSON.stringify(action.source));
 
-          /** conduct action based on configurable types */
-          root.wdclient
-            .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
-              using: 'xpath',
-              value: action.location
-            }, null)
-            .then(data => {
-              if (data.status === 0) {
-                if (this.config.clickTypes.indexOf(action.source.type) >= 0) {
-                  /** 1. handle click actions */
-                  root.wdclient.send(`/wd/hub/session/`+ this.sessionId + `/element/` + data.value.ELEMENT + `/click`, 'post', {}, null);
-                } else if (this.config.horizontalScrollTypes.indexOf(action.source.type) >= 0) {
-                  /** 2. handle horizontal scroll actions */
-                  root.wdclient
-                    .send(`/wd/hub/session/` +this.sessionId + `/dragfromtoforduration`,`post`, {
-                      fromX: 10,
-                      fromY: 200,
-                      toX: 300,
-                      toY: 200,
-                      duration: 2.00
-                    }, null);
-                } else if (this.config.editTypes.indexOf(action.source.type) >= 0 ) {
-                  /** 3. handle edit actions */
-                  root.wdclient
-                    .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
-                      'value': [action.input]
-                    }, null);
+            /** conduct action based on configurable types */
+            root.wdclient
+              .send(`/wd/hub/session/${this.sessionId}/element`, `post`, {
+                using: 'xpath',
+                value: action.location
+              }, null)
+              .then(data => {
+                if (data.status === 0) {
+                  if (this.config.clickTypes.indexOf(action.source.type) >= 0) {
+                    /** 1. handle click actions */
+                    root.wdclient.send(`/wd/hub/session/`+ this.sessionId + `/element/` + data.value.ELEMENT + `/click`, 'post', {}, null);
+                  } else if (this.config.horizontalScrollTypes.indexOf(action.source.type) >= 0) {
+                    /** 2. handle horizontal scroll actions */
+                    root.wdclient
+                      .send(`/wd/hub/session/` +this.sessionId + `/dragfromtoforduration`,`post`, {
+                        fromX: 10,
+                        fromY: 200,
+                        toX: 300,
+                        toY: 200,
+                        duration: 2.00
+                      }, null);
+                  } else if (this.config.editTypes.indexOf(action.source.type) >= 0 ) {
+                    /** 3. handle edit actions */
+                    root.wdclient
+                      .send(`/wd/hub/session/` +this.sessionId + `/element/` + data.value.ELEMENT +`/value`,`post`, {
+                        'value': [action.input]
+                      }, null);
+                  }
                 }
-              }
-            });
-          return;
+              });
+            return;
+          }
         }
-      }
-    });
+      });
+  }
 };
 
 NSCrawler.prototype.checkElementValidity = function (source) {
@@ -278,29 +280,31 @@ NSCrawler.prototype.refreshScreen = function () {
 };
 
 NSCrawler.prototype.insertTabNode = function (rawElement) {
-  /** when find a control widget in source structure, call this method to update the node hierachy */
-  let node = new NSAppCrawlingTreeNode();
-  node.actions = this.produceNodeActions(rawElement);
-  node.type = 'tab';
-  node.depth = this.currentNode.depth;
-  node.digest = '';
-  for (let i = 0; i < node.actions; i++) {
-    node.digest = node.digest + '_' +node.actions[i].location;
-  }
-
-  /** check: if there is a similar node in the parent chain, avoid */
-  let parentNode = this.currentNode.parent;
-  while (parentNode) {
-    if (parentNode.digest === node.digest) {
-      console.log('similar tab elements in parent, abort');
-      return;
+  if (!hooks.insertTabNode(rawElement, this)) {
+    /** when find a control widget in source structure, call this method to update the node hierachy */
+    let node = new NSAppCrawlingTreeNode();
+    node.actions = this.produceNodeActions(rawElement);
+    node.type = 'tab';
+    node.depth = this.currentNode.depth;
+    node.digest = '';
+    for (let i = 0; i < node.actions; i++) {
+      node.digest = node.digest + '_' +node.actions[i].location;
     }
-    parentNode = parentNode.parent;
-  }
 
-  node.parent = this.currentNode.parent;
-  this.currentNode.parent = node;
-  this.crawlingBuffer.push(node);
+    /** check: if there is a similar node in the parent chain, avoid */
+    let parentNode = this.currentNode.parent;
+    while (parentNode) {
+      if (parentNode.digest === node.digest) {
+        console.log('similar tab elements in parent, abort');
+        return;
+      }
+      parentNode = parentNode.parent;
+    }
+
+    node.parent = this.currentNode.parent;
+    this.currentNode.parent = node;
+    this.crawlingBuffer.push(node);
+  }
 };
 
 NSCrawler.prototype.produceNodeActions = function(rawElements) {
