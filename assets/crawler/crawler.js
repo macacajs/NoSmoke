@@ -1,8 +1,10 @@
 'use strict';
 
 let utils = require('../utils');
-let hooks = require('../../public/hooks').Hooks;
+let Hooks = require('../../public/hooks').Hooks;
+let hooks = new Hooks();
 let root = require('window-or-global');
+
 
 const maxRepeatCrawlingCount = 8;
 
@@ -40,12 +42,13 @@ NSCrawler.prototype.crawl = function () {
   root.wdclient
     .send(`/wd/hub/session/` + this.sessionId + `/source`, `get`, null, null)
     .then((data)  => {
-      this.explore(data);
+      this.beforeExplore(data);
     });
 };
 
 NSCrawler.prototype.explore = function(source) {
   let node = new NSAppCrawlingTreeNode();
+
   node.checkDigest(this.config.platform ,source).then(() => {
 
     /** 1. check if there is an existing node */
@@ -101,11 +104,14 @@ NSCrawler.prototype.explore = function(source) {
     node.parent = this.currentNode;
     this.currentNode = node;
 
-    let matches = this.recursiveFilter(JSON.parse(source.value), this.config.targetElements, this.config.exclusivePattern);
+    let matches = this.recursiveFilter(this.config.platform === 'PC-Web' ? source.value : JSON.parse(source.value),
+      this.config.targetElements, this.config.exclusivePattern);
+
     if (matches.length) {
       this.currentNode.actions = this.produceNodeActions(matches);
     } else {
-      let elements = this.recursiveFilter(JSON.parse(source.value), null, this.config.exclusivePattern);
+      let elements = this.recursiveFilter(this.config.platform === 'PC-Web' ? source.value : JSON.parse(source.value),
+        null, this.config.exclusivePattern);
       this.currentNode.actions = this.produceNodeActions(elements);
     }
 
@@ -124,7 +130,7 @@ NSCrawler.prototype.back = function () {
     this.refreshScreen();
     this.crawl();
   });
-}
+};
 
 // If match is null or empty, put all elements which belongs to button, label,
 NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
@@ -149,6 +155,7 @@ NSCrawler.prototype.recursiveFilter = function (source, matches, exclusive) {
 
   /** 1. filter Current Node Information */
   if (source.hasOwnProperty('children')) {
+    console.log('trap children');
     if (utils.isArray(source.children)) {
       for (let i = 0; i < source.children.length; i++) {
         this.eraseModelDifference(source.children);
@@ -249,6 +256,10 @@ NSCrawler.prototype.performAction = function(actions) {
   }
 };
 
+NSCrawler.prototype.beforeExplore = function (source) {
+  return this.explore(source);
+};
+
 NSCrawler.prototype.checkElementValidity = function (source) {
   return true;
 };
@@ -262,6 +273,10 @@ NSCrawler.prototype.eraseModelDifference = function (source) {
     if (source.node) {
       source.children = source.node;
     }
+  } else if (this.config.platform === 'PC-Web') {
+    if (source.name) {
+      source.type = source.name;
+    }
   }
 };
 
@@ -269,13 +284,8 @@ NSCrawler.prototype.refreshScreen = function () {
   /** Based on environment, choose the way of refresh screen */
   let that = this;
   root.wdclient.send(`/wd/hub/session/`+ this.sessionId +`/screenshot`, 'get', null, function(data) {
-    if (utils.isWebRuntime()) {
-      let base64 = `data:image/jpg;base64,` + data.value;
-      document.getElementById('screen').setAttribute('src', base64);
-    } else {
-      data.currentNode = that.currentNode;
-      root.eventEmmiter.emit('screenRefresh',data);
-    }
+    data.currentNode = that.currentNode;
+    root.eventEmmiter.emit('screenRefresh',data);
   });
 };
 

@@ -31,14 +31,22 @@ WDClient.prototype.init = function() {
   }, function(data) {
     sessionId = data.sessionId;
     that.sessionId = sessionId;
-    console.log(data.value);
-    that.send(`/wd/hub/session/` + sessionId +`/screenshot`, 'get', null, function(data) {
-      let base64 = `data:image/jpg;base64,`+data.value;
-      document.getElementById('screen').setAttribute('src', base64);
-    });
 
-    root.eventEmmiter.emit('onSessionCreated',data);
+    /** for desktop, shall open the url*/
+    if (desiredCapabilities.platformName === 'Desktop') {
+      that.send(`/wd/hub/session/` + sessionId +`/url`, 'POST', {
+        url: desiredCapabilities.url
+      }, ()=>{
+        that.onSessionCreated(data);
+      });
+    } else {
+      that.onSessionCreated(data);
+    }
   });
+};
+
+WDClient.prototype.onSessionCreated = function(data) {
+   root.eventEmmiter.emit('onSessionCreated',data);
 };
 
 WDClient.prototype.send = function(url, method, body, callback) {

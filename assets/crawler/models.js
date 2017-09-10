@@ -1,6 +1,7 @@
 'use strict';
 
-let hooks = require('../../public/hooks').Hooks;
+let Hooks = require('../../public/hooks').Hooks;
+let hooks = new Hooks();
 let root = require('window-or-global');
 
 /** Crawling Node: each of the tree node represents a unique user page  */
@@ -44,6 +45,11 @@ NSAppCrawlingTreeNode.prototype.checkDigest = function(platform, source) {
     } else {
       if (platform == 'iOS') {
         return root.wdclient.send(`/wd/hub/session/${root.wdclient.sessionId}/title`, `get`, null, null)
+          .then(title => {
+            this.digest = title.value;
+          });
+      } else if (platform == 'PC-Web') {
+        return root.wdclient.send(`/wd/hub/session/${root.wdclient.sessionId}/url`, `get`, null, null)
           .then(title => {
             this.digest = title.value;
           });

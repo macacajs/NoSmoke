@@ -1,6 +1,6 @@
 {
   "name": "nosmoke",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "description": "nosmoke",
   "keywords": [
     "nosmoke"
@@ -19,6 +19,7 @@
     "co-request": "^1.0.0",
     "commander": "^2.9.0",
     "detect-port": "^1.2.1",
+    "htmlparser": "^1.7.7",
     "koa": "^1.2.1",
     "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",
