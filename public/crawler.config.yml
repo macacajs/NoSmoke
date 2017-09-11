@@ -1,9 +1,14 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'Desktop'
-  browserName: 'Chrome'
-  url: 'https://macacajs.github.io'
+  platformName: 'iOS'
+  deviceName: 'iPhone 6 Plus'
+  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
+
+#  Web Configuration
+#  platformName: 'Desktop'
+#  browserName: 'Chrome'
+#  url: 'https://macacajs.github.io'
 
 #  iOS Configuration
 #  platformName: 'iOS'
@@ -17,7 +22,7 @@ desiredCapabilities:
 
 # 2. Crawling option
 crawlingConfig:
-  platform: 'PC-Web'
+  platform: 'iOS'
   targetElements:
     loginAccount:
       actionType  : 2
@@ -34,10 +39,30 @@ crawlingConfig:
       actionType  : 1
       searchValue : 'yes'
   clickTypes:
-    - 'a'
+    - 'StaticText'
+    - 'Button'
   editTypes:
-    - 'input'
+    - 'TextField'
+    - 'SecureTextField'
+  horizontalScrollTypes:
+    - 'PageIndicator'
+  verticalScrollTypes:
+    - 'ScrollView'
+  tabBarTypes:
+    - 'TabBar'
+  exclusiveTypes:
+    - 'NavigationBar'
+  navigationBackKeyword:
+    - '返回'
+    - '取消'
 ...
+
+
+# Web Configuration
+#  clickTypes:
+#    - 'a'
+#  editTypes:
+#    - 'input'
 
 #  # Android Configuration
 #  clickTypes:
@@ -50,12 +75,6 @@ crawlingConfig:
 #    - 'android.widget.TabWidget'
 
 #  # iOS Configuration
-#  # Desired Capabilities
-#  deviceName: 'iPhone 6 Plus'
-#  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
-#
-#  # crawling config
-#
 #  clickTypes:
 #    - 'StaticText'
 #    - 'Button'
