@@ -38,6 +38,7 @@ crawlingConfig:
     alertConfirm:
       actionType  : 1
       searchValue : 'yes'
+  exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:/setTitle/Macaca Test Swipe API/'
   clickTypes:
     - 'StaticText'
     - 'Button'
