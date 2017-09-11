@@ -2,6 +2,5 @@
 **/node_modules
 **/dist
 **/_dist
-**/assets
 **/public
 **/coverage
