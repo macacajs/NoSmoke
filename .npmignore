@@ -13,3 +13,4 @@ reports/
 public/index.js
 *.sw*
 *.un~
+package-lock.json
