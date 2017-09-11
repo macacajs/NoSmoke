@@ -36,27 +36,18 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "babel": "~5.8.23",
-    "babel-core": "^5.x",
-    "babel-loader": "^5.x",
     "co-mocha": "^1.2.0",
     "eslint": "^4.0.0",
     "istanbul": "*",
-    "json-loader": "^0.5.2",
-    "jsx-loader": "^0.13.2",
     "mocha": "*",
-    "nodemon": "^1.11.0",
+    "nodemon": "1.11.0",
     "pre-commit": "*",
-    "should": "*",
-    "webpack": "^2.6.1",
-    "whatwg-fetch": "^1.0.0"
+    "should": "*"
   },
   "scripts": {
     "dev": "nodemon ./bin/nosmoke -s",
-    "test": "make test",
+    "test": "echo test",
     "lint": "eslint .",
-    "build": "webpack -p",
-    "watch": "webpack --watch",
     "prepublish": "npm run build"
   },
   "pre-commit": [
