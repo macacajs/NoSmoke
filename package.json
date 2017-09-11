@@ -48,7 +48,7 @@
     "dev": "nodemon ./bin/nosmoke -s",
     "test": "echo test",
     "lint": "eslint .",
-    "prepublish": "npm run build"
+    "prepublish": "echo success!"
   },
   "pre-commit": [
     "lint"
