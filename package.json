@@ -48,8 +48,6 @@
     "dev": "nodemon ./bin/nosmoke -s",
     "test": "echo test",
     "lint": "eslint .",
-    "build": "webpack -p",
-    "watch": "webpack --watch",
     "prepublish": "npm run build"
   },
   "pre-commit": [
