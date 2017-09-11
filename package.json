@@ -46,7 +46,7 @@
   },
   "scripts": {
     "dev": "nodemon ./bin/nosmoke -s",
-    "test": "make test",
+    "test": "echo test",
     "lint": "eslint .",
     "build": "webpack -p",
     "watch": "webpack --watch",
