@@ -40,6 +40,8 @@ crawlingConfig:
       searchValue : 'yes'
   clickTypes:
     - 'a'
+  blacklist:
+    - 'github.com'
 ...
 
 
