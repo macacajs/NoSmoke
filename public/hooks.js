@@ -15,10 +15,20 @@ Hooks.prototype.checkDigest = function(platform, source, node, crawler) {
 };
 
 /**
+ * Method to sort a list of actions which will be later bind to a crawling node object, return the list of actions.
+ * @Params: actions the array of actions which can be further sorted.
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config.
+ * @Returns: actions the sorted actions which should be bind to the crawling node.
+ * */
+Hooks.prototype.sortActionPriority = function(actions, crawler) {
+  return actions;
+};
+
+/**
  * Method to perform action for the current platform.
- * @Params: $actions the actions which belongs to current active node, user can determine the priority of action execution
- * @Params: $crawler the crawler instance which contains the context information as well as crawler config
- * @Returns: $true to indicate the action has been handled and the default logic will not execute
+ * @Params: actions the actions which belongs to current active node, user can determine the priority of action execution
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config
+ * @Returns: true to indicate the action has been handled and the default logic will not execute
  * */
 Hooks.prototype.performAction = function(actions, crawler) {
   return false;
