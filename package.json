@@ -27,6 +27,7 @@
     "macaca-reporter": "*",
     "node-fetch": "^1.7.2",
     "npm-update": "^1.0.2",
+    "opn": "^5.1.0",
     "request": "^2.74.0",
     "socket.io": "^2.0.3",
     "window-or-global": "^1.0.1",
