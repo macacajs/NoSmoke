@@ -23,7 +23,7 @@
 ### a. Muliplatform
 NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**, [macaca-reporter](https://github.com/macacajs/macaca-reporter) is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:
 
-![alt text](https://camo.githubusercontent.com/79feb2b3ab6d72066753a37e53373cf38f4397b4/687474703a2f2f7778332e73696e61696d672e636e2f6c617267652f366433303862643967793166697674666f733972356a32316b773133306166372e6a7067)
+![alt text](https://testerhome.com/uploads/photo/2017/cdb5f513-ebb3-44f4-b0de-a5b8d29647b1.gif!large)
 
 ### b. Configurable 
 Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. The structure of the configuration file can be described as below:
