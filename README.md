@@ -17,13 +17,23 @@
 [download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
 [download-url]: https://npmjs.org/package/nosmoke
 
-> A cross platform UI crawler which scans view trees then generate and execute UI test cases.
+> A cross platform UI crawler which scans view trees then generate and execute UI test cases. with it you can:
+- conduct automated UI test without writing a single UI test scripts!!
+- more accurate than mokey test!!
+- one tool and configuration, multiple platform!
 
 ## Features
 ### a. Muliplatform
 NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**, [macaca-reporter](https://github.com/macacajs/macaca-reporter) is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:
 
-![alt text](https://testerhome.com/uploads/photo/2017/cdb5f513-ebb3-44f4-b0de-a5b8d29647b1.gif!large)
+#### Running on android 
+![macaca-android](https://user-images.githubusercontent.com/8198256/31303578-988f5db2-ab42-11e7-8b96-52175fe4ba92.gif)
+
+#### Running on iOS
+![macaca-ios](https://user-images.githubusercontent.com/8198256/31303576-98897564-ab42-11e7-9a12-36e5aaf5161d.gif)
+
+#### Running on web-pc
+![web-pc](https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif)
 
 ### b. Configurable 
 Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. The structure of the configuration file can be described as below:
