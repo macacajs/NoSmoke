@@ -22,6 +22,9 @@
 - more accurate than mokey test!!
 - one tool and configuration, multiple platform!
 
+## How it works?
+![image](https://user-images.githubusercontent.com/8198256/31303704-aa26c68a-ab44-11e7-9346-02db403edc48.png)
+
 ## Features
 ### a. Muliplatform
 NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**, [macaca-reporter](https://github.com/macacajs/macaca-reporter) is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:
