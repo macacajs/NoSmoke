@@ -1,9 +1,9 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'Desktop'
-  browserName: 'Electron'
-  url: 'https://macacajs.github.io'
+  platformName: 'iOS'
+  deviceName: 'iPhone 6 Plus'
+  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 
 #  Web Configuration
 #  platformName: 'Desktop'
@@ -23,11 +23,40 @@ desiredCapabilities:
 
 # 2. Crawling option
 crawlingConfig:
-  platform: 'PC-Web'
+  platform: 'iOS'
+  targetElements:
+      loginAccount:
+        actionType  : 2
+        searchValue : 'please input username'
+        actionValue : '中文+Test+12345678'
+      loginPassword:
+        actionType  : 2
+        searchValue : 'please input password'
+        actionValue : '111111'
+      loginButton:
+        actionType  : 1
+        searchValue : 'Login'
+      alertConfirm:
+        actionType  : 1
+        searchValue : 'yes'
+  exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:/setTitle/Macaca Test Swipe API/'
   clickTypes:
-    - 'a'
+    - 'StaticText'
+    - 'Button'
   editTypes:
-    - 'input'
+    - 'TextField'
+    - 'SecureTextField'
+  horizontalScrollTypes:
+    - 'PageIndicator'
+  verticalScrollTypes:
+    - 'ScrollView'
+  tabBarTypes:
+    - 'TabBar'
+  exclusiveTypes:
+    - 'NavigationBar'
+  navigationBackKeyword:
+    - '返回'
+    - '取消'
 ...
 
 # Web Configuration
