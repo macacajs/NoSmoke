@@ -6,6 +6,7 @@ npm-debug.log
 Thumbs.db
 coverage/
 .project
+reports/
 build/
 screenshoots/
 public/index.js
