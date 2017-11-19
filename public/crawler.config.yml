@@ -1,9 +1,10 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'iOS'
-  deviceName: 'iPhone 6 Plus'
-  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
+  platformName: 'android'
+  isWaitActivity: true
+  activity: 'LoginActivity'
+  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
 #  Web Configuration
 #  platformName: 'Desktop'
@@ -23,44 +24,35 @@ desiredCapabilities:
 
 # 2. Crawling option
 crawlingConfig:
-  platform: 'iOS'
+  platform: 'android'
   targetElements:
-      loginAccount:
-        actionType  : 2
-        searchValue : 'please input username'
-        actionValue : '中文+Test+12345678'
-      loginPassword:
-        actionType  : 2
-        searchValue : 'please input password'
-        actionValue : '111111'
-      loginButton:
-        actionType  : 1
-        searchValue : 'Login'
-      alertConfirm:
-        actionType  : 1
-        searchValue : 'yes'
+    loginAccount:
+      actionType  : 2
+      searchValue : 'please input username'
+      actionValue : '中文+Test+12345678'
+    loginPassword:
+      actionType  : 2
+      searchValue : 'please input password'
+      actionValue : '111111'
+    loginButton:
+      actionType  : 1
+      searchValue : 'Login'
+    alertConfirm:
+      actionType  : 1
+      searchValue : 'yes'
   exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:/setTitle/Macaca Test Swipe API/'
   clickTypes:
-    - 'StaticText'
-    - 'Button'
+    - 'android.widget.ImageView'
+    - 'android.widget.TextView'
+    - 'android.widget.Button'
   editTypes:
-    - 'TextField'
-    - 'SecureTextField'
-  horizontalScrollTypes:
-    - 'PageIndicator'
-  verticalScrollTypes:
-    - 'ScrollView'
+    - 'android.widget.EditText'
   tabBarTypes:
-    - 'TabBar'
-  exclusiveTypes:
-    - 'NavigationBar'
-  navigationBackKeyword:
-    - '返回'
-    - '取消'
+    - 'android.widget.TabWidget'
 ...
 
 # Web Configuration
-#  platform: 'PC-Web'
+#  platform: 'pc-web'
 #  clickTypes:
 #    - 'a'
 #  editTypes:
