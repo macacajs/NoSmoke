@@ -1,10 +1,9 @@
 ---
 # 1. Initialization option
 desiredCapabilities:
-  platformName: 'android'
-  isWaitActivity: true
-  activity: 'LoginActivity'
-  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
+  platformName: 'iOS'
+  deviceName: 'iPhone 6 Plus'
+  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 
 #  Web Configuration
 #  platformName: 'Desktop'
@@ -24,7 +23,7 @@ desiredCapabilities:
 
 # 2. Crawling option
 crawlingConfig:
-  platform: 'android'
+  platform: 'iOS'
   targetElements:
       loginAccount:
         actionType  : 2
@@ -42,17 +41,26 @@ crawlingConfig:
         searchValue : 'yes'
   exclusivePattern: 'pushView/popView/cookie/userAgent:/Mozilla/cookie:/setTitle/Macaca Test Swipe API/'
   clickTypes:
-    - 'android.widget.ImageView'
-    - 'android.widget.TextView'
-    - 'android.widget.Button'
+    - 'StaticText'
+    - 'Button'
   editTypes:
-    - 'android.widget.EditText'
+    - 'TextField'
+    - 'SecureTextField'
+  horizontalScrollTypes:
+    - 'PageIndicator'
+  verticalScrollTypes:
+    - 'ScrollView'
   tabBarTypes:
-    - 'android.widget.TabWidget'
+    - 'TabBar'
+  exclusiveTypes:
+    - 'NavigationBar'
+  navigationBackKeyword:
+    - '返回'
+    - '取消'
 ...
 
 # Web Configuration
-#  platform: 'PC-Web'
+#  platform: 'pc-web'
 #  clickTypes:
 #    - 'a'
 #  editTypes:
