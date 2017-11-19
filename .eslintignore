@@ -1,6 +1,5 @@
 **/.*
 **/node_modules
 **/dist
-**/_dist
 **/public
 **/coverage
