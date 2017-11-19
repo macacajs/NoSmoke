@@ -17,12 +17,16 @@
 [download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
 [download-url]: https://npmjs.org/package/nosmoke
 
+---
+
 > A cross platform UI crawler which scans view trees then generate and execute UI test cases. with it you can:
+
 - conduct automated UI test without writing a single UI test scripts!!
 - more accurate than mokey test!!
 - one tool and configuration, multiple platform!
 
 ## How it works?
+
 ![image](https://user-images.githubusercontent.com/8198256/31303704-aa26c68a-ab44-11e7-9346-02db403edc48.png)
 
 In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers. 
@@ -33,21 +37,26 @@ In order to design a multiplatform UI automation tool, the overall architcture i
 
 - The **NoSmoke** layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server** layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **macaca-server** and **proxy**.
 
-
 ## Features
+
 ### a. Muliplatform
+
 NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**, [macaca-reporter](https://github.com/macacajs/macaca-reporter) is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:
 
 #### Running on android 
+
 ![macaca-android](https://user-images.githubusercontent.com/8198256/31303578-988f5db2-ab42-11e7-8b96-52175fe4ba92.gif)
 
 #### Running on iOS
+
 ![macaca-ios](https://user-images.githubusercontent.com/8198256/31303576-98897564-ab42-11e7-9a12-36e5aaf5161d.gif)
 
 #### Running on web-pc
+
 ![web-pc](https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif)
 
 ### b. Configurable 
+
 Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. The structure of the configuration file can be described as below:
 
 ```
@@ -85,9 +94,11 @@ crawlingConfig:
 ```
 
 ### c. Customizable Hooks
+
 Different applications provides various design of UI layers. Hence it becomes extremely difficult to provide a generic crawling algorithm which can suites into all scenarios, especially when it is also required to support multiplatform crawlings. Hence a series of hooks are provided to provide further customizablility. 
 
 ## Install & Run
+
 Since current project is still under development, you can run the following command to see current crawling implementation.
 
 a. Open the terminal and initialize macaca server `macaca server --verbose`
