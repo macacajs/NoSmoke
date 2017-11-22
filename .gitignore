@@ -8,6 +8,7 @@ coverage/
 .project
 reports/
 build/
+temp/
 screenshoots/
 public/index.js
 *.sw*

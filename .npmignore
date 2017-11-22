@@ -9,6 +9,7 @@ examples/
 coverage/
 screenshoots/
 reports/
+temp/
 public/index.js
 *.sw*
 *.un~
