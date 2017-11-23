@@ -31,7 +31,17 @@ Hooks.prototype.sortActionPriority = function(actions, crawler) {
  * @Returns: true to indicate the action has been handled and the default logic will not execute
  * */
 Hooks.prototype.performAction = function(actions, crawler) {
-  return false;
+  return null;
+};
+
+/**
+ * Method to intercept the crawling process after an specific action has been performed
+ * @Params: action the action which belongs to current active node, and has just been performed
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config
+ * @Params: resolve during the calling of this function, the overall crawling process is pending until the resolve is finally called
+ * */
+Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
+  resolve();
 };
 
 /**
