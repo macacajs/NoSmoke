@@ -57,55 +57,50 @@ NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**
 
 ### b. Configurable 
 
-Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. The structure of the configuration file can be described as below:
+Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. You can choose which platform to conduct the crawling task:
 
 ```
-# 1. Initialization option
 desiredCapabilities:
-  platformName: 'platform iOS/Android'
-  deviceName: 'name of the device'
-  app: 'url for downloading app here'
-
-# 2. Crawling option
-crawlingConfig:
-  platform: 'iOS'
-  targetElements:
-    loginAccount:
-      actionType  : 'action type: 1-click; 2-input'
-      searchValue : 'the value to search'
-      actionValue : 'the value to input'
-  exclusivePattern: 'pushView/popView'
-  clickTypes: 
-    - 'array of clickable UI types: StaticText/Button'
-  editTypes:
-    - 'array of editable UI types: SecureTextField/TextFiled'
-  horizontalScrollTypes:
-    - 'array of horizontal scrollable UI types: PageIndicator'
-  verticalScrollTypes:
-    - 'array of vertical scrollable UI types: ScrollView'
-  tabBarTypes:
-    - 'array of control widget which behaves like a master in the 
-    master-detail view structures: TabBar'
-  exclusiveTypes:
-    - 'array of disabled and esclusive UI types: NavigationBar'
-  navigationBackKeyword:
-    - 'array of words on which items should be regarded 
-    as a back button: back'
+	platformName: 'iOS'
+  	deviceName: 'iPhone 6 Plus'
+ 	app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 ```
 
-### c. Customizable Hooks
+And the corresponding configuration for crawling the app:
 
-Different applications provides various design of UI layers. Hence it becomes extremely difficult to provide a generic crawling algorithm which can suites into all scenarios, especially when it is also required to support multiplatform crawlings. Hence a series of hooks are provided to provide further customizablility. 
+```
+crawlingConfig:
+  platform: 'ios'   // platforms to run: android, ios, pc-web
+  targetElements:   // array of hight priority UI element to perform
+  exclusivePattern: // specify the pattern hence you can let those element which contain the regex pattern be excluded from exection
+  clickTypes:       // specify the types of UI element which can handle click events
+  editTypes:        // specify the types of UI element which can handle edit events
+  horizontalScrollTypes: // specify the types of UI element which can handle horizontal scroll
+  tabBarTypes:      // specify the types of UI element may act as a control widget in master-detail pattern
+  exclusiveTypes:   // specify the types of UI element in which all the sub-views will be exclueded from scanning and crawl
+```
+
+### c. Hookable
+
+
 
 ## Install & Run
+ 
+Macaca - NoSmoke dependends on the following macaca components:
 
-Since current project is still under development, you can run the following command to see current crawling implementation.
+```
+npm i macaca-android -g
+npm i macaca-ios -g
+npm i macaca-cli -g
+npm i macaca-reporter -g
+npm i macaca-electron -g
+```
 
 a. Open the terminal and initialize macaca server `macaca server --verbose`
 
 b. Execute npm command in the project dir `npm run dev`
 
-When the npm program starts to execute and browser opens macaca-reporter. In case the reporter fails to refresh, after crawling process intializes, manualy refresh the reported page.
+When the npm program starts to execute and browser will automatically open the reporter-monitor, it may take several seconds for the program to start simulator. Once the testing target app installed, the crawler program will start execution and reporter's content will be updated.
 
 ## License
 
