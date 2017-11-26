@@ -71,7 +71,13 @@ And the corresponding configuration for crawling the app:
 ```
 crawlingConfig:
   platform: 'ios'   // platforms to run: android, ios, pc-web
+  testingPeriod:    // maximun testing period for a crawling task, after which the task will terminate
+  testingDepth :    // maximum testing depth of the UI window tree, exeeding which 'Back' navigation will be triggered
+  newCommandTimeout:// time interval takes to examine current window source after a crawling UI action has been performed
+  launchTimeout:    // time interval to wait after app has been launched.
+  maxActionPerPage: // max UI actions filtered and performed perpage, this will provide greate memory optimization and prevent an Page for staying too long   
   targetElements:   // array of hight priority UI element to perform
+  asserts:          // provide for regex assert test cases for windows
   exclusivePattern: // specify the pattern hence you can let those element which contain the regex pattern be excluded from exection
   clickTypes:       // specify the types of UI element which can handle click events
   editTypes:        // specify the types of UI element which can handle edit events
@@ -81,8 +87,43 @@ crawlingConfig:
 ```
 
 ### c. Hookable
+There are several hook api provided to provide further space to realize your own customization. 
+You can intercept the 'performAction' function which is called everytime a UI action is executing, 
+you can return your own promise object to replace the existing default performAction method. 
 
+```
+/**
+ * Method to perform action for the current platform.
+ * @Params: action the action which belongs to current active node, and is going to be performed
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config
+ * @Returns: your own promise to indicate that the performAction method has been fully customized
+ * */
+Hooks.prototype.performAction = function(action, crawler) {
+  	return new Promise((resolve, reject) => {
+  		... execute your async tasks here ... and then call resolve to continue the framework's crawling process
+  	});
+};
 
+```
+
+After an certain UI action has been performed, you can intercept the crawling task and manually execute any UI operation. After you are done, you can resume the crawling automation process.
+
+```
+/**
+ * Method to intercept the crawling process after an specific action has been performed
+ * @Params: action the action which belongs to current active node, and has just been performed
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config
+ * @Params: resolve during the calling of this function, the overall crawling process is pending until the resolve is finally called
+ * */
+Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
+  // Customize this action to wire through sliding view
+  if ("verify whether to intercept the process and conduct manual opperation") {
+    ... create a async task execute and call resolve, then the crawling process will continue
+  } else {
+    resolve();
+  }
+};
+```
 
 ## Install & Run
  
