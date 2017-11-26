@@ -126,6 +126,12 @@ Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
 ```
 
 ## Install & Run
+
+`Platform compatibilty:`
+
+- iOS simulator 11.0 and xcode 9.0 and above.
+- Android 6.0 and above.
+ 
  
 Macaca - NoSmoke dependends on the following macaca components:
 
@@ -142,6 +148,8 @@ a. Open the terminal and initialize macaca server `macaca server --verbose`
 b. Execute npm command in the project dir `npm run dev`
 
 When the npm program starts to execute and browser will automatically open the reporter-monitor, it may take several seconds for the program to start simulator. Once the testing target app installed, the crawler program will start execution and reporter's content will be updated.
+
+
 
 ## License
 
