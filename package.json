@@ -47,7 +47,7 @@
   },
   "scripts": {
     "dev": "nodemon ./bin/nosmoke -s",
-    "test": "echo test",
+    "test": "mocha",
     "lint": "eslint .",
     "prepublish": "echo success!"
   },
