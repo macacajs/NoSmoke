@@ -38,8 +38,8 @@ crawlingConfig:
       searchValue : 'yes'
   asserts:
     - type: 'regex'
-      given: 'android\s+boostrap'
-      then: 'please input username'
+      given: 'android\s+bootstrap'
+      then: 'please\s+input\s+username'
     - type: 'regex'
       given: 'HOME'
       then: 'list'
