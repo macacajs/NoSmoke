@@ -2,7 +2,6 @@ coverage.html
 lib-cov/
 node_modules
 .travis.yml
-.drone.yml
 examples/
 .jshintrc
 .jshintignore
@@ -11,6 +10,7 @@ screenshoots/
 reports/
 temp/
 public/index.js
+package-lock.json
 *.sw*
 *.un~
-package-lock.json
+*.tgz
