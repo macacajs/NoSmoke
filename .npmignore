@@ -3,8 +3,8 @@ lib-cov/
 node_modules
 .travis.yml
 examples/
-.jshintrc
-.jshintignore
+.eslintrc
+.eslintignore
 coverage/
 screenshoots/
 reports/
