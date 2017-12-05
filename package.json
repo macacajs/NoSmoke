@@ -1,6 +1,6 @@
 {
   "name": "nosmoke",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "description": "nosmoke",
   "keywords": [
     "nosmoke"
@@ -46,7 +46,7 @@
     "should": "*"
   },
   "scripts": {
-    "dev": "nodemon ./bin/nosmoke -s",
+    "dev": "nodemon ./bin/nosmoke",
     "test": "mocha",
     "lint": "eslint .",
     "prepublish": "echo success!"
