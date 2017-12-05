@@ -10,7 +10,9 @@ coverage/
 screenshoots/
 reports/
 temp/
+.idea
 public/index.js
 *.sw*
 *.un~
 package-lock.json
+bin/reports
