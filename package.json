@@ -48,8 +48,7 @@
   "scripts": {
     "dev": "nodemon ./bin/nosmoke",
     "test": "mocha",
-    "lint": "eslint .",
-    "prepublish": "echo success!"
+    "lint": "eslint ."
   },
   "pre-commit": [
     "lint"
