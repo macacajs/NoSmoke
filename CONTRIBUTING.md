@@ -2,14 +2,14 @@
 
 ## Dev
 
-``` bash
+```bash
 $ macaca server --verbose
 $ make dev
 ```
 
 ## Restful
 
-``` javascript
+```javascript
 fetch('http://localhost:3456/wd/hub/session', {
   method: 'POST',
   headers: {

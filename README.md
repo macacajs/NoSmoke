@@ -57,55 +57,99 @@ NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**
 
 ### b. Configurable 
 
-Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. The structure of the configuration file can be described as below:
+Refer to the crawler.config.yml file in the NoSmoke/public folder as a example. You can choose which platform to conduct the crawling task:
 
 ```
-# 1. Initialization option
 desiredCapabilities:
-  platformName: 'platform iOS/Android'
-  deviceName: 'name of the device'
-  app: 'url for downloading app here'
-
-# 2. Crawling option
-crawlingConfig:
-  platform: 'iOS'
-  targetElements:
-    loginAccount:
-      actionType  : 'action type: 1-click; 2-input'
-      searchValue : 'the value to search'
-      actionValue : 'the value to input'
-  exclusivePattern: 'pushView/popView'
-  clickTypes: 
-    - 'array of clickable UI types: StaticText/Button'
-  editTypes:
-    - 'array of editable UI types: SecureTextField/TextFiled'
-  horizontalScrollTypes:
-    - 'array of horizontal scrollable UI types: PageIndicator'
-  verticalScrollTypes:
-    - 'array of vertical scrollable UI types: ScrollView'
-  tabBarTypes:
-    - 'array of control widget which behaves like a master in the 
-    master-detail view structures: TabBar'
-  exclusiveTypes:
-    - 'array of disabled and esclusive UI types: NavigationBar'
-  navigationBackKeyword:
-    - 'array of words on which items should be regarded 
-    as a back button: back'
+	platformName: 'iOS'
+  	deviceName: 'iPhone 6 Plus'
+ 	app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
 ```
 
-### c. Customizable Hooks
+And the corresponding configuration for crawling the app:
 
-Different applications provides various design of UI layers. Hence it becomes extremely difficult to provide a generic crawling algorithm which can suites into all scenarios, especially when it is also required to support multiplatform crawlings. Hence a series of hooks are provided to provide further customizablility. 
+```
+crawlingConfig:
+  platform: 'ios'   // platforms to run: android, ios, pc-web
+  testingPeriod:    // maximun testing period for a crawling task, after which the task will terminate
+  testingDepth :    // maximum testing depth of the UI window tree, exeeding which 'Back' navigation will be triggered
+  newCommandTimeout:// time interval takes to examine current window source after a crawling UI action has been performed
+  launchTimeout:    // time interval to wait after app has been launched.
+  maxActionPerPage: // max UI actions filtered and performed perpage, this will provide greate memory optimization and prevent an Page for staying too long   
+  targetElements:   // array of hight priority UI element to perform
+  asserts:          // provide for regex assert test cases for windows
+  exclusivePattern: // specify the pattern hence you can let those element which contain the regex pattern be excluded from exection
+  clickTypes:       // specify the types of UI element which can handle click events
+  editTypes:        // specify the types of UI element which can handle edit events
+  horizontalScrollTypes: // specify the types of UI element which can handle horizontal scroll
+  tabBarTypes:      // specify the types of UI element may act as a control widget in master-detail pattern
+  exclusiveTypes:   // specify the types of UI element in which all the sub-views will be exclueded from scanning and crawl
+```
+
+### c. Hookable
+There are several hook api provided to provide further space to realize your own customization. 
+You can intercept the 'performAction' function which is called everytime a UI action is executing, 
+you can return your own promise object to replace the existing default performAction method. 
+
+```
+/**
+ * Method to perform action for the current platform.
+ * @Params: action the action which belongs to current active node, and is going to be performed
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config
+ * @Returns: your own promise to indicate that the performAction method has been fully customized
+ * */
+Hooks.prototype.performAction = function(action, crawler) {
+  	return new Promise((resolve, reject) => {
+  		... execute your async tasks here ... and then call resolve to continue the framework's crawling process
+  	});
+};
+
+```
+
+After an certain UI action has been performed, you can intercept the crawling task and manually execute any UI operation. After you are done, you can resume the crawling automation process.
+
+```
+/**
+ * Method to intercept the crawling process after an specific action has been performed
+ * @Params: action the action which belongs to current active node, and has just been performed
+ * @Params: crawler the crawler instance which contains the context information as well as crawler config
+ * @Params: resolve during the calling of this function, the overall crawling process is pending until the resolve is finally called
+ * */
+Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
+  // Customize this action to wire through sliding view
+  if ("verify whether to intercept the process and conduct manual opperation") {
+    ... create a async task execute and call resolve, then the crawling process will continue
+  } else {
+    resolve();
+  }
+};
+```
 
 ## Install & Run
 
-Since current project is still under development, you can run the following command to see current crawling implementation.
+`Platform compatibilty:`
+
+- iOS simulator 11.0 and xcode 9.0 and above.
+- Android 6.0 and above.
+ 
+ 
+Macaca - NoSmoke dependends on the following macaca components:
+
+```
+npm i macaca-android -g
+npm i macaca-ios -g
+npm i macaca-cli -g
+npm i macaca-reporter -g
+npm i macaca-electron -g
+```
 
 a. Open the terminal and initialize macaca server `macaca server --verbose`
 
 b. Execute npm command in the project dir `npm run dev`
 
-When the npm program starts to execute and browser opens macaca-reporter. In case the reporter fails to refresh, after crawling process intializes, manualy refresh the reported page.
+When the npm program starts to execute and browser will automatically open the reporter-monitor, it may take several seconds for the program to start simulator. Once the testing target app installed, the crawler program will start execution and reporter's content will be updated.
+
+
 
 ## License
 
