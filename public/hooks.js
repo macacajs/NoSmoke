@@ -26,11 +26,11 @@ Hooks.prototype.sortActionPriority = function(actions, crawler) {
 
 /**
  * Method to perform action for the current platform.
- * @Params: actions the actions which belongs to current active node, user can determine the priority of action execution
+ * @Params: action the action which belongs to current active node
  * @Params: crawler the crawler instance which contains the context information as well as crawler config
- * @Returns: true to indicate the action has been handled and the default logic will not execute
+ * @Returns: a Promise to indicate the action has been handled and the default logic will not execute
  * */
-Hooks.prototype.performAction = function(actions, crawler) {
+Hooks.prototype.performAction = function(action, crawler) {
   return null;
 };
 
