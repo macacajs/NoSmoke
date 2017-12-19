@@ -201,7 +201,13 @@ node bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
 **Method 3**: Supporting Docker as well(android):
 
 ```
-docker run  --privileged -v  nosmoke-reporter:/root/reports --name nosmoke-1 -p 5037:5037 -it zhaoysamuel/nosmoke-android:1.0.0
+docker run  --privileged -v  nosmoke-reporter:/root/reports --name nosmoke-1 -p 5037:5037 -it macacajs/nosmoke-android:1.0.0
+```
+
+You can further passing the following arguments inorder, hence the entry point will automatically execute nosmoke with:
+
+```
+'path of your config' 'path of your hook' 'device id'
 ```
 
 Note: for docker mode, you need to connect your device and grant the adb access writes to the docker env, otherwise the following error will occur:
@@ -221,8 +227,6 @@ When the npm program starts to execute and browser will automatically open the r
 If there is an error:
 
 Please kindly [drop an issue](https://github.com/macacajs/NoSmoke/issues)
-
-
 
 
 ## License
