@@ -157,8 +157,8 @@ Open the terminal and initialize macaca server `macaca server --verbose`
 
 then in your workspace directory, execute the following command
 
-```
-nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
+```shell
+$ nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
 ```
 
 For full set of command please check:
@@ -182,16 +182,16 @@ nosmoke --help
 
 **Method 2**: install via clone from git
 
-```
-git clone git@github.com:macacajs/NoSmoke.git
+```shell
+$ git clone git@github.com:macacajs/NoSmoke.git
 ```
 
 Open the terminal and initialize macaca server `macaca server --verbose`
 
 then run the following under the nosmoke root dir:
 
-```
-node bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
+```shell
+$ node bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
 ```
 
 **Note:**  -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
