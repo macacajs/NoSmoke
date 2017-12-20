@@ -136,11 +136,11 @@ Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
 
 ##### **Step 1.** Setup Macaca - NoSmoke dependends on the following macaca components:
 
-```
-npm i macaca-android -g
-npm i macaca-ios -g
-npm i macaca-cli -g
-npm i macaca-electron -g
+```bash
+$ npm i macaca-android -g
+$ npm i macaca-ios -g
+$ npm i macaca-cli -g
+$ npm i macaca-electron -g
 ```
 
 ##### 
@@ -149,15 +149,15 @@ npm i macaca-electron -g
 
 **Method 1:** install the nosmoke command line from npmjs
 
-```
-npm i nosmoke -g
+```bash
+$ npm i nosmoke -g
 ```
 
 Open the terminal and initialize macaca server `macaca server --verbose`
 
 then in your workspace directory, execute the following command
 
-```shell
+```bash
 $ nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
 ```
 
@@ -182,7 +182,7 @@ nosmoke --help
 
 **Method 2**: install via clone from git
 
-```shell
+```bash
 $ git clone git@github.com:macacajs/NoSmoke.git
 ```
 
@@ -190,18 +190,16 @@ Open the terminal and initialize macaca server `macaca server --verbose`
 
 then run the following under the nosmoke root dir:
 
-```shell
-$ node bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
+```bash
+$ bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
 ```
 
 **Note:**  -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
 
-
-
 **Method 3**: Supporting Docker as well(android):
 
-```
-docker run  --privileged -v  nosmoke-reporter:/root/reports --name nosmoke-1 -p 5037:5037 -it macacajs/nosmoke-android:1.0.0
+```bash
+$ docker run  --privileged -v  nosmoke-reporter:/root/reports --name nosmoke-1 -p 5037:5037 -it macacajs/nosmoke-android:1.0.0
 ```
 
 You can further passing the following arguments inorder, hence the entry point will automatically execute nosmoke with:
