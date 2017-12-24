@@ -21,6 +21,7 @@
     "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
+    "macaca-logo": "^1.0.0",
     "macaca-reporter": "^1.0.18",
     "node-fetch": "^1.7.2",
     "npm-update": "^1.0.2",
@@ -42,7 +43,8 @@
     "dev": "nodemon ./bin/nosmoke",
     "test": "istanbul cover `npm bin`/_mocha",
     "lint": "eslint .",
-    "ci": "npm run lint && npm run test"
+    "ci": "npm run lint && npm run test",
+    "postinstall": "node ./scripts/print.js"
   },
   "pre-commit": [
     "lint"
