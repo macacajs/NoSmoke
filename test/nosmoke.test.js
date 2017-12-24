@@ -2,10 +2,11 @@
 
 'use strict';
 
+const assert = require('assert');
+
+const regexMock = require('./mock').mockRegexRaw;
 const NSCrawlerConfig = require('../lib/crawler/config');
 const NSCrawler = require('../lib/crawler/crawler').NSCrawler;
-const assert = require('assert');
-const regexMock = require('./mock').mockRegexRaw;
 
 describe('#Load Configuration', function() {
   let config = new NSCrawlerConfig();
