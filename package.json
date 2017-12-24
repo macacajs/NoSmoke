@@ -49,6 +49,6 @@
   "pre-commit": [
     "lint"
   ],
-  "homepage": "https://github.com/macacajs/nosmoke",
+  "homepage": "https://macacajs.github.io/nosmoke",
   "license": "MIT"
 }
