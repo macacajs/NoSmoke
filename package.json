@@ -23,13 +23,13 @@
     "koa-static": "^2.0.0",
     "macaca-logo": "^1.0.0",
     "macaca-reporter": "^1.0.18",
+    "macaca-utils": "^1.0.1",
     "node-fetch": "^1.7.2",
     "npm-update": "^1.0.2",
     "socket.io": "^2.0.3",
     "window-or-global": "^1.0.1",
     "xlogger": "^1.0.4",
     "xml2map": "^1.0.2",
-    "xutil": "^1.0.7",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

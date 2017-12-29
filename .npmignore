@@ -1,8 +1,5 @@
-coverage.html
-lib-cov/
 node_modules
 .travis.yml
-examples/
 .eslintrc
 .eslintignore
 coverage/
@@ -11,7 +8,6 @@ reports/
 temp/
 .idea
 public/index.js
-package-lock.json
 *.sw*
 *.un~
 package-lock.json
