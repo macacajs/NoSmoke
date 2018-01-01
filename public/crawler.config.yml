@@ -26,6 +26,7 @@ desiredCapabilities:
 # 2. Crawling option
 crawlingConfig:
   platform: 'android'
+  packages: 'com.github.android_app_bootstrap|com.xxx.your.optional.app'
   targetElements:
     loginAccount:
       searchValue : 'please input username'
