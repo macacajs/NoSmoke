@@ -25,7 +25,8 @@ desiredCapabilities:
 #  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
 # 2. Crawling option
-platform: 'android'
+crawlingConfig:
+  platform: 'android'
   packages: 'com.github.android_app_bootstrap|com.xxx.your.optional.app'
   targetElements:
     loginAccount:
