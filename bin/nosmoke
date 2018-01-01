@@ -11,8 +11,11 @@ const _ = require('../lib/common/helper');
 const logger = require('../lib/common/logger');
 
 const {
-  chalk
+  chalk,
+  sudoUserPermissionDenied
 } = _;
+
+sudoUserPermissionDenied();
 
 const NoSmoke = require('..');
 
