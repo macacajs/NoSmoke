@@ -1,6 +1,6 @@
 {
   "name": "nosmoke",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "nosmoke",
   "keywords": [
     "nosmoke"
@@ -20,6 +20,7 @@
     "koa": "^1.2.1",
     "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",
+    "koa-static": "^2.0.0",
     "macaca-logo": "^1.0.0",
     "macaca-reporter": "^1.0.18",
     "macaca-utils": "^1.0.1",
