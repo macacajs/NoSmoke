@@ -113,14 +113,16 @@ After an certain UI action has been performed, you can intercept the crawling ta
  * Method to intercept the crawling process after an specific action has been performed
  * @Params: action the action which belongs to current active node, and has just been performed
  * @Params: crawler the crawler instance which contains the context information as well as crawler config
- * @Params: resolve during the calling of this function, the overall crawling process is pending until the resolve is finally called
+ * @Returns: a promise to indicate the action has been handled and other wise the default logic will bypass it
  * */
-Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
+Hooks.prototype.afterActionPerformed = function(action, crawler) {
   // Customize this action to wire through sliding view
   if ("verify whether to intercept the process and conduct manual opperation") {
-    ... create a async task execute and call resolve, then the crawling process will continue
+    return new Promise(resolve, reject) => {
+        ... execute your async tasks here ... and then call resolve to continue the framework's crawling process
+    };
   } else {
-    resolve();
+    return null;
   }
 };
 ```
