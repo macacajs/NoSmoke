@@ -228,6 +228,9 @@ If there is an error:
 
 Please kindly [drop an issue](https://github.com/macacajs/NoSmoke/issues)
 
+## Why the name
+
+Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke testing`, but smoke is not good for health ...
 
 ## License
 
