@@ -3,13 +3,19 @@
 'use strict';
 
 const co = require('co');
-const chalk = require('chalk');
 const program = require('commander');
 const update = require('npm-update');
 
 const pkg = require('../package.json');
 const _ = require('../lib/common/helper');
 const logger = require('../lib/common/logger');
+
+const {
+  chalk,
+  sudoUserPermissionDenied
+} = _;
+
+sudoUserPermissionDenied();
 
 const NoSmoke = require('..');
 
@@ -22,10 +28,12 @@ const EOL = require('os').EOL;
 program
   .option('-p, --port <d>',     'port to use (5678 default)')
   .option('-u, --udid <s>',     'udid of device')
+  .option('-a, --app <s>',      'path of app, will override the one specified in crawler.config.yml')
   .option('-h, --hooks <s>',    'location of the hook.js file')
-  .option('-c, --config <s>',   'location of the configuration file')
+  .option('-c, --config <s>',   'location of the configuration.yml file')
   .option('-s, --silent',       'start without opening browser')
   .option('--verbose',          'show more debugging information')
+  .option('--server <s>',           'adddress for server: "http://172.31.9.162:1212/"')
   .option('-v, --versions',     'output version infomation')
   .usage('');
 

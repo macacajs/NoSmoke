@@ -12,7 +12,7 @@
 [travis-url]: https://travis-ci.org/macacajs/NoSmoke
 [coveralls-image]: https://img.shields.io/coveralls/macacajs/NoSmoke.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/macacajs/NoSmoke?branch=master
-[node-image]: https://img.shields.io/badge/node.js-%3E=_7-green.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
 [download-url]: https://npmjs.org/package/nosmoke
@@ -113,43 +113,124 @@ After an certain UI action has been performed, you can intercept the crawling ta
  * Method to intercept the crawling process after an specific action has been performed
  * @Params: action the action which belongs to current active node, and has just been performed
  * @Params: crawler the crawler instance which contains the context information as well as crawler config
- * @Params: resolve during the calling of this function, the overall crawling process is pending until the resolve is finally called
+ * @Returns: a promise to indicate the action has been handled and other wise the default logic will bypass it
  * */
-Hooks.prototype.afterActionPerformed = function(action, crawler, resolve) {
+Hooks.prototype.afterActionPerformed = function(action, crawler) {
   // Customize this action to wire through sliding view
   if ("verify whether to intercept the process and conduct manual opperation") {
-    ... create a async task execute and call resolve, then the crawling process will continue
+    return new Promise(resolve, reject) => {
+        ... execute your async tasks here ... and then call resolve to continue the framework's crawling process
+    };
   } else {
-    resolve();
+    return null;
   }
 };
 ```
 
-## Install & Run
+## Setup
 
-`Platform compatibilty:`
+### 1. Requirements:
 
-- iOS simulator 11.0 and xcode 9.0 and above.
-- Android 6.0 and above.
- 
- 
-Macaca - NoSmoke dependends on the following macaca components:
+* iOS simulator 11.0 and xcode 9.0 and above.
+* Android 6.0 and above, supporting both device and simulator. For real device testing please install null-keyboard
+
+### 2. Setup & Run:
+
+##### **Step 1.** Setup Macaca - NoSmoke dependends on the following macaca components:
+
+```bash
+$ npm i macaca-android -g
+$ npm i macaca-ios -g
+$ npm i macaca-cli -g
+$ npm i macaca-electron -g
+```
+
+##### 
+
+##### **Step 2.** Setup NoSmoke - You can choose several ways to run it :\]
+
+**Method 1:** install the nosmoke command line from npmjs
+
+```bash
+$ npm i nosmoke -g
+```
+
+Open the terminal and initialize macaca server `macaca server --verbose`
+
+then in your workspace directory, execute the following command
+
+```bash
+$ nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
+```
+
+For full set of command please check:
 
 ```
-npm i macaca-android -g
-npm i macaca-ios -g
-npm i macaca-cli -g
-npm i macaca-reporter -g
-npm i macaca-electron -g
+nosmoke --help
+
+  Usage: nosmoke [options]
+
+  Options:
+
+    -p, --port <d>    port to use (5678 default)
+    -u, --udid <s>    udid of device
+    -h, --hooks <s>   location of the hook.js file
+    -c, --config <s>  location of the configuration file
+    -s, --silent      start without opening browser
+    --verbose         show more debugging information
+    -v, --versions    output version infomation
+    -h, --help        output usage information
 ```
 
-a. Open the terminal and initialize macaca server `macaca server --verbose`
+**Method 2**: install via clone from git
 
-b. Execute npm command in the project dir `npm run dev`
+```bash
+$ git clone git@github.com:macacajs/NoSmoke.git
+```
+
+Open the terminal and initialize macaca server `macaca server --verbose`
+
+then run the following under the nosmoke root dir:
+
+```bash
+$ bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
+```
+
+**Note:**  -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
+
+**Method 3**: Supporting Docker as well(android):
+
+```bash
+$ docker run  --privileged -v  nosmoke-reporter:/root/reports --name nosmoke-1 -p 5037:5037 -it macacajs/nosmoke-android:1.0.0
+```
+
+You can further passing the following arguments inorder, hence the entry point will automatically execute nosmoke with:
+
+```
+'path of your config' 'path of your hook' 'device id'
+```
+
+Note: for docker mode, you need to connect your device and grant the adb access writes to the docker env, otherwise the following error will occur:
+
+```
+Error: Command failed: /opt/android-sdk-linux/platform-tools/adb -s 4fea3345 forward tcp:9001 tcp:9001
+  error: device unauthorized.
+  This adb server's $ADB_VENDOR_KEYS is not set
+  Try 'adb kill-server' if that seems wrong.
+  Otherwise check for a confirmation dialog on your device.
+```
+
+### 3. What you will see
 
 When the npm program starts to execute and browser will automatically open the reporter-monitor, it may take several seconds for the program to start simulator. Once the testing target app installed, the crawler program will start execution and reporter's content will be updated.
 
+If there is an error:
 
+Please kindly [drop an issue](https://github.com/macacajs/NoSmoke/issues)
+
+## Why the name
+
+Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke testing`, but smoke is not good for health ...
 
 ## License
 
