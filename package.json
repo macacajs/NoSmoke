@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "eslint": "^4.0.0",
+    "git-contributor": "^1.0.0",
     "istanbul": "*",
     "mocha": "*",
     "nodemon": "^1.14.1",
@@ -44,7 +45,8 @@
     "test": "istanbul cover `npm bin`/_mocha",
     "lint": "eslint .",
     "ci": "npm run lint && npm run test",
-    "postinstall": "node ./scripts/print.js"
+    "postinstall": "node ./scripts/print.js",
+    "contributor": "git-contributor"
   },
   "pre-commit": [
     "lint"
