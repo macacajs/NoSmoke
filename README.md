@@ -249,7 +249,8 @@ If there is an error, please kindly [drop an issue](//github.com/macacajs/NoSmok
 | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor.git), welcome to join in and feel free to contribute.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor.git), auto upated at `Sun Mar 25 2018 16:18:54 GMT+0800`.
+
 <!-- GITCONTRIBUTOR_END -->
 
 ## License
