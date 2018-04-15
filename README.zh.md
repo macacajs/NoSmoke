@@ -78,20 +78,20 @@ desiredCapabilities:
 
 ```
 crawlingConfig:
-  platform: 'ios'   // platforms to run: Android, iOS, pc-web
-  testingPeriod:    // maximun testing period for a crawling task, after which the task will terminate
-  testingDepth :    // maximum testing depth of the UI window tree, exeeding which 'Back' navigation will be triggered
-  newCommandTimeout:// time interval takes to examine current window source after a crawling UI action has been performed
-  launchTimeout:    // time interval to wait after app has been launched.
-  maxActionPerPage: // max UI actions filtered and performed perpage, this will provide greate memory optimization and prevent an Page for staying too long
-  targetElements:   // array of hight priority UI element to perform
-  asserts:          // provide for regex assert test cases for windows
-  exclusivePattern: // specify the pattern hence you can let those element which contain the regex pattern be excluded from exection
-  clickTypes:       // specify the types of UI element which can handle click events
-  editTypes:        // specify the types of UI element which can handle edit events
-  horizontalScrollTypes: // specify the types of UI element which can handle horizontal scroll
-  tabBarTypes:      // specify the types of UI element may act as a control widget in master-detail pattern
-  exclusiveTypes:   // specify the types of UI element in which all the sub-views will be exclueded from scanning and crawl
+    platform: 'ios'   // platforms to run: android, ios, pc-web
+    testingPeriod:    // maximun testing period for a crawling task, after which the task will terminate
+    testingDepth :    // maximum testing depth of the UI window tree, exeeding which 'Back' navigation will be triggered
+    newCommandTimeout:// time interval takes to examine current window source after a crawling UI action has been performed
+    launchTimeout:    // time interval to wait after app has been launched.
+    maxActionPerPage: // max UI actions filtered and performed perpage, this will provide greate memory optimization and prevent an Page for staying too long   
+    targetElements:   // array of hight priority UI element to perform
+    asserts:          // provide for regex assert test cases for windows
+    exclusivePattern: // specify the pattern hence you can let those element which contain the regex pattern be excluded from exection
+    clickTypes:       // specify the types of UI element which can handle click events
+    editTypes:        // specify the types of UI element which can handle edit events
+    horizontalScrollTypes: // specify the types of UI element which can handle horizontal scroll
+    tabBarTypes:      // specify the types of UI element may act as a control widget in master-detail pattern
+    exclusiveTypes:   // specify the types of UI element in which all the sub-views will be exclueded from scanning and crawl
 ```
 
 ### c. 扩展接口
