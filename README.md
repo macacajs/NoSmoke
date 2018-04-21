@@ -16,11 +16,12 @@
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
 [download-url]: https://npmjs.org/package/nosmoke
+[中文版](README.zh.md)
 
 ---
 
 A cross platform UI crawler which scans view trees then generate and execute UI test cases. For full set of documentation, please refer to:
-[wiki](https://github.com/macacajs/NoSmoke/wiki) [中文版](README.zh.md)
+[wiki](https://github.com/macacajs/NoSmoke/wiki)
 
 ## 1. Advantages of NoSmoke:
 
@@ -117,11 +118,6 @@ nosmoke
 
 **Note:** For full set of command please check: `nosmoke --help`
 **Note:** Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
-
-### 3. What you will see
-
-When the npm program starts to execute and browser will automatically open the reporter-monitor, it may take several seconds for the program to start simulator. Once the testing target app installed, the crawler program will start execution and reporter's content will be updated.
-If there is an error, please kindly [drop an issue](//github.com/macacajs/NoSmoke/issues)
 
 <!-- GITCONTRIBUTOR_START -->
 
