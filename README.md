@@ -23,123 +23,63 @@ A cross platform UI crawler which scans view trees then generate and execute UI 
 
 [中文版](README.zh.md)
 
-With NoSmoke you can:
+## 1. Advantages of NoSmoke:
 
-- conduct automated UI test without writing a single UI test scripts!!
-- more accurate than mokey test!!
-- one tool and configuration, multiple platform!
+With it you can:
 
-## How it works?
+* [x] Conduct** automated UI test** with **simple configuration** and **minimum testing scripts** manually created.
 
-![image](https://user-images.githubusercontent.com/8198256/31303704-aa26c68a-ab44-11e7-9346-02db403edc48.png)
+* [x] **More accurate than monkey test**, because it analysis the view tree and transform it into data model before take UI action. And for each action performed, **UI assertion** is supported for providing fundamental UI display test.
+
+* [x] One tool and configuration, **multiple platforms - iOS, Android and Web** !! :\]
+
+* [x] Integrate into your **continuous integration environment **for your server side for smoking test.
+
+* [x] **Visualize \(automation\) testing result** and validate the testing history via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
+
+## 2. How it works?
 
 In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers.
 
-- The **Proxy** layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of [w3c webdriver protocol](//www.w3.org/TR/webdriver/).
+* The **Proxy **layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of [web driver](https://www.w3.org/TR/webdriver/) protocol.
 
-- The **Macaca-Server** layer, which are node server created on host PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.
+* The **Macaca-Server **layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.
 
-- The **NoSmoke** layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server** layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **Macaca-Server** and **Proxy**.
+* The **NoSmoke **layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server **layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **macaca-server **and **proxy**.
 
-## Why the name
+![](/assets/macaca-architecture.png)
+
+## 3. Why the name?
 
 Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke testing`, but smoke is not good for health ...
 
-## Features
+## 4. Features
 
-### a. Muliplatform
+### 4.1 Muliplatform
 
 NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**, [macaca-reporter](//github.com/macacajs/macaca-reporter) is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:
 
-#### Running on Android
+#### For Android
 
 ![macaca-android](https://user-images.githubusercontent.com/8198256/31303578-988f5db2-ab42-11e7-8b96-52175fe4ba92.gif)
 
-#### Running on iOS
+#### For iOS
 
 ![macaca-ios](https://user-images.githubusercontent.com/8198256/31303576-98897564-ab42-11e7-9a12-36e5aaf5161d.gif)
 
-#### Running on Desktop
+#### For PC-Web
 
 ![web-pc](https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif)
 
-### b. Configurable
+### 4.2 Configurable
 
-Refer to the `crawler.config.yml` file in the `NoSmoke/public` folder as a example. You can choose which platform to conduct the crawling task:
-
-```
-desiredCapabilities:
-  platformName: 'iOS'
-    deviceName: 'iPhone 6 Plus'
- 	  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
-```
-
-And the corresponding configuration for crawling the app:
-
-```
-crawlingConfig:
-    platform: 'ios'   // platforms to run: android, ios, pc-web
-    testingPeriod:    // maximun testing period for a crawling task, after which the task will terminate
-    testingDepth :    // maximum testing depth of the UI window tree, exeeding which 'Back' navigation will be triggered
-    newCommandTimeout:// time interval takes to examine current window source after a crawling UI action has been performed
-    launchTimeout:    // time interval to wait after app has been launched.
-    maxActionPerPage: // max UI actions filtered and performed perpage, this will provide greate memory optimization and prevent an Page for staying too long   
-    targetElements:   // array of hight priority UI element to perform
-    asserts:          // provide for regex assert test cases for windows
-    exclusivePattern: // specify the pattern hence you can let those element which contain the regex pattern be excluded from exection
-    clickTypes:       // specify the types of UI element which can handle click events
-    editTypes:        // specify the types of UI element which can handle edit events
-    horizontalScrollTypes: // specify the types of UI element which can handle horizontal scroll
-    tabBarTypes:      // specify the types of UI element may act as a control widget in master-detail pattern
-    exclusiveTypes:   // specify the types of UI element in which all the sub-views will be exclueded from scanning and crawl
-```
-
-### c. Hookable
+### 4.3 Hooks
 
 There are several hook API provided to provide further space to realize your own customization.
-You can intercept the 'performAction' function which is called everytime a UI action is executing, you can return your own promise object to replace the existing default performAction method.
 
-```
-/**
- * Method to perform action for the current platform.
- * @Params: action the action which belongs to current active node, and is going to be performed
- * @Params: crawler the crawler instance which contains the context information as well as crawler config
- * @Returns: your own promise to indicate that the performAction method has been fully customized
- * */
-Hooks.prototype.performAction = (action, crawler) => {
-  return new Promise((resolve, reject) => {
-    ... execute your async tasks here
-    ... and then call resolve to continue the framework's crawling process
-  });
-};
+## 5. Setup
 
-```
-
-After an certain UI action has been performed, you can intercept the crawling task and manually execute any UI operation. After you are done, you can resume the crawling automation process.
-
-```
-/**
- * Method to intercept the crawling process after an specific action has been performed
- * @Params: action the action which belongs to current active node, and has just been performed
- * @Params: crawler the crawler instance which contains the context information as well as crawler config
- * @Returns: a promise to indicate the action has been handled and other wise the default logic will bypass it
- * */
-Hooks.prototype.afterActionPerformed = function(action, crawler) {
-  // Customize this action to wire through sliding view
-  if ("verify whether to intercept the process and conduct manual opperation") {
-    return new Promise(resolve, reject) => {
-      ... execute your async tasks here
-      ... and then call resolve to continue the framework's crawling process
-    };
-  } else {
-    return null;
-  }
-};
-```
-
-## Setup
-
-### 1. Requirements:
+### 5.1. Requirements:
 
 * iOS simulator 11.0 and xcode 9.0 and above.
 * Android 6.0 and above, supporting both device and simulator. For real device testing please install null-keyboard
@@ -151,9 +91,11 @@ $ npm i macaca-cli -g
 $ macaca doctor
 ```
 
-### 2. Setup & Run:
+### 5.2. Setup & Run:
 
-##### **Step 1.** Setup Macaca - NoSmoke dependends on the following macaca components:
+##### **Step 1.** Setup:
+
+Full list of dependencies:
 
 ```bash
 $ npm i macaca-android -g
@@ -162,83 +104,31 @@ $ npm i macaca-cli -g
 $ npm i macaca-electron -g
 ```
 
-##### **Step 2.** Setup NoSmoke - You can choose several ways to run it :
-
-**Method 1:** Install the nosmoke command line from npm
+Install nosmoke in a single line:
 
 ```bash
 $ npm i nosmoke -g
 ```
 
-Open the terminal and initialize macaca server `macaca server --verbose`
+##### **Step 2.** Run it:
 
-then in your workspace directory, execute the following command
-
-```bash
-$ nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
-```
-
-For full set of command please check:
-
-```
-nosmoke --help
-
-  Usage: nosmoke [options]
-
-  Options:
-
-    -p, --port <d>    port to use (5678 default)
-    -u, --udid <s>    udid of device
-    -h, --hooks <s>   location of the hook.js file
-    -c, --config <s>  location of the configuration file
-    -s, --silent      start without opening reporter
-    --verbose         show more debugging information
-    -v, --versions    output version infomation
-    -h, --help        output usage information
-```
-
-**Method 2**: Install via clone from github
+In your workspace directory, execute the following command
 
 ```bash
-$ git clone git@github.com:macacajs/NoSmoke.git --depth=1
+
+# initialize macaca server
+macaca server --verbose &
+
+# initialize nosmoke
+nosmoke
 ```
 
-Open the terminal and initialize macaca server `macaca server --verbose`
-
-then run the following under the nosmoke root dir:
-
-```bash
-$ bin/nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
-```
-
-**Note:** -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
-
-**Method 3**: Supporting Docker as well(android):
-
-```bash
-$ docker run  --privileged -v  nosmoke-reporter:/root/reports --name nosmoke-1 -p 5037:5037 -it macacajs/nosmoke-android:1.0.0
-```
-
-You can further passing the following arguments inorder, hence the entry point will automatically execute nosmoke with:
-
-```
-'path of your config' 'path of your hook' 'device id'
-```
-
-Note: for docker mode, you need to connect your device and grant the adb access writes to the docker env, otherwise the following error will occur:
-
-```
-Error: Command failed: /opt/android-sdk-linux/platform-tools/adb -s 4fea3345 forward tcp:9001 tcp:9001
-  error: device unauthorized.
-  This adb server's $ADB_VENDOR_KEYS is not set
-  Try 'adb kill-server' if that seems wrong.
-  Otherwise check for a confirmation dialog on your device.
-```
+**Note:** For full set of command please check: `nosmoke --help`
+**Note:** Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
 
 ### 3. What you will see
 
 When the npm program starts to execute and browser will automatically open the reporter-monitor, it may take several seconds for the program to start simulator. Once the testing target app installed, the crawler program will start execution and reporter's content will be updated.
-
 If there is an error, please kindly [drop an issue](//github.com/macacajs/NoSmoke/issues)
 
 <!-- GITCONTRIBUTOR_START -->
