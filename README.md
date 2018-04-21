@@ -27,27 +27,21 @@ A cross platform UI crawler which scans view trees then generate and execute UI 
 
 With it you can:
 
-* [x] Conduct** automated UI test** with **simple configuration** and **minimum testing scripts** manually created.
-
+* [x] **Automated UI test** with **simple configuration** and **minimum testing scripts**.
 * [x] **More accurate than monkey test**, because it analysis the view tree and transform it into data model before take UI action. And for each action performed, **UI assertion** is supported for providing fundamental UI display test.
-
-* [x] One tool and configuration, **multiple platforms - iOS, Android and Web** !! :\]
-
-* [x] Integrate into your **continuous integration environment **for your server side for smoking test.
-
-* [x] **Visualize \(automation\) testing result** and validate the testing history via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
+* [x] **Multiple platforms - iOS, Android and Web** !! :\]
+* [x] **continuous integration environment** friendly for server side for smoking test.
+* [x] **Visualize \(automation\) testing result** via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
 
 ## 2. How it works?
 
 In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers.
 
-* The **Proxy **layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of [web driver](https://www.w3.org/TR/webdriver/) protocol.
+* The **Proxy** layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of [web driver](https://www.w3.org/TR/webdriver/) protocol.
+* The **Macaca-Server** layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.
+* The **NoSmoke** layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server** layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **macaca-server** and **proxy**.
 
-* The **Macaca-Server **layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.
-
-* The **NoSmoke **layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server **layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **macaca-server **and **proxy**.
-
-![](/assets/macaca-architecture.png)
+![](https://raw.githubusercontent.com/wiki/macacajs/NoSmoke/assets/macaca-architecture.png)
 
 ## 3. Why the name?
 
