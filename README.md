@@ -27,11 +27,10 @@ A cross platform UI crawler which scans view trees then generate and execute UI 
 
 With it you can:
 
-* [x] **Automated UI test** with **simple configuration** and **minimum testing scripts**.
-* [x] **More accurate than monkey test**, because it analysis the view tree and transform it into data model before take UI action. And for each action performed, **UI assertion** is supported for providing fundamental UI display test.
-* [x] **Multiple platforms - iOS, Android and Web** !! :\]
-* [x] **continuous integration environment** friendly for server side for smoking test.
-* [x] **Visualize \(automation\) testing result** via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
+* [x] **Automated UI test** with simple configuration
+* [x] **More accurate than monkey test** with view tree crawling
+* [x] **Multiple platforms** iOS, Android and Web !! :\]
+* [x] **Testing result visualisation** via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
 
 ## 2. How it works?
 
