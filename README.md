@@ -139,7 +139,7 @@ If there is an error, please kindly [drop an issue](//github.com/macacajs/NoSmok
 | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sun Apr 15 2018 16:16:46 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sat Apr 21 2018 10:28:57 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
 
