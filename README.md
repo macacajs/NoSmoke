@@ -19,9 +19,8 @@
 
 ---
 
-A cross platform UI crawler which scans view trees then generate and execute UI test cases.
-
-[中文版](README.zh.md)
+A cross platform UI crawler which scans view trees then generate and execute UI test cases. For full set of documentation, please refer to:
+[wiki](https://github.com/macacajs/NoSmoke/wiki) [中文版](README.zh.md)
 
 ## 1. Advantages of NoSmoke:
 
@@ -132,7 +131,7 @@ If there is an error, please kindly [drop an issue](//github.com/macacajs/NoSmok
 | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sat Apr 21 2018 10:28:57 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sat Apr 21 2018 11:05:32 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
 
