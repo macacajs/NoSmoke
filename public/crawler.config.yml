@@ -1,4 +1,6 @@
 ---
+# for full set of documentation, please refer to:
+#
 # 1. Initialization option
 desiredCapabilities:
   platformName: 'android'
@@ -6,23 +8,6 @@ desiredCapabilities:
   activity: 'LoginActivity'
   permissionPatterns: '[\"继续安装\",\"下一步\",\"好\",\"允许\",\"确定\",\"我知道\"]'
   app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
-
-#  Web Configuration
-#  platformName: 'Desktop'
-#  browserName: 'Electron'
-#  url: 'https://macacajs.github.io'
-
-#  iOS Configuration
-#  platformName: 'iOS'
-#  deviceName: 'iPhone 6 Plus'
-#  app: 'https://npmcdn.com/ios-app-bootstrap@latest/build/ios-app-bootstrap.zip'
-
-#  Android Configuration
-#  platformName: 'android'
-#  isWaitActivity: true
-#  activity: 'LoginActivity'
-#  permissionPatterns: '[\"继续安装\",\"下一步\",\"好\",\"允许\",\"确定\",\"我知道\"]'
-#  app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
 # 2. Crawling option
 crawlingConfig:
@@ -56,73 +41,3 @@ crawlingConfig:
   tabBarTypes:
     - 'android.widget.TabWidget'
 ...
-
-# Web Configuration
-#crawlingConfig:
-#  platform: 'pc-web'
-#  blacklist:
-#    - 'github.com'
-#  clickTypes:
-#    - 'a'
-#  editTypes:
-#    - 'input'
-
-#  # Android Configuration
-# platform: 'android'
-#  packages: 'com.github.android_app_bootstrap|com.xxx.your.optional.app'
-#  targetElements:
-#    loginAccount:
-#      searchValue : 'please input username'
-#      actionValue : '中文+Test+12345678'
-#    loginPassword:
-#      searchValue : 'please input password'
-#      actionValue : '111111'
-#    loginButton:
-#      searchValue : 'Login'
-#    alertConfirm:
-#      searchValue : 'yes'
-#  asserts:
-#    - type: 'regex'
-#      given: 'android\s+bootstrap'
-#      then: 'please\s+input\s+username'
-#    - type: 'regex'
-#      given: 'HOME'
-#      then: 'list'
-#  exclusivePattern: 'pushView|popView|cookie|userAgent:|Mozilla|cookie:|setTitle|Macaca Test Swipe API'
-#  clickTypes:
-#    - 'android.widget.ImageView'
-#    - 'android.widget.TextView'
-#    - 'android.widget.Button'
-#  editTypes:
-#    - 'android.widget.EditText'
-#  tabBarTypes:
-#    - 'android.widget.TabWidget'
-
-#  # iOS Configuration
-#  platform: 'ios'
-#  targetElements:
-#      loginAccount:
-#        searchValue : 'please input username'
-#        actionValue : '中文+Test+12345678'
-#      loginPassword:
-#        searchValue : 'please input password'
-#        actionValue : '111111'
-#      loginButton:
-#        searchValue : 'Login'
-#      alertConfirm:
-#        searchValue : 'yes'
-#  exclusivePattern: 'pushView|popView|cookie|userAgent:|Mozilla|cookie:|setTitle|Macaca Test Swipe API'
-#  clickTypes:
-#    - 'StaticText'
-#    - 'Button'
-#  editTypes:
-#    - 'TextField'
-#    - 'SecureTextField'
-#  horizontalScrollTypes:
-#    - 'PageIndicator'
-#  verticalScrollTypes:
-#    - 'ScrollView'
-#  tabBarTypes:
-#    - 'TabBar'
-#  exclusiveTypes:
-#    - 'NavigationBar'
