@@ -120,8 +120,8 @@ macaca server --verbose &
 nosmoke
 ```
 
-**Note:** For full set of command please check: `nosmoke --help`
-**Note:** Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h is optional and -c \(the path of the configuration file is a must\) in order to run the crawler
+**Note:** For full set of command please check: `nosmoke --help` <br/>
+**Note:** Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h \(setup hooks ,optional\) and -c \(the path of the configuration file is a must\) in order to run the crawler
 
 <!-- GITCONTRIBUTOR_START -->
 
@@ -131,7 +131,7 @@ nosmoke
 | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sun Apr 22 2018 09:02:23 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sun Apr 22 2018 09:07:29 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
 

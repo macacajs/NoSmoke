@@ -124,7 +124,7 @@ macaca server --verbose &
 nosmoke
 ```
 
-**Note:** nosmoke 提供了详细的运行参数说明，请见: `nosmoke --help`
+**Note:** nosmoke 提供了详细的运行参数说明，请见: `nosmoke --help` <br/>
 **Note:** 单独执行nosmoke 不带其他参数只会启动默认的demo app， 运行特定的app 需要提供配置文件， nosmoke -c '配置文件地址'
 
 <!-- GITCONTRIBUTOR_START -->
