@@ -31,13 +31,22 @@
 
 ## 2. How it works?
 
-In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers.
-
-* The **Proxy** layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of [web driver](https://www.w3.org/TR/webdriver/) protocol.
-* The **Macaca-Server** layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.
-* The **NoSmoke** layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server** layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **macaca-server** and **proxy**.
-
 ![](https://raw.githubusercontent.com/wiki/macacajs/NoSmoke/assets/macaca-architecture.png)
+
+- Platform Proxies: <br/>
+安装在各类终端的测试驱动程序，负责建立与Macaca Server 的socket 通讯端口， 并在内部根据各个平台提供的UI 测试框架 封装 WebDriver 测试协议, 便于Macaca Server 层统一通过WebDriver 协议发送测试请求指令. <br/>
+iOS Swift 版XCUITest 驱动:  [XCTestWD](//github.com/macacajs/XCTestWD) <br/>
+android UIAutomator 驱动: [UIAutomatorWD](//github.com/macacajs/UIAutomatorWD) <br/>
+
+- Macaca Server: <br/>
+安装Macaca 服务层， 通过cli 工具提供对外命令指令集， 内部封装了各个平台对应的请求发送器： macaca-ios, macaca-android, macaca-chrome <br/>
+macaca-ios 封装:  [macaca-ios](//github.com/macacajs/macaca-ios)<br/>
+macaca-android 封装: [macaca-android](//github.com/macacajs/macaca-android)<br/>
+
+- NoSmoke: <br/>
+负责初始化Macaca 服务以及代理层对应端的驱动程序， 内部提供一个 client 与 macaca server 进行通讯， 通讯协议遵守 WebDriver 规范； 初始化完毕后开始按照深度遍历算法， 结合android， ios ，以及web 各平台的特性对当前界面进行<br/>
+抓取， 分解界面可操作的基本元素后， 通过client 与router 进行交互， 发出操作指令，并进一步分解刷新后的界面. <br/>
+
 
 ## 3. Why the name?
 
