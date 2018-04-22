@@ -65,10 +65,14 @@ NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**
 ![web-pc](https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif)
 
 ### 4.2 Configurable
+Confirguration params and configuration templates for android/iOS/web demos
+[templates](https://github.com/macacajs/NoSmoke/wiki/configuration-templates)
+[list of configuration](https://github.com/macacajs/NoSmoke/wiki/configuration-parameters)
 
 ### 4.3 Hooks
 
 There are several hook API provided to provide further space to realize your own customization.
+[hooks reference](https://github.com/macacajs/NoSmoke/wiki/hook-templates)
 
 ## 5. Setup
 
