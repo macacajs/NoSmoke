@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "eslint": "^4.0.0",
-    "git-contributor": "^1.0.0",
+    "git-contributor": "^1.0.7",
     "istanbul": "*",
     "mocha": "*",
     "nodemon": "^1.14.1",
