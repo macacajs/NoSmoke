@@ -1,0 +1,32 @@
+---
+# 1. Initialization option
+desiredCapabilities:
+  platformName: 'iOS'
+  deviceName: 'iPhone 7 Plus'
+  app: '/Users/Gangdooz/.macaca-temp/ios-app-bootstrap.app'  # app download path
+  autoAcceptAlerts: true
+  reuse: 2
+
+# 2. Crawling option
+crawlingConfig:
+  strategy: 'ocr'
+  platform: 'ios'
+  newCommandTimeout: 5
+  maxActionPerPage: 20
+  testingDepth: 10
+  testingPeriod: 3600
+  targetElements:
+    changeLanguage:
+      searchValue : 'Allow'
+    enterMobile:
+      searchValue : 'Enter your Mobile Number'
+    enterMobilePWD:
+      searchValue : 'Enter your 4-digit MPIN'
+  exclusivePattern: ''
+  clickTypes:
+    - 'StaticText'
+    - 'Button'
+  editTypes:
+    - 'TextField'
+    - 'SecureTextField'
+...
