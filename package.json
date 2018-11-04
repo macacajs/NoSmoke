@@ -17,6 +17,7 @@
     "co": "^4.6.0",
     "commander": "^2.9.0",
     "htmlparser": "^1.7.7",
+    "jimp": "^0.5.6",
     "koa": "^1.2.1",
     "koa-bodyparser": "^2.2.0",
     "koa-router": "^5.4.0",

@@ -3,7 +3,7 @@
 desiredCapabilities:
   platformName: 'iOS'
   deviceName: 'iPhone 7 Plus'
-  app: '/Users/Gangdooz/.macaca-temp/ios-app-bootstrap.app'  # app download path
+  app: '/Users/Gangdooz/.macaca-temp/ios-app-bootstrap.app'
   autoAcceptAlerts: true
   reuse: 2
 
@@ -11,22 +11,14 @@ desiredCapabilities:
 crawlingConfig:
   strategy: 'ocr'
   platform: 'ios'
-  newCommandTimeout: 5
-  maxActionPerPage: 20
+  newCommandTimeout: 3
+  maxActionPerPage: 10
   testingDepth: 10
   testingPeriod: 3600
   targetElements:
-    changeLanguage:
+    confirmAlerts :
       searchValue : 'Allow'
-    enterMobile:
-      searchValue : 'Enter your Mobile Number'
-    enterMobilePWD:
-      searchValue : 'Enter your 4-digit MPIN'
-  exclusivePattern: ''
-  clickTypes:
-    - 'StaticText'
-    - 'Button'
-  editTypes:
-    - 'TextField'
-    - 'SecureTextField'
+    triggerHook:
+      searchValue : 'please input username'
+  exclusivePattern: 'please input password'
 ...
