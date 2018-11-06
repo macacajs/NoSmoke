@@ -147,8 +147,6 @@ Hooks.prototype.afterActionPerformed = function(action, crawler) {
   return null;
 };
 
-
-
 /**
  * Method to analysis and insert tab nodes for a master-detail view structure.
  * @Params: sourceArray the array of elements which belongs to the candidate tab node.

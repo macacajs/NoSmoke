@@ -20,5 +20,5 @@ crawlingConfig:
       searchValue : 'Allow'
     triggerHook:
       searchValue : 'please input username'
-  exclusivePattern: 'please input password'
+  exclusivePattern: 'please input password | Baidu'
 ...
