@@ -3,3 +3,5 @@
 **/dist
 **/public
 **/coverage
+**/lib/tesseract
+**/temp

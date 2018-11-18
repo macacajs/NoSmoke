@@ -1,4 +1,7 @@
 {
+  parserOptions: {
+    ecmaVersion: 2017
+  },
   "env": {
     "browser": true,
     "node": true,
@@ -80,7 +83,7 @@
     "no-loop-func": 0,
     "no-mixed-requires": 0,
     "no-mixed-spaces-and-tabs": [2, false],
-    "no-multi-spaces": 2,
+    "no-multi-spaces": 0,
     "no-multi-str": 2,
     "no-multiple-empty-lines": [2, { "max": 1 }],
     "no-native-reassign": 2,
@@ -130,7 +133,7 @@
     "no-with": 2,
     "no-extra-parens": 2,
     "object-curly-spacing": 0,
-    "one-var": [2, { "initialized": "never" }],
+    "one-var": [0, { "initialized": "never" }],
     "operator-assignment": 0,
     "operator-linebreak": [2, "after"],
     "padded-blocks": 0,
