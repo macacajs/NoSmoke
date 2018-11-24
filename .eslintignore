@@ -2,6 +2,7 @@
 **/node_modules
 **/dist
 **/public
+**/demo
 **/coverage
 **/lib/tesseract
 **/temp
