@@ -6,7 +6,7 @@ const assert = require('assert');
 
 const regexMock = require('./mock').mockRegexRaw;
 const NSCrawlerConfig = require('../lib/crawler/config');
-const NSCrawler = require('../lib/crawler/wda-crawler/crawler').NSCrawler;
+const NSCrawler = require('../lib/crawler/wda-impl/crawler').NSCrawler;
 
 describe('#Load Configuration', function() {
   let config = new NSCrawlerConfig();
