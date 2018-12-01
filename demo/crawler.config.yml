@@ -6,6 +6,8 @@ desiredCapabilities:
   platformName: 'android'
   isWaitActivity: true
   activity: 'LoginActivity'
+  newCommandTimeout: 5
+  autoAcceptAlerts: false
   permissionPatterns: '[\"继续安装\",\"下一步\",\"好\",\"允许\",\"确定\",\"我知道\"]'
   app: 'https://npmcdn.com/android-app-bootstrap@latest/android_app_bootstrap/build/outputs/apk/android_app_bootstrap-debug.apk'
 
