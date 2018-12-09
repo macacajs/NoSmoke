@@ -41,7 +41,6 @@
     "socket.io": "^2.0.3",
     "htmlparser2": "1.5.0",
     "string-similarity": "^2.0.0",
-    "tesseract.js-core": "^1.0.2",
     "window-or-global": "^1.0.1",
     "xlogger": "^1.0.4",
     "xml2map": "^1.0.2",
