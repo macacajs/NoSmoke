@@ -65,8 +65,7 @@
     "contributor": "git-contributor"
   },
   "pre-commit": [
-    "lint",
-    "contributor"
+    "lint"
   ],
   "homepage": "https://macacajs.github.io/nosmoke",
   "license": "MIT"
