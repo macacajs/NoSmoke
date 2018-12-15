@@ -23,6 +23,18 @@
 A cross platform UI crawler which scans view trees then generate and execute UI test cases. For full set of documentation, please refer to:
 [wiki](https://github.com/macacajs/NoSmoke/wiki)
 
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars0.githubusercontent.com/u/8198256?v=4" width="100px;"/><br/><sub><b>SamuelZhaoY</b></sub>](https://github.com/SamuelZhaoY)<br/>|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars1.githubusercontent.com/u/26514264?v=4" width="100px;"/><br/><sub><b>butterflyingdog</b></sub>](https://github.com/butterflyingdog)<br/>
+| :---: | :---: | :---: |
+
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sun Dec 09 2018 21:26:54 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->
+
 ## 1. Advantages of NoSmoke:
 
 With it you can:
@@ -122,18 +134,6 @@ nosmoke
 
 **Note:** For full set of command please check: `nosmoke --help` <br/>
 **Note:** Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h \(setup hooks ,optional\) and -c \(the path of the configuration file is a must\) in order to run the crawler
-
-<!-- GITCONTRIBUTOR_START -->
-
-## Contributors
-
-|[<img src="https://avatars0.githubusercontent.com/u/8198256?v=4" width="100px;"/><br/><sub><b>SamuelZhaoY</b></sub>](https://github.com/SamuelZhaoY)<br/>|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars1.githubusercontent.com/u/26514264?v=4" width="100px;"/><br/><sub><b>butterflyingdog</b></sub>](https://github.com/butterflyingdog)<br/>
-| :---: | :---: | :---: |
-
-
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sun Dec 09 2018 21:26:54 GMT+0800`.
-
-<!-- GITCONTRIBUTOR_END -->
 
 ## License
 
