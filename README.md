@@ -131,7 +131,7 @@ nosmoke
 | :---: | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Thu Jun 14 2018 12:15:53 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Wed Dec 12 2018 15:30:00 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
 
