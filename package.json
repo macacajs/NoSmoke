@@ -28,7 +28,7 @@
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
     "macaca-logo": "^1.0.0",
-    "macaca-reporter": "^1.1.11",
+    "macaca-reporter": "^1.2.10",
     "macaca-utils": "^1.0.1",
     "node-fetch": "^1.7.2",
     "node-uuid": "^1.4.1",
