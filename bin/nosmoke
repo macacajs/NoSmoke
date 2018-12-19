@@ -32,9 +32,12 @@ program
   .option('-h, --hooks <s>',  'location of the hook.js file')
   .option('-c, --config <s>', 'location of the configuration.yml file')
   .option('-s, --silent',     'start without opening browser')
+  .option('-v, --versions',   'output version infomation')
   .option('--verbose',        'show more debugging information')
   .option('--server <s>',     'adddress for server: `http://127.0.01:3456`')
-  .option('-v, --versions',   'output version infomation')
+  .option('--duration <d>',       'timeout interval')
+  .option('--deviceName <s>',     'name of device')
+  .option('--deviceType <s>',     'type of device')
   .usage('');
 
 program.parse(process.argv);
