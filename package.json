@@ -47,13 +47,15 @@
     "istanbul": "*",
     "mocha": "*",
     "nodemon": "^1.18.6",
-    "pre-commit": "*"
+    "pre-commit": "*",
+    "vuepress": "^0.14.8"
   },
   "scripts": {
     "dev": "nodemon ./bin/nosmoke",
     "test": "istanbul cover `npm bin`/_mocha",
     "lint": "eslint .",
-    "ci": "npm run lint && npm run test",
+    "docs:dev": "vuepress dev docs_src",
+    "docs:build": "vuepress build docs_src",
     "postinstall": "node ./scripts/print.js",
     "contributor": "git-contributor"
   },
