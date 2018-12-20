@@ -7,7 +7,6 @@ const githubLink = 'https://github.com/macacajs/NoSmoke';
 
 module.exports = {
   dest: 'docs',
-
   base: `/${name}/`,
 
   locales: {
@@ -29,7 +28,6 @@ module.exports = {
     repo: `macacajs/${name}`,
     editLinks: true,
     docsDir: 'docs_src',
-    docsBranch: 'master',
     locales: {
       '/': {
         label: 'English',
@@ -48,9 +46,9 @@ module.exports = {
             link: '/guide/'
           },
         ],
-        sidebar: [
-          '/guide/': genSidebarConfig('Guide'),
-        ]
+        sidebar: {
+          '/guide/': genSidebarConfig('Guide')
+        }
       },
       '/zh/': {
         label: '简体中文',
@@ -69,9 +67,9 @@ module.exports = {
             link: '/zh/guide/'
           },
         ],
-        sidebar: [
-          '/guide/': genSidebarConfig('Guide'),
-        ]
+        sidebar: {
+          '/zh/guide/': genSidebarConfig('指南')
+        }
       },
     },
   },
@@ -83,9 +81,12 @@ function genSidebarConfig(title) {
       title,
       collapsable: false,
       children: [
-        '',
         'quick-start',
         'configuration',
+        'cross-platform',
+        'hooks',
+        'continous-integration',
+        'roadmap',
       ],
     },
   ];
