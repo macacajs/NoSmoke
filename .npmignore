@@ -11,5 +11,4 @@ public/index.js
 *.sw*
 *.un~
 package-lock.json
-bin/reports
 *.tgz

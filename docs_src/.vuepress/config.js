@@ -2,4 +2,6 @@
 
 module.exports = {
   dest: 'docs',
+
+  base: '.'
 };
