@@ -85,7 +85,7 @@ function genSidebarConfig(title) {
         'configuration',
         'cross-platform',
         'hooks',
-        'continous-integration',
+        'continious-integration',
         'roadmap',
       ],
     },
