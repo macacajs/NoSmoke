@@ -1,6 +1,6 @@
 # 跨平台支持
 
-拷贝以下任何一段平台的代码， 按照[快速开始](/guide/quick-start.md) 中的指令运行.
+拷贝以下任何一段平台的代码， 按照[快速开始](/zh/guide/quick-start.md) 中的指令运行.
 
 ### **iOS Demo 配置**
 对于iOS, 用户可以选择声明 `app` 参数指明安装包路径或者 `bundleId` 参数

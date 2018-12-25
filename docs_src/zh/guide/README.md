@@ -91,7 +91,7 @@ Hooks.prototype.onActionPerformed = async function(action, crawler) {
 };
 ```
 
-阅读后续篇章以便了解 [如何快速开始](/guide/quick-start.md) 以及 [各个平台的配置方法](/guide/cross-platform.md) 并且懂得 [如何进一步通过勾子进行定制](/guide/hooks.md).
+阅读后续篇章以便了解 [如何快速开始](/zh/guide/quick-start.md) 以及 [各个平台的配置方法](/zh/guide/cross-platform.md) 并且懂得 [如何进一步通过勾子进行定制](/zh/guide/hooks.md).
 
 ### 案例展示
 TBD

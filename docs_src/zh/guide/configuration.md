@@ -1,6 +1,6 @@
 # 配置项
 
-在 [介绍](/guide/README.md) 部分, 我们提到了在 crawler.config.yml 文件中的可配置项:
+在 [介绍](/zh/guide/README.md) 部分, 我们提到了在 crawler.config.yml 文件中的可配置项:
 
 ```py
 crawlingConfig:
