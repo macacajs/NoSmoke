@@ -1,7 +1,7 @@
 ---
 
 home: true
-heroImage: /assets/macaca_logo.png
+heroImage: https://macacajs.github.io/assets/icons/macaca.svg
 actionText: Try it Out →
 actionLink: /guide/
 features:
@@ -11,27 +11,17 @@ features:
   details: 比UI自动化BDD脚本成本更简单，比猴子随机测试更精确
 - title:  报告收集
   details: 测试结果自动收集并生成，通过macaca reporter 展现
-  footer: MIT Licensed | Copyright © 2018-present
+footer: MIT Licensed | Copyright © 2015-present Macaca
 
 ---
 
-<br/>
+## 准备起航
 
-[![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![node version][node-image]][node-url]
-[![npm download][download-image]][download-url]
+```bash
+# 安装
+$ npm i nosmoke -g
+```
 
-[npm-image]: https://img.shields.io/npm/v/nosmoke.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/nosmoke
-[travis-image]: https://img.shields.io/travis/macacajs/NoSmoke.svg?style=flat-square
-[travis-url]: https://travis-ci.org/macacajs/NoSmoke
-[coveralls-image]: https://img.shields.io/coveralls/macacajs/NoSmoke.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/macacajs/NoSmoke?branch=master
-[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
-[download-url]: https://npmjs.org/package/nosmoke
-
-<br/>
+::: warning 注意
+NoSmoke 要求 Node.js >= 8.
+:::
