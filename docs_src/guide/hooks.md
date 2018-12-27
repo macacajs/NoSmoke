@@ -12,7 +12,7 @@ Even though the configuration file's [parameters](/guide/configuration.md)  prov
 
 Hooks provides a direct way for user to take full control of the crawling process in the following stage.
 
-![](./assets/nosmoke-hook-2.0.png)
+![](/NoSmoke/assets/nosmoke-hook-2.0.png)
 
 ### 3. Hook APIs
 

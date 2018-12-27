@@ -11,7 +11,7 @@
 
 钩子提供了在每一次爬虫完成操作以后，用户进行干预，选择自己手动进行元素操作的窗口.
 
-![](./assets/nosmoke-hook-2.0.png)
+![](/NoSmoke/assets/nosmoke-hook-2.0.png)
 
 ### 3. 钩子API
 

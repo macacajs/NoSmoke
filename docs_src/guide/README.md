@@ -24,7 +24,7 @@ From NoSmoke version 1.0, it relies on retrieving source information from local 
 
 From NoSmoke version 2.0, OCR is introduced to NoSmoke, by retrieving textual information directly from image, previously tons of calculation of xml view hierarchy on driver process has been removed.
 
-![](./assets/macaca-architecture-2.0.png)
+![](/NoSmoke/assets/macaca-architecture-2.0.png)
 
 ### Difference between versions:
 
@@ -44,7 +44,7 @@ From NoSmoke version 2.0, OCR is introduced to NoSmoke, by retrieving textual in
 
 NoSmoke supports UI crawling and testing for **iOS**, **Android**, [macaca-reporter](https://github.com/macacajs/macaca-reporter) is used to gather and present the crawling process.
 
-![](./assets/new_report_layout.png)
+![](/NoSmoke/assets/new_report_layout.png)
 
 ### b. Configurable
 

@@ -1,9 +1,6 @@
 'use strict';
 
-const pkg = require('../../package');
-
 const name = 'NoSmoke';
-const githubLink = 'https://github.com/macacajs/NoSmoke';
 
 module.exports = {
   dest: 'docs',
@@ -12,13 +9,13 @@ module.exports = {
   locales: {
     '/': {
       lang: 'en-US',
-      title: name,
-      description: pkg.description,
+      title: 'NoSmoke',
+      description: 'A cross platform UI crawler which scans view trees then generate and execute UI test cases.',
     },
     '/zh/': {
-      lang: 'zh-CN',
-      title: name,
-      description: pkg.description,
+      lang: 'zh',
+      title: 'NoSmoke',
+      description: '基于source tree 分析以及OCR 的多端冒烟测试爬虫工具',
     },
   },
   head: [

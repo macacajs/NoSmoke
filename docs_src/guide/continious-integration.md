@@ -52,4 +52,4 @@ nosmoke   -s --server http://localhost:3684  \
 
 After this is executed, the report file will be generated at the dir where the script has been executed.
 
-![](./assets/generated_output.png)
+![](/NoSmoke/assets/generated_output.png)

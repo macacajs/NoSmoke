@@ -1,4 +1,21 @@
-# NoSmoke
+---
+
+home: true
+heroImage: /assets/macaca_logo.png
+actionText: Try it Out →
+actionLink: /guide/
+features:
+- title: Cross Platform
+  details: Supports Android and IOS, setup and run at anytime!
+- title: Automated UI Tests
+  details: Simpler than UI BDD scripts, more accurate than Monkey tests.
+- title:  Report Generation
+  details: Testing result is fully visualized via macaca-reporter
+  footer: MIT Licensed | Copyright © 2018-present
+
+---
+
+<br/>
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
@@ -16,130 +33,5 @@
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
 [download-url]: https://npmjs.org/package/nosmoke
-[中文版](https://macacajs.github.io/NoSmoke/zh/guide/)
 
----
-
-A cross platform UI crawler which scans view trees then generate and execute UI test cases. For full set of documentation, please refer to:
-[wiki](https://macacajs.github.io/NoSmoke/guide/)
-
-<!-- GITCONTRIBUTOR_START -->
-
-## Contributors
-
-|[<img src="https://avatars0.githubusercontent.com/u/8198256?v=4" width="100px;"/><br/><sub><b>SamuelZhaoY</b></sub>](https://github.com/SamuelZhaoY)<br/>|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars1.githubusercontent.com/u/26514264?v=4" width="100px;"/><br/><sub><b>butterflyingdog</b></sub>](https://github.com/butterflyingdog)<br/>
-| :---: | :---: | :---: |
-
-
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sun Dec 09 2018 21:26:54 GMT+0800`.
-
-<!-- GITCONTRIBUTOR_END -->
-
-## 1. Advantages of NoSmoke:
-
-With it you can:
-
-* [x] **Automated UI test** with simple configuration
-* [x] **More accurate than monkey test** with view tree crawling
-* [x] **Multiple platforms** iOS, Android and Web !! :\]
-* [x] **Testing result visualisation** via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
-
-## 2. How it works?
-
-In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers.
-
-* The **Proxy** layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of [web driver](https://www.w3.org/TR/webdriver/) protocol.
-* The **Macaca-Server** layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.
-* The **NoSmoke** layer, it contains a node client which posting various crawling and analysis commands to **Macaca-Server** layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via **macaca-server** and **proxy**.
-
-![](https://raw.githubusercontent.com/wiki/macacajs/NoSmoke/assets/macaca-architecture.png)
-
-## 3. Why the name?
-
-Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke testing`, but smoke is not good for health ...
-
-## 4. Features
-
-### 4.1 Muliplatform
-
-NoSmoke supports UI crawling and testing for **iOS**, **Android** and **PC Web**, [macaca-reporter](//github.com/macacajs/macaca-reporter) is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:
-
-#### For Android
-
-![macaca-android](https://user-images.githubusercontent.com/8198256/31303578-988f5db2-ab42-11e7-8b96-52175fe4ba92.gif)
-
-#### For iOS
-
-![macaca-ios](https://user-images.githubusercontent.com/8198256/31303576-98897564-ab42-11e7-9a12-36e5aaf5161d.gif)
-
-#### For PC-Web
-
-![web-pc](https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif)
-
-### 4.2 Configurable
-Configuration params and configuration templates for android/iOS demos [templates](/guide/cross-platform.md) [list of configuration](/guide/configuration.md)
-
-### 4.3 Hook
-
-For every iteration in the DFS crawling process, users can intercept the action and manually post out UI actions based on xpath:
-[hooks reference](/guide/hooks.md)
-
-## 5. Setup
-
-### 5.1. Requirements:
-
-* iOS simulator 11.0 and xcode 10.0 and above.
-* Android 6.0 and above, supporting both device and simulator. For real device testing please install null-keyboard
-
-**Note** You could also check environment by `macaca doctor`:
-
-```bash
-$ npm i macaca-cli -g
-$ macaca doctor
-```
-
-### 5.2. Setup & Run:
-
-##### **Step 1.** Setup:
-
-Since NoSmoke 2.0 utilizes OCR to replace the previous xml source tree parsing implementation. You may need to install tesseract on your device properly to use the ocr strategy introduced in NoSmoke 2.0.
-
-For mac-os user:
-```
-brew install tesseract --all-languages
-```
-
-Full list of dependencies:
-
-```bash
-$ npm i macaca-android -g
-$ npm i macaca-ios -g
-$ npm i macaca-cli -g
-$ npm i macaca-electron -g
-```
-
-Install nosmoke in a single line:
-
-```bash
-$ npm i nosmoke -g
-```
-
-##### **Step 2.** Run it:
-
-In your workspace directory, execute the following command
-
-```bash
-
-# initialize macaca server
-macaca server --verbose &
-
-# initialize nosmoke
-nosmoke
-```
-
-**Note:** For full set of command please check: `nosmoke --help` <br/>
-**Note:** Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h \(setup hooks ,optional\) and -c \(the path of the configuration file is a must\) in order to run the crawler
-
-## License
-
-The MIT License (MIT)
+<br/>

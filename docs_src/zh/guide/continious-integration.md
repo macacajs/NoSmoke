@@ -53,5 +53,5 @@ nosmoke   -s --server http://localhost:3684  \
 
 在以上指令执行后，该执行路径下会生成对应的reports 路径，可点击并查看运行报告.
 
-![](./assets/generated_output.png)
+![](/NoSmoke/assets/generated_output.png)
 

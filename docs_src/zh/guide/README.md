@@ -24,7 +24,7 @@ NoSmoke 提供一下能力:
 
 从 NoSmoke 2.0 起， 爬虫程序通过OCR 扫描客户端App 窗口图片对可操作点进行分析，规避了大量的xml 计算成本，从而提升效率.
 
-![](./assets/macaca-architecture-2.0.png)
+![](/NoSmoke/assets/macaca-architecture-2.0.png)
 
 ### 版本差异一览:
 
@@ -44,7 +44,7 @@ NoSmoke 提供一下能力:
 
 NoSmoke 支持多端UI测试： **iOS**, **Android**, 爬行记录通过 [macaca-reporter](https://github.com/macacajs/macaca-reporter) 进行展示.
 
-![](./assets/new_report_layout.png)
+![](/NoSmoke/assets/new_report_layout.png)
 
 ### b. 可配置
 

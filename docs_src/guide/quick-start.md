@@ -15,7 +15,6 @@
 npm i macaca-android -g
 npm i macaca-ios -g
 npm i macaca-cli -g
-npm i macaca-electron -g
 ```
 
 ##### **Step 2.** Setup NoSmoke :\]
