@@ -1,6 +1,6 @@
 # NoSmoke 2.0 Cookbook
 
-NoSmoke 是一款基于source-XML-tree/OCR 为基础的多端UI自动化测试框架，服务于持续集成环境中的冒烟测试 并尊从[WDA 规范](https://www.w3.org/TR/webdriver/). 本文档介绍NoSmoke 2.0 的使用方式.
+NoSmoke 是一款基于source-XML-tree/OCR 为基础的多端UI自动化测试框架，服务于持续集成环境中的冒烟测试 并尊从[Webdriver 标准](https://www.w3.org/TR/webdriver/). 本文档介绍NoSmoke 2.0 的使用方式.
 
 ## 1. NoSmoke 的优势:
 

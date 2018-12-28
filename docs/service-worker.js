@@ -21,11 +21,11 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "3a93fc3feae55af1948b8315e883dc76"
+    "revision": "4542f6a7ec38657c0a60751b3a13f621"
   },
   {
-    "url": "assets/css/0.styles.7957c06f.css",
-    "revision": "e6e807ddc8cab365731e74165eb3064b"
+    "url": "assets/css/0.styles.49467085.css",
+    "revision": "5d2bbe9ebb038a366166a56efc93a82f"
   },
   {
     "url": "assets/generated_output.png",
@@ -40,12 +40,12 @@ self.__precacheManifest = [
     "revision": "ce5f3fdb8aedd2e490941b4e0a9f72f1"
   },
   {
-    "url": "assets/js/11.58336d05.js",
-    "revision": "9e40d91c70f66d0a1cde539117153a9a"
+    "url": "assets/js/11.afbfaff8.js",
+    "revision": "5d3b73d2b889c8d06f25990a3341615e"
   },
   {
-    "url": "assets/js/12.ce1f53be.js",
-    "revision": "023a2971572bfa2b2f4cbb1dccf4aac2"
+    "url": "assets/js/12.94bc775e.js",
+    "revision": "11126bc840c6aacb26adce5da727669f"
   },
   {
     "url": "assets/js/13.72808d1c.js",
@@ -80,12 +80,12 @@ self.__precacheManifest = [
     "revision": "2b2cb8dfc9d1cac46680b7a52053d552"
   },
   {
-    "url": "assets/js/3.e5eb65bc.js",
-    "revision": "0fdcce36cf0c250cf373d5428f779748"
+    "url": "assets/js/3.6be11723.js",
+    "revision": "f0a089b525da75d0b2d269f08c2a61f4"
   },
   {
-    "url": "assets/js/4.d8129c02.js",
-    "revision": "92f4e456d84862ec0899a9ef37ca33d6"
+    "url": "assets/js/4.f4a441d9.js",
+    "revision": "b3eeafb765a4aa029cf577f144f255af"
   },
   {
     "url": "assets/js/5.91be2d1a.js",
@@ -108,12 +108,8 @@ self.__precacheManifest = [
     "revision": "c6537ff58c02fc2d91ec0ac45c921679"
   },
   {
-    "url": "assets/js/app.085bbc4d.js",
-    "revision": "817080ce4ced80554f8092e89f89fb67"
-  },
-  {
-    "url": "assets/macaca_logo.png",
-    "revision": "be63e48bfbd7e7aad9f48cac6d03a0c2"
+    "url": "assets/js/app.1627ba50.js",
+    "revision": "cca1d84ff01305c0aa4c16374778ac89"
   },
   {
     "url": "assets/macaca-architecture-2.0.png",
@@ -133,67 +129,67 @@ self.__precacheManifest = [
   },
   {
     "url": "guide/configuration.html",
-    "revision": "4b8052cf7502976ebe064b5e7c82f358"
+    "revision": "b48ff7d6722d8b7bbd513c4965d43181"
   },
   {
     "url": "guide/continious-integration.html",
-    "revision": "1e70318af6eeb6e649126099bebbb671"
+    "revision": "b6d5f627bd3756ef79d4453600e611c9"
   },
   {
     "url": "guide/cross-platform.html",
-    "revision": "94ccc1b719fb5d7e5d44168d55690f92"
+    "revision": "53a3655d2b0cb7da49d6ede996a5c731"
   },
   {
     "url": "guide/hooks.html",
-    "revision": "70ace57cabc190d57368f9c58a942f9b"
+    "revision": "165fc36aacb779627c87d233fdccfdfe"
   },
   {
     "url": "guide/index.html",
-    "revision": "27be2e9e7c761e8910b690678eba42f6"
+    "revision": "b9f842f8599bce92643269cf407bee75"
   },
   {
     "url": "guide/quick-start.html",
-    "revision": "d6b08a71d0ba20a98f809e85c27cddae"
+    "revision": "81d9eeb9278313f23f37fec4b4041f7a"
   },
   {
     "url": "guide/roadmap.html",
-    "revision": "3dd23962981fdafb5c8b3f38507e1b5a"
+    "revision": "65d436f9c88ac2a4f3d6be2742e4815a"
   },
   {
     "url": "index.html",
-    "revision": "995921642024636ff2ab93c397ed94d2"
+    "revision": "81764a01b2d26f5973bbbe359e9b548c"
   },
   {
     "url": "zh/guide/configuration.html",
-    "revision": "2d6ea84296081f19e335de7b8e399c1b"
+    "revision": "6739b1d15dfc7929605840645ba216a8"
   },
   {
     "url": "zh/guide/continious-integration.html",
-    "revision": "6fcef5efb4724227ce3a00f0569a58e8"
+    "revision": "c7ab3a92251290d9916d2c34194b8bb6"
   },
   {
     "url": "zh/guide/cross-platform.html",
-    "revision": "ce08d0f16fd70381276be00e9b7ced5c"
+    "revision": "36040df0ac38f72f08a5d5402725df44"
   },
   {
     "url": "zh/guide/hooks.html",
-    "revision": "385a73945650de18ea363e1d13abd4ab"
+    "revision": "d4366958236ad5026c2391e585d6830b"
   },
   {
     "url": "zh/guide/index.html",
-    "revision": "2ee636868d7c1c5018411a56d27c51a5"
+    "revision": "016ad317c4460dfe5b70fbe933412919"
   },
   {
     "url": "zh/guide/quick-start.html",
-    "revision": "0dfb2bfcc0cbddf37b7432246387f3ab"
+    "revision": "d9e59520c9450cfd1e1e019f25bf0e32"
   },
   {
     "url": "zh/guide/roadmap.html",
-    "revision": "f0af9f6d6447b30968fce12508ad270b"
+    "revision": "967663d4f8ba2924c87691b24f36c732"
   },
   {
     "url": "zh/index.html",
-    "revision": "5b8c97eef25dc25ad2e20cbba4ceb0cb"
+    "revision": "6d94698a3a274d0f4d210c0dbe029f24"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();

@@ -15,7 +15,7 @@ module.exports = {
     '/zh/': {
       lang: 'zh',
       title: 'NoSmoke',
-      description: '基于source tree 分析以及OCR 的多端冒烟测试爬虫工具',
+      description: '基于 source tree 分析以及 OCR 的多端冒烟测试工具',
     },
   },
   head: [

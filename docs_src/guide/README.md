@@ -1,6 +1,6 @@
 # NoSmoke 2.0 Cookbook
 
-NoSmoke is a cross platform UI crawler which scans view trees/conduct ocr operations and then generate and execute UI test cases.  Used for smoke testing under continuous integration. Following [WDA](https://www.w3.org/TR/webdriver/) protocol. This document is written as a manual for NoSmoke 2.0.
+NoSmoke is a cross platform UI crawler which scans view trees/conduct ocr operations and then generate and execute UI test cases.  Used for smoke testing under continuous integration. Following [Webdriver](https://www.w3.org/TR/webdriver/) protocol. This document is written as a manual for NoSmoke 2.0.
 
 ## 1. Advantages of NoSmoke:
 
@@ -33,7 +33,7 @@ From NoSmoke version 2.0, OCR is introduced to NoSmoke, by retrieving textual in
 | Support Platform  | Android iOS Web  |  Android iOS  |
 | Configurable Items |  14 configuration  |  4 simplified configuration
 | Hook APIs     |   5 hooks   |     1 simplified hooks
-| Hook implementation  |  Raw restful wda request  |  Encapsulated APIs for click/input/drag  |
+| Hook implementation  |  Raw restful wd request  |  Encapsulated APIs for click/input/drag  |
 | Duration per iteration  | 12 Second / Round  |  5 Second / Round |
 | Stability Factor  | 0.6  |  0.95  |
 | Module Dependencies  |  Macaca Drivers  | Macaca/Appium Drivers |
@@ -96,6 +96,7 @@ Hooks.prototype.onActionPerformed = async function(action, crawler) {
 Read the following chapters to know [how to setup](/guide/quick-start.md) then [you can start on different platforms](/guide/cross-platform.md) and [further customization](/guide/hooks.md) to fullfil your own desired crawling behaviour.
 
 ### Demos
+
 TBD
 
 ### License
