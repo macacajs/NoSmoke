@@ -99,10 +99,10 @@ NoSmoke OCR 执行案例
 
 | App  | 平台  | 设备类型 |  报告 |  配置链接 |
 | :--- | :---  |  :---  | :--- | :--- |
-| Macaca Demo  | iOS  | Simulator   | [链接](https://upbeat-shannon-0947ed.netlify.com/reports/2018-12-28-13-50-36-report.html#mode=image)  |   [configuration](https://upbeat-shannon-0947ed.netlify.com/crawler.config-ios.yml) [cmd](https://upbeat-shannon-0947ed.netlify.com/run-ios.yml) |
-| Macaca Demo  | Android  | Simulator  | [链接](https://upbeat-shannon-0947ed.netlify.com/reports/2018-12-28-14-4-26-report.html#mode=image)  |   [configuration](https://upbeat-shannon-0947ed.netlify.com/crawler.config-android.yml) [cmd](https://upbeat-shannon-0947ed.netlify.com/run-android.yml) |
-| Dash-iOS  | iOS  |  Simulator  | [链接](https://compassionate-mclean-9beb64.netlify.com/reports/2018-12-28-14-40-38-report.html#mode=image)  |   [configuration](https://compassionate-mclean-9beb64.netlify.com/crawler.config-ios.yml) [cmd](https://compassionate-mclean-9beb64.netlify.com/run-ios.yml) |
-| YouDao-Dict   | Android  |  Device  | [链接](https://compassionate-mclean-9beb64.netlify.com/reports/2018-12-28-14-52-24-report.html#mode=image)  |   [configuration](https://compassionate-mclean-9beb64.netlify.com/crawler.config-android.yml) [cmd](https://upbeat-shannon-0947ed.netlify.com/run-android.yml) |
+| Macaca Demo  | iOS  | Simulator   | [链接](https://upbeat-shannon-0947ed.netlify.com/reports/2018-12-28-13-50-36-report.html#mode=image)  |   [配置](https://upbeat-shannon-0947ed.netlify.com/crawler.config-ios.yml) [指令](https://upbeat-shannon-0947ed.netlify.com/run-ios.yml) |
+| Macaca Demo  | Android  | Simulator  | [链接](https://upbeat-shannon-0947ed.netlify.com/reports/2018-12-28-14-4-26-report.html#mode=image)  |   [配置](https://upbeat-shannon-0947ed.netlify.com/crawler.config-android.yml) [指令](https://upbeat-shannon-0947ed.netlify.com/run-android.yml) |
+| Dash-iOS  | iOS  |  Simulator  | [链接](https://compassionate-mclean-9beb64.netlify.com/reports/2018-12-28-14-40-38-report.html#mode=image)  |   [配置](https://compassionate-mclean-9beb64.netlify.com/crawler.config-ios.yml) [指令](https://compassionate-mclean-9beb64.netlify.com/run-ios.yml) |
+| YouDao-Dict   | Android  |  Device  | [链接](https://compassionate-mclean-9beb64.netlify.com/reports/2018-12-28-14-52-24-report.html#mode=image)  |   [配置](https://compassionate-mclean-9beb64.netlify.com/crawler.config-android.yml) [指令](https://upbeat-shannon-0947ed.netlify.com/run-android.yml) |
 
 ### License
 
