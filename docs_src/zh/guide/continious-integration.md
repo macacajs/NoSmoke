@@ -2,7 +2,7 @@
 
 本文在快速启动，以及配置项，钩子等内容基础上，介绍在CI 环境中完成相关配置部署的一些tips.
 
-### 1. 脚本模版:
+### 运行前准备
 
 在运行前，可检查macaca 以及 nosmoke 将要执行的端口上是否已有相关程序，可执行以下指令将对应程序进行清理
 
@@ -10,7 +10,7 @@
 lsof -i :${process-port-which-you-need-to-close} | awk '{print $2}' | tail -1 | xargs kill -9
 ```
 
-**运行安卓:**  <br/>
+### 运行安卓
 
 在运行安卓前，先唤起macaca 服务.
 
@@ -30,7 +30,7 @@ nosmoke -s -c ${path-of-file}/crawler.config-android.yml \
 
 ```
 
-**运行iOS** <br/>
+### 运行iOS
 
 在运行iOS前，先唤起macaca 服务.
 ```bash

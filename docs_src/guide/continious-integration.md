@@ -2,7 +2,7 @@
 
 Based on previous information we have provided,  we have talked about how to [install](/guide/quick-start.md), customize nosmoke testing via [hooks](/guide/hooks.md) and [configuration](/guide/configuration.md) files. Here is the last step in the series of documents, where you can see how a living CI instance of NoSmoke is scripted.
 
-### 1.Scripts Template:
+### Before Run:
 
 Before run, you may terminate the process which occupies the current process id and then start macaca service and
 
@@ -12,7 +12,7 @@ lsof -i :${process-port-which-you-need-to-close} | awk '{print $2}' | tail -1 | 
 
 ```
 
-**For Android** <br/>
+### For Android
 
 Ensure you have setup macaca server first.
 
@@ -33,7 +33,7 @@ nosmoke -s -c ${path-of-file}/crawler.config-android.yml \
 
 ```
 
-**For iOS** <br/>
+### For iOS
 
 Ensure you have setup macaca server first.
 ```bash
