@@ -10,7 +10,7 @@ With it you can:
 
 * [x] **More accurate than monkey test**, instead of generate randomised UI test action, crawler analyse current screens potential UI elements and triggers action targeting those elements.
 
-* [x] One tool, **multiple platforms - iOS, Android and Web** !! :\]
+* [x] One tool, **multiple platforms - iOS and Android** !! :\]
 
 * [x] **Visualise \(automation\) testing result** and validate the testing history via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
 

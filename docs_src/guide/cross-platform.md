@@ -3,8 +3,8 @@
 If you simply want to verify how NoSmoke works, there is a fast way to do it. Copy the following sections of code and save it as a .yml file.  Run your code with the instruction given [previously](/guide/quick-start.md) .  You will see how the NoSmoke app-crawler performs on [Macaca Demos ](https://github.com/macaca-sample)
 
 ### **Configuration For iOS**
-For iOS, instead of using `app` param, you can specify bundleID as well, like:
-`bundleId: '${your-package-name}'`
+For iOS, instead of using `app` param, for using app which has already been installed, you can specify bundleID as well, like:
+`bundleId: '${your-package-name}'` . You can get the bundleId in the plist file of your .ipa bundle.
 
 ```py
 ---
@@ -25,7 +25,7 @@ crawlingConfig:
 
 ### **Configuration For Android**
 For Android, instead of using `app` param, you can specify package as well, like:
-`package: '${name-of-package}'` . You may get the list of package names installed on android device like: `adb shell 'pm list packages -f'`
+`package: '${name-of-package}'` for using app which has already been installed. You may get the list of package names installed on android device like: `adb shell 'pm list packages -f'`
 
 ```py
 ---

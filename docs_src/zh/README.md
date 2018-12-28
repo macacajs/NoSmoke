@@ -10,7 +10,7 @@ features:
 - title: 自动化UI测试
   details: 比UI自动化BDD脚本成本更简单，比猴子随机测试更精确
 - title:  报告收集
-  details: 测试结果自动收集并生成，通过macaca reporter 展现
+  details: 测试结果自动收集并生成，通过macaca reporter展现
   footer: MIT Licensed | Copyright © 2018-present
 
 ---

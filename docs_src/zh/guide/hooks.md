@@ -4,8 +4,8 @@
 
 虽然 [配置文件](/zh/guide/configuration.md) 提供了完整的定制化爬虫的方法，但在一些场合下，依然会有一些特殊的交互需要更加直接的操作方式来进行干预，比如：
 
-* case 1: 当App 安装，完成首次登陆的滑动式欢迎页面.
-* case 2: 在App 进行爬行过程中，需要进入特定入口完成一系列操作后对XX 场景进行识别.
+* **Case 1 :**: 当App 安装，完成首次登陆的滑动式欢迎页面.
+* **case 2 :**: 在App 进行爬行过程中，需要进入特定入口完成一系列操作后对XX 场景进行识别.
 
 ### 2. 触发点:
 
@@ -17,11 +17,11 @@
 
 以下是钩子API 拦截点的详细说明:
 
-#### 3.1 onActionPerformed
+#### onActionPerformed
 
 ```js
 /**
- * Method to perform action for the current platform, invoked when the action is going to perform
+ * Method to perform action for the current platform, invoked when the action is performed
  * @Params: action the action which belongs to current active node, user can determine the priority of action execution
  * @Params: crawler the crawler instance which contains the context information as well as crawler config
  * */
@@ -34,7 +34,7 @@ Hooks.prototype.onActionPerformed = async function(action, crawler) {
 
 ### 4. 编写你的钩子
 
-参考以下方法了解在`onActionPerform` 钩子当中，可以执行的已经完成封装的指令， 它们是: 'click', 'type', 'drag'
+参考以下方法了解在`onActionPerform` 钩子当中，可以执行的已经完成封装的指令， 它们是: 'click', 'type', 'drag', 对于需要输入的对象, 可以通过[app-inspector](https://macacajs.github.io/app-inspector/)获得.
 
 ```js
 
@@ -63,4 +63,3 @@ Hooks.prototype.onActionPerformed = async function(action, crawler) {
 };
 
 ```
-

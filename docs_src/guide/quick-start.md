@@ -17,7 +17,7 @@ npm i macaca-ios -g
 npm i macaca-cli -g
 ```
 
-##### **Step 2.** Setup NoSmoke :\]
+##### **Step 2.** Setup NoSmoke
 
 Install the nosmoke command line from npmjs
 
@@ -25,31 +25,22 @@ Install the nosmoke command line from npmjs
 npm i nosmoke -g
 ```
 
-Open the terminal and initialize macaca server `macaca server --verbose`
-
-then in your workspace directory, execute the following command
+Open the terminal and initialize macaca server:
 
 ```
-nosmoke -h path-of-your-hook.js -c path-of-your-config.yml
+ macaca server --verbose
 ```
 
-For full set of command please check:
+Then in your workspace directory, execute the following command and run the default macaca demo (Android), you may need to create a emulator first. Please refer [here](/zh/guide/cross-platform.md) to see how to configure and run on your own target app.
+
+```
+nosmoke
+```
+
+For full set of command please type the following lines in terminal.
 
 ```
 nosmoke --help
-
-  Usage: nosmoke [options]
-
-  Options:
-
-    -p, --port <d>    port to use (5678 default)
-    -u, --udid <s>    udid of device
-    -h, --hooks <s>   location of the hook.js file
-    -c, --config <s>  location of the configuration file
-    -s, --silent      start without opening browser
-    --verbose         show more debugging information
-    -v, --versions    output version infomation
-    -h, --help        output usage information
 ```
 
 ### 3. What you will see

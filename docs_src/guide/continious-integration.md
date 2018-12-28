@@ -7,10 +7,13 @@ Based on previous information we have provided,  we have talked about how to [in
 Before run, you may terminate the process which occupies the current process id and then start macaca service and
 
 ```bash
+
 lsof -i :${process-port-which-you-need-to-close} | awk '{print $2}' | tail -1 | xargs kill -9
+
 ```
 
-For Android:
+**For Android** <br/>
+
 Ensure you have setup macaca server first.
 
 ```bash
@@ -22,6 +25,7 @@ macaca server --verbose -p 3554 &
 Then execute the following command to start the crawling process.
 
 ```bash
+
 nosmoke -s -c ${path-of-file}/crawler.config-android.yml \
         -h ${path-of-file}/hooks-android.js \
         --server http://localhost:3554 \
@@ -29,7 +33,8 @@ nosmoke -s -c ${path-of-file}/crawler.config-android.yml \
 
 ```
 
-For iOS
+**For iOS** <br/>
+
 Ensure you have setup macaca server first.
 ```bash
 macaca server --verbose -p 3684 &
@@ -39,13 +44,13 @@ Then execute the following command to start the crawling process.
 ```bash
 xcrun simctl launch booted com.apple.springboard
 xcrun simctl terminate booted com.apple.test.XCTestWDUITests-Runner
-xcrun simctl terminate booted ${your-bundle-id}.-   # bundle id of your current app.
+xcrun simctl terminate booted ${your-bundle-id}   # bundle id of your current app.
 
 sleep 2
 
 nosmoke   -s --server http://localhost:3684  \
           -h ${path-of-file}/hooks-ios.js \
-          -c ${path-of-file}//crawler.config-ios.yml \
+          -c ${path-of-file}/crawler.config-ios.yml \
           -p 3694
 
 ```

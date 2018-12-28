@@ -10,7 +10,8 @@
 lsof -i :${process-port-which-you-need-to-close} | awk '{print $2}' | tail -1 | xargs kill -9
 ```
 
-运行安卓:
+**运行安卓:**  <br/>
+
 在运行安卓前，先唤起macaca 服务.
 
 ```bash
@@ -29,7 +30,8 @@ nosmoke -s -c ${path-of-file}/crawler.config-android.yml \
 
 ```
 
-运行iOS
+**运行iOS** <br/>
+
 在运行iOS前，先唤起macaca 服务.
 ```bash
 macaca server --verbose -p 3684 &
@@ -46,7 +48,7 @@ sleep 2
 
 nosmoke   -s --server http://localhost:3684  \
           -h ${path-of-file}/hooks-ios.js \
-          -c ${path-of-file}//crawler.config-ios.yml \
+          -c ${path-of-file}/crawler.config-ios.yml \
           -p 3694
 
 ```

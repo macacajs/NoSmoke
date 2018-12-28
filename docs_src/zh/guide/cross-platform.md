@@ -3,8 +3,7 @@
 拷贝以下任何一段平台的代码， 按照[快速开始](/zh/guide/quick-start.md) 中的指令运行.
 
 ### **iOS Demo 配置**
-对于iOS, 用户可以选择声明 `app` 参数指明安装包路径或者 `bundleId` 参数
-`bundleId: '${your-package-name}'` 指明启动已经安装了的App.
+对于iOS, 用户可以选择声明 `app` 参数指明安装包路径. 或者对于已经在模拟器中安装的应用, 用户可以声明 `bundleId` 参数, 通过 `bundleId: '${your-package-name}'` 指明启动已经安装了的App, bundleId 需要在安装包的plist 文件中，搜索'bundleId' 来获得.
 
 ```py
 ---

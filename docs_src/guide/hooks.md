@@ -2,11 +2,11 @@
 
 ### 1. **Why do we need it:**
 
-Even though the configuration file's [parameters](/guide/configuration.md)  provides comprehensive ways of customizing the crawling behavior for your target app, there may be some tricky scenes that you need a more direct control on the crawling process. For example:
+Even though the configuration file's [parameters](/guide/configuration.md) provides comprehensive ways of customizing the crawling behavior for your target app, there may be some tricky scenes that you need a more direct control on the crawling process. For example:
 
-* case 1: if your app contains a login page and after the first time you login you have to slide down until end of an agreement and tick a check box and then click the confirm button before you can enter the home panel of your app.  You may have to write a complicated list of specific actions in your configuration parameter to perform these series of behavior.
+* **Case 1 :** if your app contains a login page and after the first time you login you have to slide down until end of an agreement and tick a check box and then click the confirm button before you can enter the home panel of your app.  You may have to write a complicated list of specific actions in your configuration parameter to perform these series of behavior.
 
-* case 2: during the middle of crawling, if you want to test a very specific section of your app which is embedded inside of deep layers of  activities/view controllers, it will also be like hell if you can only make it via a set of actions in configuration file.
+* **Case 2 :** during the middle of crawling, if you want to test a very specific section of your app which is embedded inside of deep layers of  activities/view controllers, it will also be like hell if you can only make it via a set of actions in configuration file.
 
 ### 2. Trigger points:
 
@@ -18,11 +18,11 @@ Hooks provides a direct way for user to take full control of the crawling proces
 
 This sections gives you an overview about hook methods and their input output params.
 
-#### 3.1 onActionPerformed
+#### onActionPerformed
 
 ```js
 /**
- * Method to perform action for the current platform, invoked when the action is going to perform
+ * Method to perform action for the current platform, invoked when the action is performed
  * @Params: action the action which belongs to current active node, user can determine the priority of action execution
  * @Params: crawler the crawler instance which contains the context information as well as crawler config
  * */

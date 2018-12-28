@@ -6,9 +6,9 @@ actionText: Try it Out →
 actionLink: /guide/
 features:
 - title: Cross Platform
-  details: Supports Android and IOS, setup and run at anytime!
+  details: Supports android and iOS, setup and run at anytime!
 - title: Automated UI Tests
-  details: Simpler than UI BDD scripts, more accurate than Monkey tests.
+  details: Simpler than UI BDD scripts, more accurate than monkey tests.
 - title:  Report Generation
   details: Testing result is fully visualized via macaca-reporter
   footer: MIT Licensed | Copyright © 2018-present

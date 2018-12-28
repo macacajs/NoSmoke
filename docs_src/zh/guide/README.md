@@ -6,11 +6,11 @@ NoSmoke 是一款基于source-XML-tree/OCR 为基础的多端UI自动化测试�
 
 NoSmoke 提供一下能力:
 
-* [x] 以 **最轻便的配置能力** 以及 **最简化的脚本** 执行 **自动化UI测试**.
+* [x] 以**最轻便的配置能力**以及**最简化的脚本**执行**自动化UI测试**.
 
-* [x] **基于深度遍历算法** 精确定位测试UI元素， 提供 **高于猴子测试的测试精度**.
+* [x] **基于深度遍历算法**精确定位测试UI元素， 提供**高于猴子测试的测试精度**.
 
-* [x] 支持多端运行： **iOS, Android** !! :\]
+* [x] 支持多端运行: **iOS, Android**!! :\]
 
 * [x] **测试结果可视化**  [Macaca-Reporter](https://github.com/macacajs/macaca-reporter).
 
@@ -31,8 +31,8 @@ NoSmoke 提供一下能力:
 | 指标    | 版本 1.0   |  版本 2.0
 |-              | -           | -
 | 支持平台  | Android iOS Web  |  Android iOS  |
-| 可配置项  |  14 配置  |  4 项简化配置
-| 拦截钩子  |  5 个  |     1 个并简化
+| 可配置项  |  14 配置  |  4 项简化配置 |
+| 拦截钩子  |  5 个  |     1 个并简化 |
 | 钩子实现  | 无API，需要用户实现restful 指令  |  封装API 提供点击/输入/拖拽能力 |
 | 迭代长度  | 12 秒/轮 | 5 秒/轮 |
 | 稳定评分  | 0.6  |  0.95  |
@@ -42,7 +42,7 @@ NoSmoke 提供一下能力:
 
 ### a. 多端
 
-NoSmoke 支持多端UI测试： **iOS**, **Android**, 爬行记录通过 [macaca-reporter](https://github.com/macacajs/macaca-reporter) 进行展示.
+NoSmoke 支持多端UI测试： **iOS**, **Android**, 爬行记录通过[macaca-reporter](https://github.com/macacajs/macaca-reporter) 进行展示.
 
 ![](/NoSmoke/assets/new_report_layout.png)
 
@@ -53,7 +53,7 @@ NoSmoke 支持多端UI测试： **iOS**, **Android**, 爬行记录通过 [macaca
 ```ruby
 desiredCapabilities:
     platformName: 'iOS/Android'
-    deviceName: 'iPhone 6 Plus'
+    deviceName: '${name-of-the-device}'  // for android run `adb devices`, for iOS simulator run `xcrun simctl list`
     app: '${downloadable address of .ipa/.apk file}'
 ```
 
@@ -91,7 +91,7 @@ Hooks.prototype.onActionPerformed = async function(action, crawler) {
 };
 ```
 
-阅读后续篇章以便了解 [如何快速开始](/zh/guide/quick-start.md) 以及 [各个平台的配置方法](/zh/guide/cross-platform.md) 并且懂得 [如何进一步通过勾子进行定制](/zh/guide/hooks.md).
+阅读后续篇章以便了解 [如何快速开始](/zh/guide/quick-start.md) 以及[各个平台的配置方法](/zh/guide/cross-platform.md) 并且懂得[如何进一步通过勾子进行定制](/zh/guide/hooks.md).
 
 ### 案例展示
 TBD
