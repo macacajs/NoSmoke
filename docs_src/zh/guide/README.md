@@ -94,7 +94,15 @@ Hooks.prototype.onActionPerformed = async function(action, crawler) {
 阅读后续篇章以便了解 [如何快速开始](/zh/guide/quick-start.md) 以及[各个平台的配置方法](/zh/guide/cross-platform.md) 并且懂得[如何进一步通过勾子进行定制](/zh/guide/hooks.md).
 
 ### 案例展示
-TBD
+
+NoSmoke OCR 执行案例
+
+| App  | 平台  | 设备类型 |  报告 |  配置链接 |
+| :--- | :---  |  :---  | :--- | :--- |
+| Macaca Demo  | iOS  | Simulator   | [链接](https://upbeat-shannon-0947ed.netlify.com/reports/2018-12-28-13-50-36-report.html#mode=image)  |   [configuration](https://upbeat-shannon-0947ed.netlify.com/crawler.config-ios.yml) [cmd](https://upbeat-shannon-0947ed.netlify.com/run-ios.yml) |
+| Macaca Demo  | Android  | Simulator  | [链接](https://upbeat-shannon-0947ed.netlify.com/reports/2018-12-28-14-4-26-report.html#mode=image)  |   [configuration](https://upbeat-shannon-0947ed.netlify.com/crawler.config-android.yml) [cmd](https://upbeat-shannon-0947ed.netlify.com/run-android.yml) |
+| Dash-iOS  | iOS  |  Simulator  | [链接](https://compassionate-mclean-9beb64.netlify.com/reports/2018-12-28-14-40-38-report.html#mode=image)  |   [configuration](https://compassionate-mclean-9beb64.netlify.com/crawler.config-ios.yml) [cmd](https://compassionate-mclean-9beb64.netlify.com/run-ios.yml) |
+| YouDao-Dict   | Android  |  Device  | [链接](https://compassionate-mclean-9beb64.netlify.com/reports/2018-12-28-14-52-24-report.html#mode=image)  |   [configuration](https://compassionate-mclean-9beb64.netlify.com/crawler.config-android.yml) [cmd](https://upbeat-shannon-0947ed.netlify.com/run-android.yml) |
 
 ### License
 
