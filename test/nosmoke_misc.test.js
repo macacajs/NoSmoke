@@ -10,14 +10,6 @@ describe('#Load Configuration', function() {
   let config = new NSCrawlerConfig();
   config.loadDefault();
 
-  it('clickTypes should have value', function() {
-    assert.ok(config.clickTypes.length, 'clickTypes should have value');
-  });
-
-  it('editTypes should have value', function() {
-    assert.ok(config.editTypes.length, 'editTypes should have value');
-  });
-
   it('testing depth should be greater than 5', function() {
     assert.ok(config.testingDepth > 5, 'testing depth should be greater than 5');
   });
