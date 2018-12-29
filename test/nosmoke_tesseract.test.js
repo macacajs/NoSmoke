@@ -3,12 +3,11 @@
 'use strict';
 
 const Jimp = require('jimp');
-const path = require('path');
-
 const configure = require('@jimp/custom');
 const types = require('@jimp/types');
 const plugins = require('@jimp/plugins');
 const threshold = require('@jimp/plugin-threshold');
+const mock = require('./mock');
 
 configure({
   types: [types],
@@ -16,18 +15,8 @@ configure({
 });
 
 var HOCR = require('../lib/crawler/ocr-impl/hocr-to-json');
-var tesseract = require('../lib/crawler/ocr-impl/tesseract');
 
-var options = {
-  l: 'chi_sim',
-  binary: '/usr/local/bin/tesseract',
-  psm: 3,
-  config: '--oem 1'
-};
-
-let filePath = './test/1.png';
-const fs = require('fs');
-
+const filePath = './test/1.png';
 const assert = require('assert');
 
 describe('#Load Template', function() {
@@ -46,28 +35,14 @@ describe('#Load Template', function() {
           .invert()
           .write('./temp/temp.png');
 
-        tesseract.process(path.join(process.cwd(), './temp/temp.png'), options, function(err, text) {
+        new HOCR(mock.mockTesseractResult,  (err, result) => {
 
           if (err) {
             assert.fail(err, null, 'tesseract fails');
           }
 
-          new HOCR(text,  (err, result) => {
-
-            if (err) {
-              assert.fail(err, null, 'tesseract fails');
-            }
-
-            console.log(JSON.stringify(result));
-            console.log('The file was saved!');
-
-            fs.writeFile('./temp/result.json', JSON.stringify(text), function(err) {
-
-              assert.ok(err === null);
-
-              resolve();
-            });
-          });
+          console.log(JSON.stringify(result));
+          resolve();
         });
       });
     });
