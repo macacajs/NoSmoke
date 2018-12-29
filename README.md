@@ -1,4 +1,4 @@
-# NoSmoke
+# NoSmoke 2.0
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
@@ -20,14 +20,14 @@
 
 ---
 
-A cross platform UI crawler which generate and execute UI test cases. For full set of documentation, please refer to the [documents](https://macacajs.github.io/NoSmoke/guide/).
+A cross platform UI crawler which generate and execute UI test cases. [Docs](https://macacajs.github.io/NoSmoke/guide/).
 
-## 1. Advantages of NoSmoke:
+## 1. Advantages:
 
-* [x] **Automated UI test** with simple configuration
-* [x] **More accurate than monkey test** with view tree crawling
-* [x] **Multiple platforms** iOS and Android !! :\]
-* [x] **Testing result visualisation** via [Macaca-Reporter](https://github.com/macacajs/macaca-reporter)
+* [x] automated ui tests with light configuration
+* [x] high accuracy
+* [x] cross-platform: android & ios
+* [x] testing result visualization
 
 ## 2. Why the name?
 
@@ -39,7 +39,7 @@ Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke 
 
 ## 4. Quick Start
 
-Ensure [tesseract](https://github.com/tesseract-ocr/tesseract) has been properly installed and then install nosmoke:
+Ensure [tesseract](https://github.com/tesseract-ocr/tesseract) and macaca drivers have been properly installed and then install nosmoke:
 
 ```bash
 npm i nosmoke -g
