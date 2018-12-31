@@ -57,7 +57,8 @@
     "docs:dev": "vuepress dev docs_src",
     "docs:build": "vuepress build docs_src",
     "postinstall": "node ./scripts/print.js",
-    "contributor": "git-contributor"
+    "contributor": "git-contributor",
+    "preinstall": "scripts/preinstall.sh"
   },
   "pre-commit": [
     "lint"
