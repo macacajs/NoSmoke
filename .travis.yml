@@ -6,5 +6,11 @@ script:
   - npm i
   - npm run lint
   - npm run test
+  - npm run docs:build
 after_script:
   - npm install coveralls@2 && cat ./coverage/lcov.info | coveralls
+  - cd ./docs
+  - git init
+  - git add --all .
+  - git commit -m "Travis CI Auto Builder"
+  - git push --quiet --force https://$REPO_TOKEN@github.com/macacajs/NoSmoke.git gh-pages
