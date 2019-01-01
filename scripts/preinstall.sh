@@ -6,16 +6,16 @@ echo 'update node dependencies:'
 echo '--------------------------'
 
 echo 'updating ios-deploy...'
-npm update ios-deploy -g
+npm list -g ios-deploy || npm install ios-deploy -g
 
 echo 'updating macaca-ios...'
-npm update macaca-ios -g
+npm list -g macaca-ios || npm install macaca-ios -g
 
 echo 'updating macaca-android...'
-npm update macaca-android -g
+npm list -g macaca-android || npm install macaca-android -g
 
 echo 'updating macaca...'
-npm update macaca -g
+npm list -g macaca-cli || npm install macaca-cli -g
 
 # Check os versions and install essential dependencies
 echo '--------------------------'
