@@ -1,7 +1,7 @@
 ---
 
 home: true
-heroImage: https://macacajs.github.io/logo/macaca.svg
+heroImage: https://macacajs.github.io/macaca-logo/svg/monkey.svg
 actionText: Try it Out →
 actionLink: /guide/
 features:

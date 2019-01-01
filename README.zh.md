@@ -1,23 +1,5 @@
 # NoSmoke 2.0
 
-[![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![node version][node-image]][node-url]
-[![npm download][download-image]][download-url]
-
-[npm-image]: https://img.shields.io/npm/v/nosmoke.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/nosmoke
-[travis-image]: https://img.shields.io/travis/macacajs/NoSmoke.svg?style=flat-square
-[travis-url]: https://travis-ci.org/macacajs/NoSmoke
-[coveralls-image]: https://img.shields.io/coveralls/macacajs/NoSmoke.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/macacajs/NoSmoke?branch=master
-[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
-[download-url]: https://npmjs.org/package/nosmoke
-[English Version](README.md)
-
 ---
 
 一款跨端的自动化爬虫工具. [使用文档](https://macacajs.github.io/NoSmoke/guide/).
@@ -42,14 +24,14 @@ Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke 
 确保 [tesseract](https://github.com/tesseract-ocr/tesseract) 以及macaca 驱动层已安装在本地正确安装， 并运行一下指令安装NoSmoke
 
 ```bash
-npm i nosmoke -g
+$ npm i nosmoke -g
 ```
 
 并运行:
 
 ```bash
-macaca server --verbose &
-nosmoke
+$ macaca server --verbose &
+$ nosmoke
 ```
 
 <!-- GITCONTRIBUTOR_START -->

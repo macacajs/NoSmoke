@@ -4,6 +4,13 @@ node_js:
   - 8
 script:
   - npm i
+  - npm run docs:build
+  - cd ./docs
+  - git init
+  - git add --all .
+  - git commit -m "Travis CI Auto Builder"
+  - git push --quiet --force https://$REPO_TOKEN@github.com/macacajs/NoSmoke.git master:gh-pages
+  - cd ..
   - npm run lint
   - npm run test
 after_script:

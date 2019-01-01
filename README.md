@@ -42,14 +42,14 @@ Since all the good ones are taken, `NoSmoke` comes from the ideas across `smoke 
 Ensure [tesseract](https://github.com/tesseract-ocr/tesseract) and macaca drivers have been properly installed and then install nosmoke:
 
 ```bash
-npm i nosmoke -g
+$ npm i nosmoke -g
 ```
 
 and then run:
 
 ```bash
-macaca server --verbose &
-nosmoke
+$ macaca server --verbose &
+$ nosmoke
 ```
 
 <!-- GITCONTRIBUTOR_START -->
