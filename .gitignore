@@ -10,6 +10,7 @@ build/
 screenshoots/
 public/index.js
 package-lock.json
+docs
 *.sw*
 *.un~
 *.tgz
