@@ -34,7 +34,8 @@ esac
 if [ $machine == "Mac" ]; then
     # Do something under Mac OS X platform
     echo 'install libs for Mac OS'
-    brew install tesseract --with-all-languages
+    brew ls --versions tesseract || brew install tesseract --with-all-languages
+    brew ls --versions libimobiledevice || brew install libimobiledevice
 elif [ $machine == "Linux" ]; then
     # Do something under GNU/Linux platform
     echo 'install libs for Linux'
