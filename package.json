@@ -56,8 +56,8 @@
     "dev": "nodemon ./bin/nosmoke",
     "test": "istanbul cover `npm bin`/_mocha",
     "lint": "eslint .",
-    "docs:dev": "vuepress dev docs_src",
-    "docs:build": "vuepress build docs_src",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "postinstall": "node ./scripts/print.js",
     "contributor": "git-contributor",
     "preinstall": "scripts/preinstall.sh"

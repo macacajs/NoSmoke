@@ -5,7 +5,7 @@ node_js:
 script:
   - npm i
   - npm run docs:build
-  - cd ./docs
+  - cd ./docs_dist
   - git init
   - git add --all .
   - git commit -m "Travis CI Auto Builder"

@@ -5,6 +5,8 @@ node_modules
 coverage/
 screenshoots/
 reports/
+docs_dist/
+docs/
 temp/
 .idea
 public/index.js
