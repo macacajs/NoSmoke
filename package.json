@@ -1,6 +1,6 @@
 {
   "name": "nosmoke",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A cross platform UI crawler which scans view trees then generate and execute UI test cases",
   "keywords": [
     "nosmoke"
