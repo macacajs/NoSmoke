@@ -45,11 +45,11 @@
   "devDependencies": {
     "eslint": "^4.0.0",
     "git-contributor": "^1.0.7",
+    "husky": "^1.3.1",
     "istanbul": "*",
     "macaca-ecosystem": "*",
     "mocha": "*",
     "nodemon": "^1.18.6",
-    "pre-commit": "*",
     "vuepress": "^0.14.8"
   },
   "scripts": {
@@ -62,9 +62,11 @@
     "contributor": "git-contributor",
     "preinstall": "scripts/preinstall.sh"
   },
-  "pre-commit": [
-    "lint"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "homepage": "https://macacajs.github.io/nosmoke",
   "license": "MIT"
 }
