@@ -5,7 +5,7 @@ const macacaEcosystem = require('macaca-ecosystem');
 const name = 'NoSmoke';
 
 module.exports = {
-  dest: 'docs',
+  dest: 'docs_dist',
   base: `/${name}/`,
 
   locales: {
