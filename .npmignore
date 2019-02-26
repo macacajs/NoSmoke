@@ -3,6 +3,7 @@ node_modules
 .eslintrc
 .eslintignore
 coverage/
+.nyc_output/
 screenshoots/
 reports/
 docs_dist/

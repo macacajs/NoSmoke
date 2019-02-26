@@ -4,6 +4,7 @@ npm-debug.log
 .idea/*
 .macaca-temp/*
 coverage/
+.nyc_output/
 .project
 reports/
 build/
