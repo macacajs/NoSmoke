@@ -61,7 +61,7 @@
     "docs:build": "vuepress build docs",
     "postinstall": "node ./scripts/print.js",
     "contributor": "git-contributor",
-    "preinstall": "scripts/preinstall.sh"
+    "preinstall": "node ./scripts/preinstall.js"
   },
   "husky": {
     "hooks": {
