@@ -2,7 +2,7 @@
 
 home: true
 heroImage: https://macacajs.github.io/macaca-logo/svg/monkey.svg
-actionText: Try it Out →
+actionText: Quick Start
 actionLink: /guide/
 features:
 - title: Cross Platform

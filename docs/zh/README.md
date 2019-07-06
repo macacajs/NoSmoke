@@ -2,8 +2,8 @@
 
 home: true
 heroImage: https://macacajs.github.io/macaca-logo/svg/monkey.svg
-actionText: Try it Out →
-actionLink: /guide/
+actionText: 快速上手
+actionLink: /zh/guide/
 features:
 - title: 多端支持
   details: 支持iOS 以及安卓平台，开箱即用！
