@@ -36,10 +36,10 @@ This project follows the git-contributor [spec](https://github.com/xudafeng/git-
 
 ## 1. Advantages:
 
-* [x] automated ui tests with light configuration
-* [x] high accuracy
-* [x] cross-platform: android & ios
-* [x] testing result visualization
+* ✅ automated ui tests with light configuration
+* ✅ high accuracy
+* ✅ cross-platform: android & ios
+* ✅ testing result visualization
 
 ## 2. Why the name?
 

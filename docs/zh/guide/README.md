@@ -6,13 +6,13 @@ NoSmoke 是一款基于source-XML-tree/OCR 为基础的多端UI自动化测试�
 
 NoSmoke 提供一下能力:
 
-* [x] 以**最轻便的配置能力**以及**最简化的脚本**执行**自动化UI测试**.
+* ✅ 以**最轻便的配置能力**以及**最简化的脚本**执行**自动化UI测试**.
 
-* [x] **基于深度遍历算法**精确定位测试UI元素， 提供**高于猴子测试的测试精度**.
+* ✅ **基于深度遍历算法**精确定位测试UI元素， 提供**高于猴子测试的测试精度**.
 
-* [x] 支持多端运行: **iOS, Android**!! :\]
+* ✅ 支持多端运行: **iOS, Android**!! :\]
 
-* [x] **测试结果可视化**  [Macaca-Reporter](https://github.com/macacajs/macaca-reporter).
+* ✅ **测试结果可视化**  [Macaca-Reporter](https://github.com/macacajs/macaca-reporter).
 
 ## 2. 工作原理介绍
 
