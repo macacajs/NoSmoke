@@ -31,7 +31,7 @@
     "macaca-logo": "^1.0.0",
     "macaca-reporter": "^1.2.10",
     "macaca-utils": "^1.0.1",
-    "node-fetch": "^1.7.2",
+    "node-fetch": "^2.6.1",
     "node-uuid": "^1.4.1",
     "npm-update": "^1.0.2",
     "socket.io": "^2.0.3",
