@@ -6,15 +6,15 @@
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: https://img.shields.io/npm/v/nosmoke.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/nosmoke.svg
 [npm-url]: https://npmjs.org/package/nosmoke
-[travis-image]: https://img.shields.io/travis/macacajs/NoSmoke.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/macacajs/NoSmoke.svg
 [travis-url]: https://travis-ci.org/macacajs/NoSmoke
-[coveralls-image]: https://img.shields.io/coveralls/macacajs/NoSmoke.svg?style=flat-square
+[coveralls-image]: https://img.shields.io/coveralls/macacajs/NoSmoke.svg
 [coveralls-url]: https://coveralls.io/r/macacajs/NoSmoke?branch=master
-[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg
 [node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/nosmoke.svg?style=flat-square
+[download-image]: https://img.shields.io/npm/dm/nosmoke.svg
 [download-url]: https://npmjs.org/package/nosmoke
 [中文版](README.zh.md)
 
@@ -26,11 +26,11 @@ A cross platform UI crawler which generate and execute UI test cases. [Docs](htt
 
 ## Contributors
 
-|[<img src="https://avatars0.githubusercontent.com/u/8198256?v=4" width="100px;"/><br/><sub><b>SamuelZhaoY</b></sub>](https://github.com/SamuelZhaoY)<br/>|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars1.githubusercontent.com/u/26514264?v=4" width="100px;"/><br/><sub><b>butterflyingdog</b></sub>](https://github.com/butterflyingdog)<br/>|[<img src="https://avatars1.githubusercontent.com/u/11460601?v=4" width="100px;"/><br/><sub><b>zivyangll</b></sub>](https://github.com/zivyangll)<br/>|[<img src="https://avatars2.githubusercontent.com/u/1380777?v=4" width="100px;"/><br/><sub><b>wusphinx</b></sub>](https://github.com/wusphinx)<br/>|
-| :---: | :---: | :---: | :---: | :---: |
+|[<img src="https://avatars.githubusercontent.com/u/8198256?v=4" width="100px;"/><br/><sub><b>SamuelZhaoY</b></sub>](https://github.com/SamuelZhaoY)<br/>|[<img src="https://avatars.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars.githubusercontent.com/u/26514264?v=4" width="100px;"/><br/><sub><b>butterflyingdog</b></sub>](https://github.com/butterflyingdog)<br/>|[<img src="https://avatars.githubusercontent.com/u/1380777?v=4" width="100px;"/><br/><sub><b>wusphinx</b></sub>](https://github.com/wusphinx)<br/>|[<img src="https://avatars.githubusercontent.com/u/11460601?v=4" width="100px;"/><br/><sub><b>zivyangll</b></sub>](https://github.com/zivyangll)<br/>|[<img src="https://avatars.githubusercontent.com/u/31232146?v=4" width="100px;"/><br/><sub><b>wanglipeng8</b></sub>](https://github.com/wanglipeng8)<br/>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Sun Feb 24 2019 12:20:30 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Mon Nov 08 2021 13:49:30 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
 

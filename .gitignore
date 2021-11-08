@@ -1,7 +1,4 @@
-.DS_Store
 node_modules
-npm-debug.log
-.idea/*
 .macaca-temp/*
 coverage/
 .nyc_output/
