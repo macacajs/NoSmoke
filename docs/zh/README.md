@@ -1,7 +1,7 @@
 ---
 
 home: true
-heroImage: https://macacajs.github.io/macaca-logo/svg/monkey.svg
+heroImage: https://macacajs.github.io/macaca-ecosystem/macaca-logo/svg/monkey.svg
 actionText: 快速上手
 actionLink: /zh/guide/
 features:
