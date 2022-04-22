@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  
+  push:
+    branches:
+      - '**'
+
+jobs:
+  Runner:
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macOS-latest ]
+        node-version: [ 16 ]
+    steps:
+      - name: Checkout Git Source
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        # https://github.com/webpack-contrib/terser-webpack-plugin/issues/66
+        run: |
+          npm i terser@3.14.1
+          npm install
+
+      - name: Continuous integration
+        run: |
+          npm run lint
+          npm run test
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v3.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
