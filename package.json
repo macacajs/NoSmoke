@@ -22,7 +22,7 @@
     "canvas": "^2.0.1",
     "co": "^4.6.0",
     "commander": "^2.9.0",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.0.0",
     "glob": "^5.0.10",
     "htmlparser2": "1.5.0",
     "image-size": "^0.6.3",
